@@ -5,10 +5,25 @@
     tools:context="com.example.alexm.selfbet.MainActivity">
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Home"
-        android:textSize="30sp"/>
+        android:layout_marginTop="26dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="This page will show the user's balance, and summary of their account." />
+
+    <TextView
+        android:id="@+id/tv_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="34dp"
+        android:textSize="26sp"
+        android:text="" />
 
 </RelativeLayout>

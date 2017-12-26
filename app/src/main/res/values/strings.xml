@@ -8,4 +8,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="bt_logout">Logout</string>
+    <string name="tv_balance">Balance: </string>
 </resources>

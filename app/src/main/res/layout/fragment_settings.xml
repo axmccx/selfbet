@@ -4,14 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.alexm.selfbet.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Settings"
-        android:textSize="30sp"
-        android:id="@+id/textView" />
-
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"

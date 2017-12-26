@@ -5,10 +5,12 @@
     tools:context="com.example.alexm.selfbet.MainActivity">
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Bets"
-        android:textSize="30sp"/>
-
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="22dp"
+        android:text='Where the user can "place" bets. ' />
 </RelativeLayout>

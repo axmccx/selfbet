@@ -16,6 +16,7 @@ public class BetsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(R.string.title_bets);
     }
 
     @Override
