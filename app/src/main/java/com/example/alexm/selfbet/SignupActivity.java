@@ -19,14 +19,29 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    public static final String BALANCE_KEY = "balance";
+    public static final String EMAIL_KEY = "email";
+    public static final String NAME_KEY = "name";
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
+    private DocumentReference mDocref;
+
+    private String email;
+    private String password;
+    private String reEnterPassword;
+    private String name;
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_email) EditText _emailText;
@@ -79,9 +94,10 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
+        email = _emailText.getText().toString();
+        password = _passwordText.getText().toString();
+        reEnterPassword = _reEnterPasswordText.getText().toString();
+        name = _nameText.getText().toString();
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -91,14 +107,8 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            String name = _nameText.getText().toString();
                             FirebaseUser user = mAuth.getCurrentUser();
-
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name)
-                                    .build();
-
-                            user.updateProfile(profileUpdates);
+                            initDB(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -119,6 +129,36 @@ public class SignupActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
+    }
+
+    public void initDB(FirebaseUser user) {
+        Map<String, Object> dataToSave = new HashMap<String, Object>();
+        dataToSave.put(BALANCE_KEY, 0);
+        dataToSave.put(EMAIL_KEY, email);
+        dataToSave.put(NAME_KEY, name);
+
+        mFirestore = FirebaseFirestore.getInstance();
+
+        mDocref = mFirestore.document("users/" + user.getUid());
+
+        mDocref.set(dataToSave).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "It worked!");
+                    Toast.makeText(getApplicationContext(), "User added to DB", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.w(TAG, "I messed up...", task.getException());
+                    Toast.makeText(getApplicationContext(), "Something went wrong, users/" + mAuth.getUid(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+        //.setDisplayName(name)
+        //.build();
+
+        //user.updateProfile(profileUpdates);
     }
 
     public void onSignupSuccess() {

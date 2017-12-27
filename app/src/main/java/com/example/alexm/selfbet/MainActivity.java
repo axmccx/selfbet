@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.example.alexm.selfbet.fragments.BetsFragment;
 import com.example.alexm.selfbet.fragments.GroupFragment;
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, HomeFragment.newInstance());
         transaction.commit();
-
     }
 
     @Override
@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String getBalance() {
         return userBalance;
+    }
+
+    public FirebaseAuth getmAuth() {
+        return mAuth;
     }
 
 }

@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.alexm.selfbet.MainActivity;
 import com.example.alexm.selfbet.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,8 +30,10 @@ public class MoneyFragment extends Fragment {
     public static final String BALANCE_KEY = "balance";
     private static final String TAG = "SaveToFirestore";
 
-    private DocumentReference mDocref = FirebaseFirestore.getInstance()
-            .document("sampleData/userTest");
+    private MainActivity activity;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
+    private DocumentReference mDocref;
 
     public static MoneyFragment newInstance() {
         MoneyFragment fragment = new MoneyFragment();
@@ -49,12 +53,16 @@ public class MoneyFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         faucetButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 openFaucet();
             }
         });
+
+        activity = (MainActivity) getActivity();
+        mAuth = activity.getmAuth();
+        mFirestore = FirebaseFirestore.getInstance();
+        mDocref = mFirestore.document("users/" + mAuth.getUid());
 
         return view;
     }
@@ -63,7 +71,7 @@ public class MoneyFragment extends Fragment {
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put(BALANCE_KEY, 20);
 
-        mDocref.set(dataToSave).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDocref.update(dataToSave).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
