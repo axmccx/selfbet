@@ -51,19 +51,21 @@ public class HomeFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         mAuth = activity.getmAuth();
-        mFirestore = FirebaseFirestore.getInstance();
-        mDocRef = mFirestore.document("users/" + mAuth.getUid());
 
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (documentSnapshot.exists()) {
-                    userBalance = documentSnapshot.get(BALANCE_KEY).toString();
-                    balanceText.setText("Balance: $" + userBalance + ".00");
+        if (mAuth.getCurrentUser() != null) {
+            mFirestore = FirebaseFirestore.getInstance();
+            mDocRef = mFirestore.document("users/" + mAuth.getUid());
+
+            mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                    if (documentSnapshot.exists()) {
+                        userBalance = documentSnapshot.get(BALANCE_KEY).toString();
+                        balanceText.setText("Balance: $" + userBalance + ".00");
+                    }
                 }
-            }
-        });
-
+            });
+        }
         return view;
     }
 }

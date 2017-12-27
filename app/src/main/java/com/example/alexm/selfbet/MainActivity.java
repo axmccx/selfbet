@@ -27,9 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    public static final String BALANCE_KEY = "balance";
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("sampleData/userTest");
-    private String userBalance;
+    //public static final String BALANCE_KEY = "balance";
+    //private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("sampleData/userTest");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -83,20 +82,11 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
-        mDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (documentSnapshot.exists()) {
-                    userBalance = documentSnapshot.get(BALANCE_KEY).toString();
-                }
-            }
-        });
     }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            // Probably need to rework this...
+            // do something more useful...
         } else {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

@@ -13,9 +13,12 @@ import android.widget.Toast;
 import com.example.alexm.selfbet.MainActivity;
 import com.example.alexm.selfbet.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -68,6 +71,22 @@ public class MoneyFragment extends Fragment {
     }
 
     private void openFaucet() {
+        mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String balance = documentSnapshot.getData().get(BALANCE_KEY).toString();
+                    if (balance.equals("0")) {
+                        addFunds();
+                    } else {
+                        Toast.makeText(activity.getApplicationContext(), "Balance needs to be zero!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    public void addFunds() {
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put(BALANCE_KEY, 20);
 
@@ -76,10 +95,10 @@ public class MoneyFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "It worked!");
-                    Toast.makeText(getActivity().getApplicationContext(), "Adding credits...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Adding $20 to account...", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.w(TAG, "I messed up...", task.getException());
-                    Toast.makeText(getActivity().getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Oops, something went wrong", Toast.LENGTH_SHORT).show();
                 }
             }
         });
