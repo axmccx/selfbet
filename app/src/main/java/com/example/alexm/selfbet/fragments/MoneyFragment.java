@@ -33,7 +33,7 @@ public class MoneyFragment extends Fragment {
     private MainActivity activity;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
-    private DocumentReference mDocref;
+    private DocumentReference mDocRef;
 
     public static MoneyFragment newInstance() {
         MoneyFragment fragment = new MoneyFragment();
@@ -62,7 +62,7 @@ public class MoneyFragment extends Fragment {
         activity = (MainActivity) getActivity();
         mAuth = activity.getmAuth();
         mFirestore = FirebaseFirestore.getInstance();
-        mDocref = mFirestore.document("users/" + mAuth.getUid());
+        mDocRef = mFirestore.document("users/" + mAuth.getUid());
 
         return view;
     }
@@ -71,7 +71,7 @@ public class MoneyFragment extends Fragment {
         Map<String, Object> dataToSave = new HashMap<String, Object>();
         dataToSave.put(BALANCE_KEY, 20);
 
-        mDocref.update(dataToSave).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDocRef.update(dataToSave).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {

@@ -103,10 +103,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String getBalance() {
-        return userBalance;
-    }
-
     public FirebaseAuth getmAuth() {
         return mAuth;
     }
