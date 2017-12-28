@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alexm.selfbet.fragments.BetsFragment;

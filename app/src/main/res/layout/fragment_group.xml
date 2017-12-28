@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,4 +16,38 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="Where the user can see information related to the group they're in. " />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/groups_act_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        app:fab_addButtonColorNormal="@color/primary_blue"
+        app:fab_addButtonColorPressed="@color/primary_dark_blue"
+        app:fab_addButtonPlusIconColor="@color/white"
+        app:fab_labelStyle="@style/menu_labels_style"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp">
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/create_group_act"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/primary_blue"
+        app:fab_title="Create"
+        app:fab_colorPressed="@color/white"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/join_group_act"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/primary_blue"
+        app:fab_title="Join"
+        app:fab_colorPressed="@color/white"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
 </RelativeLayout>

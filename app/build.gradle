@@ -34,6 +34,7 @@ dependencies {
     compile 'com.google.firebase:firebase-firestore:11.8.0'
     compile 'com.google.android.gms:play-services-auth:11.8.0'
     compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
