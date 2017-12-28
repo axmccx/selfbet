@@ -50,4 +50,14 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <TextView
+        android:id="@+id/tv_groupMembership"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="30dp"
+        android:text="You're not in a group yet! \nJoin or create one."
+        android:textSize="18sp" />
+
 </RelativeLayout>

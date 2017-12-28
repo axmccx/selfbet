@@ -1,13 +1,28 @@
 package com.example.alexm.selfbet.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.alexm.selfbet.CreateGroupActivity;
+import com.example.alexm.selfbet.LoginActivity;
+import com.example.alexm.selfbet.MainActivity;
 import com.example.alexm.selfbet.R;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +32,14 @@ public class GroupFragment extends Fragment {
     @BindView(R.id.groups_act_menu) FloatingActionsMenu menuMultipleActions;
     @BindView(R.id.create_group_act) FloatingActionButton createGroup;
     @BindView(R.id.join_group_act) FloatingActionButton joinGroup;
+    @BindView(R.id.tv_groupMembership) TextView groupMembership;
 
+    public static final String BALANCE_GMEMBERSHIP= "memberOfGroups";
     private View view;
+    private MainActivity activity;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
+    private DocumentReference mDocRef;
 
     public static GroupFragment newInstance() {
         GroupFragment fragment = new GroupFragment();
@@ -40,7 +61,8 @@ public class GroupFragment extends Fragment {
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createGroup.setTitle("Button clicked");
+                Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -51,6 +73,29 @@ public class GroupFragment extends Fragment {
             }
         });
 
+        activity = (MainActivity) getActivity();
+        mAuth = activity.getmAuth();
+
+        if (mAuth.getCurrentUser() != null) {
+            mFirestore = FirebaseFirestore.getInstance();
+            mDocRef = mFirestore.document("users/" + mAuth.getUid());
+
+            mDocRef.addSnapshotListener(activity, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    ArrayList<String> userBalance = (ArrayList<String>) documentSnapshot.get(BALANCE_GMEMBERSHIP);
+
+                    if (!userBalance.get(0).equals("")) {
+                        groupMembership.setText("You are a member of the following groups: \n \n");
+                        for (String group: userBalance) {
+                            groupMembership.append(group);
+                        }
+                    }
+                }
+                }
+            });
+        }
         return view;
     }
 }
