@@ -97,7 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Re-enter Password"/>
+                android:hint="Re-enter Password"
+                android:imeOptions="actionDone"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->

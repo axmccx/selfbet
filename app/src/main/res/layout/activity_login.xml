@@ -51,7 +51,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Login"/>
+            android:text="Login"
+            android:imeOptions="actionDone"/>
 
         <TextView android:id="@+id/link_signup"
             android:layout_width="fill_parent"
