@@ -24,6 +24,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
     public static final String BALANCE_KEY = "balance";
     public static final String EMAIL_KEY = "email";
     public static final String NAME_KEY = "name";
+    public static final String GROUP_KEY = "memberOfGroups";
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
@@ -44,6 +46,7 @@ public class SignupActivity extends AppCompatActivity {
     private String password;
     private String reEnterPassword;
     private String name;
+    private ArrayList<String> groups;
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_email) EditText _emailText;
@@ -147,6 +150,7 @@ public class SignupActivity extends AppCompatActivity {
         dataToSave.put(BALANCE_KEY, 0);
         dataToSave.put(EMAIL_KEY, email);
         dataToSave.put(NAME_KEY, name);
+        dataToSave.put(GROUP_KEY, groups);
 
         mFirestore = FirebaseFirestore.getInstance();
 

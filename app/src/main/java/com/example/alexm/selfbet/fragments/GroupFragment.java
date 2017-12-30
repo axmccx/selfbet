@@ -34,7 +34,7 @@ public class GroupFragment extends Fragment {
     @BindView(R.id.join_group_act) FloatingActionButton joinGroup;
     @BindView(R.id.tv_groupMembership) TextView groupMembership;
 
-    public static final String BALANCE_GMEMBERSHIP= "memberOfGroups";
+    public static final String GROUP_KEY= "memberOfGroups";
     private View view;
     private MainActivity activity;
     private FirebaseAuth mAuth;
@@ -84,9 +84,8 @@ public class GroupFragment extends Fragment {
                 @Override
                 public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (documentSnapshot != null && documentSnapshot.exists()) {
-                    ArrayList<String> userBalance = (ArrayList<String>) documentSnapshot.get(BALANCE_GMEMBERSHIP);
-
-                    if (!userBalance.get(0).equals("")) {
+                    ArrayList<String> userBalance = (ArrayList<String>) documentSnapshot.get(GROUP_KEY);
+                    if (userBalance != null) {
                         groupMembership.setText("You are a member of the following groups: \n \n");
                         for (String group: userBalance) {
                             groupMembership.append(group);
