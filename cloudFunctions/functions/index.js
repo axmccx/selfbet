@@ -49,3 +49,47 @@ function createGroupInDB(uid, groupName, response) {
 		}
 	});
 }
+
+exports.joinGroup = functions.https.onRequest((request, response) => {
+	console.log('joinGroup called');
+	if (!request.headers.authorization) {
+		console.error('No Firebase ID token was passed');
+		response.status(403).send('Unauthorized');
+		return;
+	}
+	admin.auth().verifyIdToken(request.headers.authorization).then(decodedIdToken => {
+		console.log('ID Token correctly decoded', decodedIdToken);
+		joinGroupInDB(decodedIdToken.uid, request.query.groupName, response)
+	}).catch(error => {
+		console.error('Error while verifying Firebase ID token:', error);
+		response.status(403).send('Unauthorized');
+	});
+});
+
+function joinGroupInDB(uid, groupName, response) {
+	const db = admin.firestore();
+	const userRef = db.collection('users').doc(uid)
+	const groupRef = db.collection('groups').doc(groupName) 
+	groupRef.get().then((docSnapshot) => {
+		if (docSnapshot.exists) {
+			// get current members array of the specified group, and append the uid...
+			var members_lst = docSnapshot.data()["members"];
+			members_lst.push(uid);
+			groupRef.update({
+				members: members_lst
+			}).catch(error => {
+			 	console.log(error);
+			});
+			userRef.update({
+				memberOfGroups: [groupName]
+			}).catch(error => {
+				console.log(error);
+			});
+			console.log('User ' + uid + ' joined group '+ groupName);
+			response.send('You joined ' + groupName + '!');
+		} else {
+			response.send('ERROR: ' + groupName + ' doesn\'t exists');
+			console.log('ERROR: Trying to join ' + groupName + ', but it doesn\'t already exists');
+		}
+	});
+}

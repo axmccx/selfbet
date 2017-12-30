@@ -35,7 +35,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateGroupActivity"
-            android:label="@string/title_activity_create_group"/>
+            android:label="@string/title_activity_create_group"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".JoinGroupActivity"
+            android:label="@string/title_activity_join_group"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

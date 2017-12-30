@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alexm.selfbet.CreateGroupActivity;
+import com.example.alexm.selfbet.JoinGroupActivity;
 import com.example.alexm.selfbet.LoginActivity;
 import com.example.alexm.selfbet.MainActivity;
 import com.example.alexm.selfbet.R;
@@ -69,7 +70,8 @@ public class GroupFragment extends Fragment {
         joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                joinGroup.setTitle("Button clicked");
+                Intent intent = new Intent(getActivity(), JoinGroupActivity.class);
+                startActivity(intent);
             }
         });
 
