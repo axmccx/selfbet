@@ -47,7 +47,8 @@ public class cloudFuncHTTP extends AsyncTask<String, String, String> {
             case CREATE_GROUP_FUNC:
                 if (strings.length == 3) {
                     out.append(baseURL);
-                    out.append("createGroup?groupName=");
+                    out.append(CREATE_GROUP_FUNC);
+                    out.append("/");
                     out.append(strings[2]);
                 }
                 break;
@@ -55,7 +56,8 @@ public class cloudFuncHTTP extends AsyncTask<String, String, String> {
             case JOIN_GROUP_FUNC:
                 if (strings.length == 3) {
                     out.append(baseURL);
-                    out.append("joinGroup?groupName=");
+                    out.append(JOIN_GROUP_FUNC);
+                    out.append("/");
                     out.append(strings[2]);
                 }
                 break;
@@ -63,11 +65,12 @@ public class cloudFuncHTTP extends AsyncTask<String, String, String> {
             case PLACE_BET_FUNC:
                 if (strings.length == 5) {
                     out.append(baseURL);
-                    out.append("placeBet?groupName=");
+                    out.append(PLACE_BET_FUNC);
+                    out.append("/");
                     out.append(strings[2]);
-                    out.append("&type=");
+                    out.append("/");
                     out.append(strings[3]);
-                    out.append("&amount=");
+                    out.append("/");
                     out.append(strings[4]);
                 }
                 break;

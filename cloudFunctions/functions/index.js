@@ -3,33 +3,45 @@
 var functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
+const db = admin.firestore();
+const express = require('express');
+const app = express();
+const createGroup = express();
+const joinGroup = express();
+const placeBet = express();
+const triggerBet = express();
 
-exports.createGroup = functions.https.onRequest((request, response) => {
-	console.log('createGroup called');
-	if (!request.headers.authorization) {
-		console.error('No Firebase ID token was passed');
-		response.status(403).send('Unauthorized');
+const validateFirebaseIdToken = (req, res, next) => {
+	console.log('Check if request is authorized with Firebase ID token');
+	if (!req.headers.authorization) {
+		console.error('No Firebase ID token was passed.');
+		res.status(403).send('Unauthorized');
 		return;
 	}
-	admin.auth().verifyIdToken(request.headers.authorization).then(decodedIdToken => {
+	admin.auth().verifyIdToken(req.headers.authorization).then(decodedIdToken => {
 		console.log('ID Token correctly decoded', decodedIdToken);
-		createGroupInDB(decodedIdToken.uid, request.query.groupName, response)
+		req.user = decodedIdToken;
+		next();
 	}).catch(error => {
 		console.error('Error while verifying Firebase ID token:', error);
-		response.status(403).send('Unauthorized');
+		res.status(403).send('Unauthorized');
 	});
-});
+};
 
-function createGroupInDB(uid, groupName, response) {
-	const db = admin.firestore();
+
+createGroup.use(validateFirebaseIdToken);
+createGroup.get('/:groupName', (req, res) => {
+	console.log('createGroup called');
+	const uid = req.user.uid;
+	const r = req.params;
 	const userRef = db.collection('users').doc(uid);
-	const groupRef = db.collection('groups').doc(groupName);
+	const groupRef = db.collection('groups').doc(r.groupName);
 
 	// check whether the group already exists...
 	groupRef.get().then((docSnapshot) => {
 		if (docSnapshot.exists) {
-			response.send('ERROR: ' + groupName + ' already exists');
-			console.log('ERROR: ' + groupName + ' already exists');
+			res.send('ERROR: ' + r.groupName + ' already exists');
+			console.log('ERROR: ' + r.groupName + ' already exists');
 		} else {
 			// create group document in the groups collection, call it the group name
 			// add the users uid in the member's array
@@ -40,36 +52,25 @@ function createGroupInDB(uid, groupName, response) {
 			});
 			// Update the user's memberOfGroups array with the new group name
 			userRef.update({
-				memberOfGroups: [groupName]
+				memberOfGroups: [r.groupName]
 			}).catch(error => {
 				console.log(error);
 			});
-			console.log(groupName + ' has been created!');
-			response.send(groupName + ' has been created! :)');
+			console.log(r.groupName + ' has been created!');
+			res.send(r.groupName + ' has been created! :)');
 		}
 	});
-}
-
-exports.joinGroup = functions.https.onRequest((request, response) => {
-	console.log('joinGroup called');
-	if (!request.headers.authorization) {
-		console.error('No Firebase ID token was passed');
-		response.status(403).send('Unauthorized');
-		return;
-	}
-	admin.auth().verifyIdToken(request.headers.authorization).then(decodedIdToken => {
-		console.log('ID Token correctly decoded', decodedIdToken);
-		joinGroupInDB(decodedIdToken.uid, request.query.groupName, response)
-	}).catch(error => {
-		console.error('Error while verifying Firebase ID token:', error);
-		response.status(403).send('Unauthorized');
-	});
 });
+exports.createGroup = functions.https.onRequest(createGroup);
 
-function joinGroupInDB(uid, groupName, response) {
-	const db = admin.firestore();
+
+joinGroup.use(validateFirebaseIdToken);
+joinGroup.get('/:groupName', (req, res) => {
+	console.log('joinGroup called');
+	const uid = req.user.uid;
+	const r = req.params;
 	const userRef = db.collection('users').doc(uid);
-	const groupRef = db.collection('groups').doc(groupName);
+	const groupRef = db.collection('groups').doc(r.groupName);
 	groupRef.get().then((docSnapshot) => {
 		if (docSnapshot.exists) {
 			// get current members array of the specified group, and append the uid...
@@ -81,47 +82,58 @@ function joinGroupInDB(uid, groupName, response) {
 			 	console.log(error);
 			});
 			userRef.update({
-				memberOfGroups: [groupName]
+				memberOfGroups: [r.groupName]
 			}).catch(error => {
 				console.log(error);
 			});
-			console.log('User ' + uid + ' joined group '+ groupName);
-			response.send('You joined ' + groupName + '!');
+			console.log('User ' + uid + ' joined group '+ r.groupName);
+			res.send('You joined ' + r.groupName + '!');
 		} else {
-			response.send('ERROR: ' + groupName + ' doesn\'t exists');
-			console.log('ERROR: Trying to join ' + groupName + ', but it doesn\'t already exists');
+			res.send('ERROR: ' + r.groupName + ' doesn\'t exists');
+			console.log('ERROR: Trying to join ' + r.groupName + ', but it doesn\'t already exists');
 		}
 	});
-}
-
-exports.placeBet = functions.https.onRequest((request, response) => {
-	console.log('placeBet called');
-	if (!request.headers.authorization) {
-		console.error('No Firebase ID token was passed');
-		response.status(403).send('Unauthorized');
-		return;
-	}
-	admin.auth().verifyIdToken(request.headers.authorization).then(decodedIdToken => {
-		console.log('ID Token correctly decoded', decodedIdToken);
-		placeBetInDB(decodedIdToken.uid, request.query.groupName, request.query.type, request.query.amount, response)
-	}).catch(error => {
-		console.error('Error while verifying Firebase ID token:', error);
-		response.status(403).send('Unauthorized');
-	});
 });
+exports.joinGroup = functions.https.onRequest(joinGroup);
 
-function placeBetInDB(uid, nGroupName, nType, nAmount, response) {
-	const db = admin.firestore();
+
+placeBet.use(validateFirebaseIdToken);
+placeBet.get('/:groupName/:type/:amount', (req, res) => {
+	console.log('placeBet called');
+	const uid = req.user.uid;
+	const r = req.params;
 	const betsRef = db.collection('users').doc(uid).collection('bets');
-
 	betsRef.add({
-	    amount: nAmount,
-	    group: nGroupName,
-	    type: nType
+	    amount: r.amount,
+	    group: r.groupName,
+	    type: r.type
 	}).catch(error => {
 		console.log(error);
-		response.send('An error occured');
+		res.send('An error occured');
 	});
 	console.log('Bet has been placed');
-	response.send('Bet has been placed');
-}
+	res.send('Bet has been placed');
+});
+exports.placeBet = functions.https.onRequest(placeBet);
+
+
+triggerBet.use(validateFirebaseIdToken);
+triggerBet.get('/:betID', (req, res) => {
+	console.log('triggerBet called');
+	const uid = req.user.uid;
+	const r = req.params;
+	const betRef = db.collection('users').doc(uid).collection('bets').doc(r.betID);
+
+	// determine the group of the bet
+	// determine the amount of the bet
+	// determine the list of users in the group
+	// remove the current user from this list
+	// count the number of users remaining
+	// delete the amount by this number
+	// reduce the balance of the current user by the original amount 
+	// increase the balance of all other users by the divide amount
+
+	console.log('Bet was triggered');
+	res.send('Bet was triggered');
+});
+exports.triggerBet = functions.https.onRequest(triggerBet);
