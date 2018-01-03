@@ -3,6 +3,7 @@ package com.example.alexm.selfbet.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class BetsFragment extends Fragment {
     @BindView(R.id.rv_bets) RecyclerView betsList;
 
     protected View view;
-    private LinearLayoutManager linearLayoutManager;
+    private LinearLayoutManager layoutManager;
 
     private MainActivity activity;
     private FirebaseAuth mAuth;
@@ -72,8 +73,13 @@ public class BetsFragment extends Fragment {
     }
 
     private void init(){
-        linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        betsList.setLayoutManager(linearLayoutManager);
+        layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        betsList.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(betsList.getContext(),
+                layoutManager.getOrientation());
+        betsList.addItemDecoration(dividerItemDecoration);
+
         db = FirebaseFirestore.getInstance();
     }
 
