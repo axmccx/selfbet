@@ -1,6 +1,6 @@
 'use strict';
 
-var functions = require('firebase-functions');
+const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
@@ -28,6 +28,39 @@ const validateFirebaseIdToken = (req, res, next) => {
 	});
 };
 
+function changeBalance(balance, amount, increase) {
+	var balance_int = parseInt(balance);
+	var amount_int = parseInt(amount);
+	var new_balance;
+	if (increase) {
+		new_balance = balance_int + amount_int;
+	} else {
+		if (amount_int > balance_int) {	//this shouldn't be needed after I add the amount guards
+			new_balance = 0;
+		} else {
+			new_balance = balance_int - amount_int;
+		}
+	}
+	return new_balance.toString();
+}
+
+function transferToMember(memberRef, transfer_amount) {
+	db.runTransaction(t => {
+		return t.get(memberRef).then(mDoc => {
+		 	if (mDoc.exists) {
+				var member_balance = mDoc.data()["balance"];
+				var new_mem_balance = changeBalance(member_balance, transfer_amount, true);
+				//console.log('(loop) memberRed =  ' + memberRef.id);
+				t.update(memberRef, {balance: new_mem_balance});
+			}
+		});
+	}).then(result => {
+		console.log('transfered ' + transfer_amount + ' to ' + memberRef.id);
+	}).catch(err => {
+        console.log('transferToMember failure:', err);
+	});
+}
+
 
 createGroup.use(validateFirebaseIdToken);
 createGroup.get('/:groupName', (req, res) => {
@@ -38,8 +71,8 @@ createGroup.get('/:groupName', (req, res) => {
 	const groupRef = db.collection('groups').doc(r.groupName);
 
 	// check whether the group already exists...
-	groupRef.get().then((docSnapshot) => {
-		if (docSnapshot.exists) {
+	groupRef.get().then((doc) => {
+		if (doc.exists) {
 			res.send('ERROR: ' + r.groupName + ' already exists');
 			console.log('ERROR: ' + r.groupName + ' already exists');
 		} else {
@@ -71,10 +104,10 @@ joinGroup.get('/:groupName', (req, res) => {
 	const r = req.params;
 	const userRef = db.collection('users').doc(uid);
 	const groupRef = db.collection('groups').doc(r.groupName);
-	groupRef.get().then((docSnapshot) => {
-		if (docSnapshot.exists) {
+	groupRef.get().then((doc) => {
+		if (doc.exists) {
 			// get current members array of the specified group, and append the uid...
-			var members_lst = docSnapshot.data()["members"];
+			var members_lst = doc.data()["members"];
 			members_lst.push(uid);
 			groupRef.update({
 				members: members_lst
@@ -122,18 +155,59 @@ triggerBet.get('/:betID', (req, res) => {
 	console.log('triggerBet called');
 	const uid = req.user.uid;
 	const r = req.params;
+	const userRef = db.collection('users').doc(uid);
 	const betRef = db.collection('users').doc(uid).collection('bets').doc(r.betID);
+	var batch = db.batch();
 
-	// determine the group of the bet
-	// determine the amount of the bet
-	// determine the list of users in the group
-	// remove the current user from this list
-	// count the number of users remaining
-	// delete the amount by this number
-	// reduce the balance of the current user by the original amount 
-	// increase the balance of all other users by the divide amount
+	betRef.get().then((doc) => {
+		if (doc.exists) {
+			// determine the amount of the bet
+			var amount = doc.data()["amount"];
 
-	console.log('Bet was triggered');
+			// reduce the balance of the current user by the amount 
+			userRef.get().then((uDoc) => {
+				if (uDoc.exists) {
+					var current_balance = uDoc.data()["balance"];
+					var new_balance = changeBalance(current_balance, amount, false);
+					userRef.update({
+						balance: new_balance
+					}).catch(error => {
+					 	console.log(error);
+					})
+				}
+			});
+
+			// determine the group of the bet
+			var groupName = doc.data()["group"];
+			const groupRef = db.collection('groups').doc(groupName);
+
+			// determine the list of users in the group
+			groupRef.get().then((gDoc) => {
+				if (gDoc.exists) {
+					var members_lst = gDoc.data()["members"];
+
+					// remove the current user from this list
+					const index = members_lst.indexOf(uid);
+					members_lst.splice(index, 1);
+
+					// count the number of users remaining
+					var user_count = members_lst.length
+
+					// divide the amount by this number
+					var transfer_amount = parseInt(amount) / user_count;
+
+					// increase the balance of all other users by the divide amount
+					// ## for each user id in the list, 
+					// 		obtain their current balance
+					//		increase it by the amount, and set the new value
+					for (var i = 0; i < user_count; i++) {
+						var memberRef = db.collection('users').doc(members_lst[i]);
+						transferToMember(memberRef, transfer_amount);
+					}
+				}
+			});	
+		}
+	});
 	res.send('Bet was triggered');
 });
 exports.triggerBet = functions.https.onRequest(triggerBet);
