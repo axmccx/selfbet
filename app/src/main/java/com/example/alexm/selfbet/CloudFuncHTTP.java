@@ -23,10 +23,10 @@ import javax.net.ssl.HttpsURLConnection;
 //  - Which function to run
 //  - the functions parameter(s)
 
-public class cloudFuncHTTP extends AsyncTask<String, String, String> {
+public class CloudFuncHTTP extends AsyncTask<String, String, String> {
 
     private HttpURLConnection urlConnection;
-    private String TAG = "cloudFuncHTTP";
+    private String TAG = "CloudFuncHTTP";
 
     private static final String baseURL = "https://us-central1-selfbet-489b2.cloudfunctions.net/";
     private static Context mContext;
@@ -34,9 +34,10 @@ public class cloudFuncHTTP extends AsyncTask<String, String, String> {
     public static final String CREATE_GROUP_FUNC = "createGroup";    // needs one parameter
     public static final String JOIN_GROUP_FUNC = "joinGroup";        // needs one parameter
     public static final String PLACE_BET_FUNC = "placeBet";        // needs three parameters
+    public static final String TRIGGER_BET_FUNC = "triggerBet";
 
 
-    public cloudFuncHTTP (Context context) {
+    public CloudFuncHTTP (Context context) {
         this.mContext = context;
     }
 
@@ -72,6 +73,15 @@ public class cloudFuncHTTP extends AsyncTask<String, String, String> {
                     out.append(strings[3]);
                     out.append("/");
                     out.append(strings[4]);
+                }
+                break;
+
+            case TRIGGER_BET_FUNC:
+                if (strings.length == 3) {
+                    out.append(baseURL);
+                    out.append(TRIGGER_BET_FUNC);
+                    out.append("/");
+                    out.append(strings[2]);
                 }
                 break;
 

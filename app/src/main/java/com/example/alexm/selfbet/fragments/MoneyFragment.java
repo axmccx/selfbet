@@ -40,7 +40,6 @@ public class MoneyFragment extends Fragment {
                 ((MainActivity) getActivity()).openFaucet();
             }
         });
-
         return view;
     }
 }

@@ -47,8 +47,8 @@ public class PlaceBetActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<GetTokenResult> task) {
                 if (task.isSuccessful()) {
                     String idToken = task.getResult().getToken();
-                    new cloudFuncHTTP(getApplicationContext())
-                            .execute(idToken, cloudFuncHTTP.PLACE_BET_FUNC, groupName, type, amount);
+                    new CloudFuncHTTP(getApplicationContext())
+                            .execute(idToken, CloudFuncHTTP.PLACE_BET_FUNC, groupName, type, amount);
                 } else {
                     Toast.makeText(getApplicationContext(), "AUTH ERROR", Toast.LENGTH_SHORT).show();
                 }

@@ -55,7 +55,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<GetTokenResult> task) {
                 if (task.isSuccessful()) {
                     String idToken = task.getResult().getToken();
-                    new cloudFuncHTTP(getApplicationContext()).execute(idToken, cloudFuncHTTP.CREATE_GROUP_FUNC, groupName);
+                    new CloudFuncHTTP(getApplicationContext()).execute(idToken, CloudFuncHTTP.CREATE_GROUP_FUNC, groupName);
                 } else {
                     Toast.makeText(getApplicationContext(), "AUTH ERROR", Toast.LENGTH_SHORT).show();
                 }

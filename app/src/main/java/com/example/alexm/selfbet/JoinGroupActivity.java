@@ -55,7 +55,7 @@ public class JoinGroupActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<GetTokenResult> task) {
                 if (task.isSuccessful()) {
                     String idToken = task.getResult().getToken();
-                    new cloudFuncHTTP(getApplicationContext()).execute(idToken, cloudFuncHTTP.JOIN_GROUP_FUNC, groupName);
+                    new CloudFuncHTTP(getApplicationContext()).execute(idToken, CloudFuncHTTP.JOIN_GROUP_FUNC, groupName);
                 } else {
                     Toast.makeText(getApplicationContext(), "AUTH ERROR", Toast.LENGTH_SHORT).show();
                 }
