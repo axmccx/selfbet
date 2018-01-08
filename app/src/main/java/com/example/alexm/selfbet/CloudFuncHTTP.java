@@ -26,19 +26,18 @@ import javax.net.ssl.HttpsURLConnection;
 public class CloudFuncHTTP extends AsyncTask<String, String, String> {
 
     private HttpURLConnection urlConnection;
-    private String TAG = "CloudFuncHTTP";
 
     private static final String baseURL = "https://us-central1-selfbet-489b2.cloudfunctions.net/";
     private static Context mContext;
 
-    public static final String CREATE_GROUP_FUNC = "createGroup";    // needs one parameter
-    public static final String JOIN_GROUP_FUNC = "joinGroup";        // needs one parameter
-    public static final String PLACE_BET_FUNC = "placeBet";        // needs three parameters
-    public static final String TRIGGER_BET_FUNC = "triggerBet";
+    static final String CREATE_GROUP_FUNC = "createGroup";    // needs one parameter
+    static final String JOIN_GROUP_FUNC = "joinGroup";        // needs one parameter
+    static final String PLACE_BET_FUNC = "placeBet";        // needs three parameters
+    static final String TRIGGER_BET_FUNC = "triggerBet";
 
 
-    public CloudFuncHTTP (Context context) {
-        this.mContext = context;
+    CloudFuncHTTP(Context context) {
+        mContext = context;
     }
 
     private String urlBuilder(String... strings) {
@@ -118,8 +117,8 @@ public class CloudFuncHTTP extends AsyncTask<String, String, String> {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            return result;
         }
+        return result;
     }
 
     @Override
@@ -128,10 +127,11 @@ public class CloudFuncHTTP extends AsyncTask<String, String, String> {
         super.onPostExecute(result);
     }
 
-    private String readStream(InputStream is) {   //static if it were on its own class
+    private String readStream(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line;
+        String TAG = "CloudFuncHTTP";
         try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");

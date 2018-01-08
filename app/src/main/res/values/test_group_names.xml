@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="test_group_names">
+        <item>DeezBets</item>
+        <item>Test2</item>
+        <item>Budget</item>
+    </string-array>
+</resources>

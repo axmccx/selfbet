@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
@@ -49,9 +48,8 @@ public class JoinGroupActivity extends AppCompatActivity {
     }
 
     protected void joinGroup(final String groupName) {
-        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        mUser.getToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+        FirebaseUser mUser = FirebaseProvider.getAuth().getCurrentUser();
+        mUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
             public void onComplete(@NonNull Task<GetTokenResult> task) {
                 if (task.isSuccessful()) {
                     String idToken = task.getResult().getToken();

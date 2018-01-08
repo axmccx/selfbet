@@ -1,8 +1,5 @@
 package com.example.alexm.selfbet;
 
-import com.google.firebase.firestore.IgnoreExtraProperties;
-
-@IgnoreExtraProperties
 public class SingleBet {
     private String type;
     private String amount;
@@ -16,7 +13,7 @@ public class SingleBet {
         this.group = group;
     }
 
-    public String getType() {
+    String getType() {
         return this.type;
     }
 
@@ -24,7 +21,7 @@ public class SingleBet {
         this.type = type;
     }
 
-    public String getAmount() {
+    String getAmount() {
         return this.amount;
     }
 
@@ -32,7 +29,7 @@ public class SingleBet {
         this.amount = amount;
     }
 
-    public String getGroup() {
+    String getGroup() {
         return this.group;
     }
 
@@ -40,5 +37,3 @@ public class SingleBet {
         this.group = group;
     }
 }
-
-

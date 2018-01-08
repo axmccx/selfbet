@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alexm.selfbet.FSRecyclerAdapter;
+import com.example.alexm.selfbet.FirebaseProvider;
 import com.example.alexm.selfbet.MainActivity;
 import com.example.alexm.selfbet.PlaceBetActivity;
 import com.example.alexm.selfbet.R;
@@ -56,6 +57,7 @@ public class BetsFragment extends Fragment {
         placeBet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //check if part of a group first...
                 Intent intent = new Intent(getActivity(), PlaceBetActivity.class);
                 startActivity(intent);
             }
@@ -76,9 +78,7 @@ public class BetsFragment extends Fragment {
     }
 
     private void getBetsList() {
-        MainActivity activity = (MainActivity) getActivity();
-        FirebaseAuth mAuth = activity.getmAuth();
-        Query query = db.collection("users/" + mAuth.getUid() + "/bets");
+        Query query = db.collection("users/" + FirebaseProvider.getUID() + "/bets");
 
         FirestoreRecyclerOptions<SingleBet> bet = new FirestoreRecyclerOptions.Builder<SingleBet>()
                 .setQuery(query, SingleBet.class)

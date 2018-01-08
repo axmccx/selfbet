@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.alexm.selfbet.MainActivity;
+import com.example.alexm.selfbet.FirebaseProvider;
 import com.example.alexm.selfbet.R;
 
 import butterknife.BindView;
@@ -18,8 +18,7 @@ public class MoneyFragment extends Fragment {
     private View view;
 
     public static MoneyFragment newInstance() {
-        MoneyFragment fragment = new MoneyFragment();
-        return fragment;
+        return new MoneyFragment();
     }
 
     @Override
@@ -37,10 +36,9 @@ public class MoneyFragment extends Fragment {
         faucetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).openFaucet();
+                FirebaseProvider.openFaucet();
             }
         });
         return view;
     }
 }
-

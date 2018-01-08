@@ -15,7 +15,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
@@ -43,20 +42,16 @@ public class FSRecyclerAdapter extends FirestoreRecyclerAdapter<SingleBet, FSRec
 
 
     public class BetsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.tv_bet_type)
-        TextView typeText;
-        @BindView(R.id.tv_bet_amount)
-        TextView amountText;
-        @BindView(R.id.tv_bet_group)
-        TextView groupText;
-        @BindView(R.id.btn_trigger_bet)
-        Button triggerButton;
+        @BindView(R.id.tv_bet_type) TextView typeText;
+        @BindView(R.id.tv_bet_amount) TextView amountText;
+        @BindView(R.id.tv_bet_group) TextView groupText;
+        @BindView(R.id.btn_trigger_bet) Button triggerButton;
 
         private final String typeLabel = "Type: ";
         private final String amountLabel = "Amount: $";
         private final String groupLabel = "Group: ";
 
-        public BetsHolder(View itemView) {
+        BetsHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             triggerButton.setOnClickListener(this);
@@ -77,9 +72,8 @@ public class FSRecyclerAdapter extends FirestoreRecyclerAdapter<SingleBet, FSRec
         }
 
         private void triggerBet(final Context context, final String betId) {
-            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            mUser.getToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            FirebaseUser mUser = FirebaseProvider.getAuth().getCurrentUser();
+            mUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         String idToken = task.getResult().getToken();
