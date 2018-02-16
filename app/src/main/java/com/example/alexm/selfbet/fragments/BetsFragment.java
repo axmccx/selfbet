@@ -45,6 +45,7 @@ public class BetsFragment extends Fragment {
         getActivity().setTitle(R.string.title_bets);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
