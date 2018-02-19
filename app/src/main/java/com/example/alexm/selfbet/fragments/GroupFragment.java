@@ -70,6 +70,7 @@ public class GroupFragment extends Fragment implements Observer {
             groupMembership.setText("You are a member of the following groups: \n \n");
             for (String group: groupList) {
                 groupMembership.append(group);
+                groupMembership.append("\n");
             }
         }
     }
