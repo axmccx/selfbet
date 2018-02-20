@@ -5,17 +5,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.alexm.selfbet.MainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_groups"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="23dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Where the user can see information related to the group they're in. " />
+        android:layout_alignParentTop="true" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/groups_act_menu"
@@ -49,12 +44,12 @@
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
     <TextView
-        android:id="@+id/tv_groupMembership"
+        android:id="@+id/tv_joinGroupNotice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
         android:text="You're not in a group yet! \nJoin or create one."
         android:textSize="18sp" />
 

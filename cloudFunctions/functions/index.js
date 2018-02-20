@@ -84,10 +84,14 @@ createGroup.get('/:groupName', (req, res) => {
 				console.log(error);
 			});
 			// Update the user's memberOfGroups array with the new group name
-			userRef.update({
-				memberOfGroups: [r.groupName]
-			}).catch(error => {
-				console.log(error);
+			userRef.get().then((userDoc) => {
+				var group_lst = userDoc.data()["memberOfGroups"];
+				group_lst.push(r.groupName);
+				userRef.update({
+					memberOfGroups: group_lst
+				}).catch(error => {
+					console.log(error);
+				});
 			});
 			console.log(r.groupName + ' has been created!');
 			res.send(r.groupName + ' has been created! :)');
@@ -114,10 +118,15 @@ joinGroup.get('/:groupName', (req, res) => {
 			}).catch(error => {
 			 	console.log(error);
 			});
-			userRef.update({
-				memberOfGroups: [r.groupName]
-			}).catch(error => {
-				console.log(error);
+			// get current group array from user, and append the group name...
+			userRef.get().then((userDoc) => {
+				var group_lst = userDoc.data()["memberOfGroups"];
+				group_lst.push(r.groupName);
+				userRef.update({
+					memberOfGroups: group_lst
+				}).catch(error => {
+					console.log(error);
+				});
 			});
 			console.log('User ' + uid + ' joined group '+ r.groupName);
 			res.send('You joined ' + r.groupName + '!');
