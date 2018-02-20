@@ -33,7 +33,7 @@ public class PlaceBetActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String groupName = "Test2";
+                String groupName = choosenGroup.getSelectedItem().toString();
                 String type = "mock";
                 String amount = betAmount.getText().toString();
                 placeBet(groupName, type, amount);
@@ -41,9 +41,8 @@ public class PlaceBetActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.test_group_names, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, FirebaseProvider.getGroupList());
         choosenGroup.setAdapter(adapter);
     }
 

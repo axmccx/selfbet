@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 
 import com.example.alexm.selfbet.FSRecyclerAdapter;
 import com.example.alexm.selfbet.FirebaseProvider;
-import com.example.alexm.selfbet.MainActivity;
 import com.example.alexm.selfbet.PlaceBetActivity;
 import com.example.alexm.selfbet.R;
 import com.example.alexm.selfbet.SingleBet;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
