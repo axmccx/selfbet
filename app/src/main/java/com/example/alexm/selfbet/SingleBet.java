@@ -1,6 +1,8 @@
 package com.example.alexm.selfbet;
 
-public class SingleBet {
+import java.io.Serializable;
+
+public class SingleBet implements Serializable {
     private String type;
     private String amount;
     private String group;
@@ -13,7 +15,8 @@ public class SingleBet {
         this.group = group;
     }
 
-    String getType() {
+    // all getters and setters must be public or app will crash when viewing bets
+    public String getType() {
         return this.type;
     }
 
@@ -21,7 +24,7 @@ public class SingleBet {
         this.type = type;
     }
 
-    String getAmount() {
+    public String getAmount() {
         return this.amount;
     }
 
@@ -29,7 +32,7 @@ public class SingleBet {
         this.amount = amount;
     }
 
-    String getGroup() {
+    public String getGroup() {
         return this.group;
     }
 
