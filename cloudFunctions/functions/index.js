@@ -6,10 +6,6 @@ admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const express = require('express');
 const app = express();
-const createGroup = express();
-const joinGroup = express();
-const placeBet = express();
-const triggerBet = express();
 
 const validateFirebaseIdToken = (req, res, next) => {
 	console.log('Check if request is authorized with Firebase ID token');
@@ -61,9 +57,9 @@ function transferToMember(memberRef, transfer_amount) {
 	});
 }
 
+app.use(validateFirebaseIdToken);
 
-createGroup.use(validateFirebaseIdToken);
-createGroup.get('/:groupName', (req, res) => {
+app.get('/createGroup/:groupName', (req, res) => {
 	console.log('createGroup called');
 	const uid = req.user.uid;
 	const r = req.params;
@@ -98,11 +94,8 @@ createGroup.get('/:groupName', (req, res) => {
 		}
 	});
 });
-exports.createGroup = functions.https.onRequest(createGroup);
 
-
-joinGroup.use(validateFirebaseIdToken);
-joinGroup.get('/:groupName', (req, res) => {
+app.get('/joinGroup/:groupName', (req, res) => {
 	console.log('joinGroup called');
 	const uid = req.user.uid;
 	const r = req.params;
@@ -136,11 +129,8 @@ joinGroup.get('/:groupName', (req, res) => {
 		}
 	});
 });
-exports.joinGroup = functions.https.onRequest(joinGroup);
 
-
-placeBet.use(validateFirebaseIdToken);
-placeBet.get('/:groupName/:type/:amount', (req, res) => {
+app.get('/placeBet/:groupName/:type/:amount', (req, res) => {
 	console.log('placeBet called');
 	const uid = req.user.uid;
 	const r = req.params;
@@ -156,11 +146,8 @@ placeBet.get('/:groupName/:type/:amount', (req, res) => {
 	console.log('Bet has been placed');
 	res.send('Bet has been placed');
 });
-exports.placeBet = functions.https.onRequest(placeBet);
 
-
-triggerBet.use(validateFirebaseIdToken);
-triggerBet.get('/:betID', (req, res) => {
+app.get('/triggerBet/:betID', (req, res) => {
 	console.log('triggerBet called');
 	const uid = req.user.uid;
 	const r = req.params;
@@ -219,4 +206,5 @@ triggerBet.get('/:betID', (req, res) => {
 	});
 	res.send('Bet was triggered');
 });
-exports.triggerBet = functions.https.onRequest(triggerBet);
+
+exports.api = functions.https.onRequest(app);

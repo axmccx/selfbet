@@ -27,7 +27,7 @@ public class CloudFuncHTTP extends AsyncTask<String, String, String> {
 
     private HttpURLConnection urlConnection;
 
-    private static final String baseURL = "https://us-central1-selfbet-489b2.cloudfunctions.net/";
+    private static final String baseURL = "https://us-central1-selfbet-489b2.cloudfunctions.net/api/";
     private static Context mContext;
 
     static final String CREATE_GROUP_FUNC = "createGroup";    // needs one parameter
