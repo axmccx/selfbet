@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:selfbet/auth.dart';
 
 class LoginPage extends StatefulWidget {
+  final Auth auth;
+  final VoidCallback onSignedIn;
+  LoginPage({this.auth, this.onSignedIn});
+
   @override
   _LoginPageState createState() => new _LoginPageState();
 }
@@ -50,11 +54,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void _performLogin() async {
     try {
-      FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _email,
-        password: _password,
-      );
-      debugPrint('Signed in: ${user.uid}');
+      String userId = await widget.auth.signInEmailAndPass(_email, _password);
+      debugPrint('Signed in: $userId');
+      widget.onSignedIn();
     } catch (e) {
       final snackbar = new SnackBar(
         content: new Text('Incorrect username or password'),
@@ -65,13 +67,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void _createAccount() async {
     try {
-      FirebaseUser user =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _email,
-            password: _password,
-      );
-      debugPrint('Created user: ${user.uid}');
-      //debugPrint('$_name $_email $_password');
+      String userId = await widget.auth.createUserEmailandPass(_email, _password);
+      debugPrint('Signed in: $userId');
+      widget.onSignedIn();
     } catch (e) {
       final snackbar = new SnackBar(
         content: new Text('An Error Occured...'),
@@ -141,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
           validator: (val) =>
           val.length < 6 ? 'Password too short.' : null,
           onSaved: (val) => _password = val,
-          obscureText: true,
+          //obscureText: true,
           onFieldSubmitted: (s) { _submit(); },
         ),
         new Padding(padding: new EdgeInsets.all(20.0)),
