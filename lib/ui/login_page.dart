@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   FormType _formType = FormType.login;
   FocusNode _focusEmail;
   FocusNode _focusPassword;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -44,11 +45,14 @@ class _LoginPageState extends State<LoginPage> {
     final form = formKey.currentState;
     if (form.validate()) {
       form.save();
-      if (_formType == FormType.login) {
-        _performLogin();
-      } else {
-        _createAccount();
-      }
+      setState(() {
+        _loading = true;
+        if (_formType == FormType.login) {
+          _performLogin();
+        } else {
+          _createAccount();
+        }
+      });
     }
   }
 
@@ -94,16 +98,35 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget loadingIndicator = _loading ? new Container(
+      color: Colors.grey[300],
+      width: 70.0,
+      height: 70.0,
+      child: new Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: new Center(
+          child: new CircularProgressIndicator()
+        ),
+      ),
+    ) : new Container();
     return new Scaffold(
       key: scaffoldKey,
-      body: new Container(
-        padding: new EdgeInsets.all(30.0),
-        child: new Form(
-          key: formKey,
-          child: new ListView(
-            children: buildInputs() + buildSubmitButtons(),
+      body: new Stack(
+        children: <Widget>[
+          new Container(
+            padding: new EdgeInsets.all(30.0),
+            child: new Form(
+              key: formKey,
+              child: new ListView(
+                children: buildInputs() + buildSubmitButtons(),
+              ),
+            ),
           ),
-        ),
+          new Align(
+            child: loadingIndicator,
+            alignment: FractionalOffset.center,
+          ),
+        ],
       ),
     );
   }
