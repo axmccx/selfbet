@@ -6,23 +6,33 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => new _LoginPageState();
 }
 
+enum FormType {
+  login,
+  register
+}
+
 class _LoginPageState extends State<LoginPage> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
+  String _name;
   String _email;
   String _password;
-  FocusNode _focusNode;
+  FormType _formType = FormType.login;
+  FocusNode _focusEmail;
+  FocusNode _focusPassword;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = new FocusNode();
+    _focusEmail = new FocusNode();
+    _focusPassword = new FocusNode();
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _focusEmail.dispose();
+    _focusPassword.dispose();
     super.dispose();
   }
 
@@ -30,7 +40,11 @@ class _LoginPageState extends State<LoginPage> {
     final form = formKey.currentState;
     if (form.validate()) {
       form.save();
-      _performLogin();
+      if (_formType == FormType.login) {
+        _performLogin();
+      } else {
+        _createAccount();
+      }
     }
   }
 
@@ -49,6 +63,37 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _createAccount() async {
+    try {
+      FirebaseUser user =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _email,
+            password: _password,
+      );
+      debugPrint('Created user: ${user.uid}');
+      //debugPrint('$_name $_email $_password');
+    } catch (e) {
+      final snackbar = new SnackBar(
+        content: new Text('An Error Occured...'),
+      );
+      scaffoldKey.currentState.showSnackBar(snackbar);
+    }
+  }
+
+  void moveToRegister() {
+    formKey.currentState.reset();
+    setState(() {
+      _formType = FormType.register;
+    });
+  }
+
+  void moveToLogin() {
+    formKey.currentState.reset();
+    setState(() {
+      _formType = FormType.login;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -58,61 +103,145 @@ class _LoginPageState extends State<LoginPage> {
         child: new Form(
           key: formKey,
           child: new ListView(
-            children: <Widget>[
-              new Image.asset(
-                'images/loginLogo.png',
-                width: 75.0,
-                height: 75.0,
-              ),
-              new Padding(padding: new EdgeInsets.all(15.0)),
-              new TextFormField(
-                decoration: new InputDecoration(
-                  labelText: 'Email',
-                ),
-                validator: (val) =>
-                    !val.contains('@') ? 'Not a valid email.' : null,
-                onSaved: (val) => _email = val,
-                keyboardType: TextInputType.emailAddress,
-                onFieldSubmitted: (s) {
-                  FocusScope.of(context).requestFocus(_focusNode);
-                },
-              ),
-              new Padding(padding: new EdgeInsets.all(8.0)),
-              new TextFormField(
-                focusNode: _focusNode,
-                decoration: new InputDecoration(
-                  labelText: 'Password',
-                ),
-                validator: (val) =>
-                    val.length < 6 ? 'Password too short.' : null,
-                onSaved: (val) => _password = val,
-                obscureText: true,
-                onFieldSubmitted: (s) { _submit(); },
-              ),
-              new Padding(padding: new EdgeInsets.all(20.0)),
-              new RaisedButton(
-                onPressed: _submit,
-                child: new Text("Login"),
-              ),
-              new Padding(padding: new EdgeInsets.all(20.0)),
-              new Center(
-                child: new InkWell(
-                  onTap: () => debugPrint('Create new account!'),
-                  child: new Text(
-                    'No account yet? Create one',
-                    style: new TextStyle(
-                      color: Colors.black54,
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            children: buildInputs() + buildSubmitButtons(),
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> buildInputs() {
+
+    if (_formType == FormType.login) {
+      return [
+        new Image.asset(
+          'images/loginLogo.png',
+          width: 75.0,
+          height: 75.0,
+        ),
+        new Padding(padding: new EdgeInsets.all(15.0)),
+        new TextFormField(
+          decoration: new InputDecoration(
+            labelText: 'Email',
+          ),
+          validator: (val) =>
+          !val.contains('@') ? 'Not a valid email.' : null,
+          onSaved: (val) => _email = val,
+          keyboardType: TextInputType.emailAddress,
+          onFieldSubmitted: (s) {
+            FocusScope.of(context).requestFocus(_focusPassword);
+          },
+        ),
+        new Padding(padding: new EdgeInsets.all(8.0)),
+        new TextFormField(
+          focusNode: _focusPassword,
+          decoration: new InputDecoration(
+            labelText: 'Password',
+          ),
+          validator: (val) =>
+          val.length < 6 ? 'Password too short.' : null,
+          onSaved: (val) => _password = val,
+          obscureText: true,
+          onFieldSubmitted: (s) { _submit(); },
+        ),
+        new Padding(padding: new EdgeInsets.all(20.0)),
+      ];
+    } else {
+      return [
+        new Image.asset(
+          'images/loginLogo.png',
+          width: 75.0,
+          height: 75.0,
+        ),
+        new Padding(padding: new EdgeInsets.all(15.0)),
+        new TextFormField(
+          decoration: new InputDecoration(
+            labelText: 'Name',
+          ),
+          validator: (val) =>
+          val.isEmpty ? 'Name can\'t be empty' : null,
+          onSaved: (val) => _name = val,
+          onFieldSubmitted: (s) {
+            FocusScope.of(context).requestFocus(_focusEmail);
+          },
+        ),
+        new Padding(padding: new EdgeInsets.all(8.0)),
+        new TextFormField(
+          focusNode: _focusEmail,
+          decoration: new InputDecoration(
+            labelText: 'Email',
+          ),
+          validator: (val) =>
+          !val.contains('@') ? 'Not a valid email.' : null,
+          onSaved: (val) => _email = val,
+          keyboardType: TextInputType.emailAddress,
+          onFieldSubmitted: (s) {
+            FocusScope.of(context).requestFocus(_focusPassword);
+          },
+        ),
+        new Padding(padding: new EdgeInsets.all(8.0)),
+        new TextFormField(
+          focusNode: _focusPassword,
+          decoration: new InputDecoration(
+            labelText: 'Password',
+          ),
+          validator: (val) =>
+            val.length < 6 ? 'Password too short.' : null,
+          onSaved: (val) => _password = val,
+          obscureText: true,
+          onFieldSubmitted: (s) {
+            _submit();
+          },
+        ),
+        new Padding(padding: new EdgeInsets.all(20.0)),
+      ];
+    }
+  }
+
+  List<Widget> buildSubmitButtons() {
+    if (_formType == FormType.login) {
+      return [
+        new RaisedButton(
+          onPressed: _submit,
+          child: new Text("Login"),
+        ),
+        new Padding(padding: new EdgeInsets.all(20.0)),
+        new Center(
+          child: new InkWell(
+            onTap: moveToRegister,
+            child: new Text(
+              'No account yet? Create one',
+              style: new TextStyle(
+                color: Colors.black54,
+                fontSize: 17.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ];
+    } else {
+      return [
+        new RaisedButton(
+          onPressed: _submit,
+          child: new Text("Create Account"),
+        ),
+        new Padding(padding: new EdgeInsets.all(20.0)),
+        new Center(
+          child: new InkWell(
+            onTap: moveToLogin,
+            child: new Text(
+              'Already a member? Login',
+              style: new TextStyle(
+                color: Colors.black54,
+                fontSize: 17.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ];
+    }
   }
 }
 
