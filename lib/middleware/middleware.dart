@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/actions/auth_actions.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:redux/redux.dart';
@@ -6,30 +7,49 @@ import 'package:redux/redux.dart';
 List<Middleware<AppState>> createMiddleware() {
 
   return [
-    TypedMiddleware<AppState, LogIn>(
+    TypedMiddleware<AppState, InitAppAction>(
+      _initApp(),
+    ),
+    TypedMiddleware<AppState, LogInAction>(
       _firestoreEmailSignIn(),
     ),
-    TypedMiddleware<AppState, CreateAccount>(
+    TypedMiddleware<AppState, CreateAccountAction>(
       _firestoreEmailCreateUser(),
     ),
-    TypedMiddleware<AppState, LogOut>(
+    TypedMiddleware<AppState, LogOutAction>(
       _firestoreLogOut(),
     )
   ];
 }
 
+Middleware<AppState> _initApp() {
+  return (Store store, action, NextDispatcher next) async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    if (action is InitAppAction) {
+      try {
+        final FirebaseUser user = await _firebaseAuth.currentUser();
+        if (user != null) {
+          store.dispatch(LogInSuccessfulAction(user: user));
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+  };
+}
+
 Middleware<AppState> _firestoreEmailSignIn() {
   return (Store store, action, NextDispatcher next) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    if (action is LogIn)
+    if (action is LogInAction)
       try {
         final FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
           email: action.username,
           password: action.password,
         );
-        store.dispatch(LogInSuccessful(user: user));
-      } catch (error) {
-        store.dispatch(LogInFail(error));
+        store.dispatch(LogInSuccessfulAction(user: user));
+      } catch (e) {
+        store.dispatch(LogInFailAction(e));
       }
     next(action);
   };
@@ -38,16 +58,16 @@ Middleware<AppState> _firestoreEmailSignIn() {
 Middleware<AppState> _firestoreEmailCreateUser() {
   return (Store store, action, NextDispatcher next) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    if (action is CreateAccount) {
+    if (action is CreateAccountAction) {
       try {
           await _firebaseAuth.createUserWithEmailAndPassword(
               email: action.username,
               password: action.password,
           );
-        store.dispatch(MoveToLogin());
-        store.dispatch(LogIn(action.username, action.password));
-      } catch (error) {
-        print(error);
+        store.dispatch(MoveToLoginAction());
+        store.dispatch(LogInAction(action.username, action.password));
+      } catch (e) {
+        print(e);
       }
     }
     next(action);
@@ -57,12 +77,12 @@ Middleware<AppState> _firestoreEmailCreateUser() {
 Middleware<AppState> _firestoreLogOut() {
   return (Store store, action, NextDispatcher next) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    if (action is LogOut) {
+    if (action is LogOutAction) {
       try {
         await _firebaseAuth.signOut();
-        store.dispatch(LogOutSuccessful());
-      } catch (error) {
-        print(error);
+        store.dispatch(LogOutSuccessfulAction());
+      } catch (e) {
+        print(e);
       }
     }
     next(action);

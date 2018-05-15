@@ -4,7 +4,6 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/actions/auth_actions.dart';
-import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/presentation/login_new_acc_screen.dart';
 
 class ShowLogin extends StatelessWidget {
@@ -36,10 +35,10 @@ class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       login: (email, pass) {
-        store.dispatch(LogIn(email, pass));
+        store.dispatch(LogInAction(email, pass));
       },
       moveToRegister: () {
-        store.dispatch(MoveToRegister());
+        store.dispatch(MoveToRegisterAction());
       } ,
     );
   }

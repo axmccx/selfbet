@@ -32,7 +32,7 @@ class _ViewModel {
     return _ViewModel(
       onActionSelected: (action) {
         if (action == ExtraActions.LogOut) {
-          store.dispatch(LogOut());
+          store.dispatch(LogOutAction());
         }
       }
     );

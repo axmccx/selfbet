@@ -35,9 +35,9 @@ class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       createAccount: (email, pass) {
-        store.dispatch(CreateAccount(email, pass));
+        store.dispatch(CreateAccountAction(email, pass));
       },
-      moveToLogin: () => store.dispatch(MoveToLogin()),
+      moveToLogin: () => store.dispatch(MoveToLoginAction()),
     );
   }
 }

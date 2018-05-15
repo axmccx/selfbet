@@ -3,14 +3,14 @@ import 'package:selfbet/models/models.dart';
 class InitAppAction {
   @override
   String toString() {
-    return 'InitAppAction{}';
+    return 'InitApp{}';
   }
 }
 
 class ConnectToDataSourceAction {
   @override
   String toString() {
-    return 'ConnectToDataSourceAction{}';
+    return 'ConnectToDataSource{}';
   }
 }
 
@@ -33,7 +33,7 @@ class UpdateTabAction {
 
   @override
   String toString() {
-    return 'UpdateTabAction{newTab: $newTab}';
+    return 'UpdateTab{newTab: $newTab}';
   }
 }
 
@@ -89,6 +89,6 @@ class LeaveGroup {
 class PlaceHolderAction{
   @override
   String toString() {
-    return 'PlaceHolderAction{}';
+    return 'PlaceHolder{}';
   }
 }

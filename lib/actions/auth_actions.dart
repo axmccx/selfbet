@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-class LogIn {
+class LogInAction {
   final String username;
   final String password;
 
-  LogIn(this.username, this.password);
+  LogInAction(this.username, this.password);
 
   @override
   String toString() {
@@ -13,10 +13,10 @@ class LogIn {
   }
 }
 
-class LogInSuccessful {
+class LogInSuccessfulAction {
   final FirebaseUser user;
 
-  LogInSuccessful({ @required this.user});
+  LogInSuccessfulAction({ @required this.user});
 
   @override
   String toString() {
@@ -24,20 +24,20 @@ class LogInSuccessful {
   }
 }
 
-class LogInFail {
+class LogInFailAction {
   final dynamic error;
-  LogInFail(this.error);
+  LogInFailAction(this.error);
   @override
   String toString() {
     return 'LogInFail{There was an error loggin in: $error}';
   }
 }
 
-class CreateAccount {
+class CreateAccountAction {
   final String username;
   final String password;
 
-  CreateAccount(this.username, this.password);
+  CreateAccountAction(this.username, this.password);
 
   @override
   String toString() {
@@ -45,29 +45,29 @@ class CreateAccount {
   }
 }
 
-class LogOut {
+class LogOutAction {
   @override
   String toString() {
     return 'LogOut{}';
   }
 }
 
-class LogOutSuccessful {
-  LogOutSuccessful();
+class LogOutSuccessfulAction {
+  LogOutSuccessfulAction();
   @override
   String toString() {
     return 'LogOut{user: null}';
   }
 }
 
-class MoveToRegister {
+class MoveToRegisterAction {
   @override
   String toString() {
     return 'MovetoRegister{}';
   }
 }
 
-class MoveToLogin {
+class MoveToLoginAction {
   @override
   String toString() {
     return 'MoveToLogin{}';
