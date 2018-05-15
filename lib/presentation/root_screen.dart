@@ -1,18 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/containers/containers.dart';
+import 'package:selfbet/presentation/home_screen.dart';
 
 class RootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ActiveLoginForm(
-      builder: (BuildContext context, FormType form) {
-        if (form == FormType.login) {
-          return ShowLogin();
+    return StoreConnector<AppState, _ViewModel>(
+      distinct: true,
+      converter: _ViewModel.fromStore,
+      builder: (context, vm) {
+        if (vm.user == null) {
+          if (vm.formType == FormType.login) {
+            return ShowLogin();
+          } else {
+            return ShowNewAcc();
+          }
         } else {
-          return ShowNewAcc();
+          return HomeScreen();
         }
       },
+    );
+  }
+}
+
+class _ViewModel {
+  final FormType formType;
+  final FirebaseUser user;
+
+  _ViewModel({
+    @required this.formType,
+    @required this.user,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      formType: store.state.formType,
+      user: store.state.currentUser,
     );
   }
 }

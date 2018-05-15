@@ -18,8 +18,8 @@ class TabSelector extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           items: [
             new BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
-              title:  new Text('Home'),
+              icon: new Icon(Icons.dashboard),
+              title:  new Text('Dashboard'),
             ),
             new BottomNavigationBarItem(
               icon: new Icon(Icons.casino),

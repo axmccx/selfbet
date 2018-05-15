@@ -6,6 +6,7 @@ import 'package:selfbet/models/models.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/reducers/root_reducer.dart';
 import 'package:selfbet/presentation/root_screen.dart';
+import 'package:selfbet/middleware/middleware.dart';
 
 
 void main() {
@@ -18,7 +19,9 @@ class SelfbetApp extends StatelessWidget {
   SelfbetApp() : store = Store<AppState>(
     rootReducer,
     initialState: AppState.loading(),
-    middleware: [LoggingMiddleware.printer()],
+    middleware: []
+     ..addAll(createMiddleware())
+     ..add(LoggingMiddleware.printer()),
 
   ) {
     store.dispatch(InitAppAction());

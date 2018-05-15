@@ -9,7 +9,7 @@ class LogIn {
 
   @override
   String toString() {
-    return 'Login{Username: $username, Password: $password}';
+    return 'LogIn{Username: $username, Password: $password}';
   }
 }
 
@@ -20,7 +20,7 @@ class LogInSuccessful {
 
   @override
   String toString() {
-    return 'LogIn{user: $user}';
+    return 'LogInSuccessful{user: $user}';
   }
 }
 
@@ -29,7 +29,7 @@ class LogInFail {
   LogInFail(this.error);
   @override
   String toString() {
-    return 'LogIn{There was an error loggin in: $error}';
+    return 'LogInFail{There was an error loggin in: $error}';
   }
 }
 

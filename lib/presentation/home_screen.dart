@@ -3,6 +3,29 @@ import 'package:selfbet/models/models.dart';
 import 'package:selfbet/containers/containers.dart';
 
 class HomeScreen extends StatelessWidget {
+  Widget appBarSelector(AppTab tab) {
+    if (tab == AppTab.dashboard) {
+      return AppBar(
+        title: Text("Dashboard"),
+        actions: <Widget>[
+          ExtraActionsContainer(),
+        ],
+      );
+    } else if (tab == AppTab.bets) {
+      return AppBar(
+        title: Text("Bets"),
+      );
+    } else if (tab == AppTab.groups) {
+      return AppBar(
+        title: Text("Groups"),
+      );
+    } else {
+      return AppBar(
+        title: Text("Money"),
+      );
+    }
+  }
+
   Widget bodySelector(AppTab tab) {
     if (tab == AppTab.dashboard) {
       return Dashboard();
@@ -20,9 +43,7 @@ class HomeScreen extends StatelessWidget {
     return new ActiveTab(
       builder: (BuildContext context, AppTab tab) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text("Selfbet"),
-          ),
+          appBar: appBarSelector(tab),
           body: bodySelector(tab),
           bottomNavigationBar: TabSelector(),
         );

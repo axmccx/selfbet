@@ -1,0 +1,1 @@
+enum ExtraActions { LogOut }
