@@ -3,27 +3,27 @@ import 'package:selfbet/models/models.dart';
 import 'package:selfbet/containers/containers.dart';
 
 class HomeScreen extends StatelessWidget {
-  Widget bodySelector(AppTab activeTab) {
-    if (activeTab == AppTab.dashboard) {
+  Widget bodySelector(AppTab tab) {
+    if (tab == AppTab.dashboard) {
       return Dashboard();
-    } else if (activeTab == AppTab.bets) {
-      return new Container();
-    } else if (activeTab == AppTab.groups) {
-      return new Container();
+    } else if (tab == AppTab.bets) {
+      return Container();
+    } else if (tab == AppTab.groups) {
+      return Container();
     } else {
-      return new Money();
+      return Money();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return new ActiveTab(
-      builder: (BuildContext context, AppTab activeTab) {
+      builder: (BuildContext context, AppTab tab) {
         return Scaffold(
-          appBar: new AppBar(
-            title: new Text("Selfbet"),
+          appBar: AppBar(
+            title: Text("Selfbet"),
           ),
-          body: bodySelector(activeTab),
+          body: bodySelector(tab),
           bottomNavigationBar: TabSelector(),
         );
       },

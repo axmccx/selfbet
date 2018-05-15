@@ -5,8 +5,7 @@ import 'package:redux_logging/redux_logging.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/reducers/root_reducer.dart';
-import 'package:selfbet/presentation/home_screen.dart';
-import 'package:selfbet/containers/containers.dart';
+import 'package:selfbet/presentation/root_screen.dart';
 
 
 void main() {
@@ -16,12 +15,12 @@ void main() {
 class SelfbetApp extends StatelessWidget {
   final Store<AppState> store;
 
-  SelfbetApp() : store = Store<AppState> (
+  SelfbetApp() : store = Store<AppState>(
     rootReducer,
     initialState: AppState.loading(),
     middleware: [LoggingMiddleware.printer()],
 
-  ){
+  ) {
     store.dispatch(InitAppAction());
   }
 
@@ -31,18 +30,11 @@ class SelfbetApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         title: "Selfbet",
-        theme: new ThemeData(
+        theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: getFirstPage(),
+        home: RootScreen(),
       ),
     );
-  }
-
-  Widget getFirstPage() {
-    if (store.state.currentUser == null) {
-        return ShowLogin();
-    }
-    return HomeScreen();
   }
 }
