@@ -16,6 +16,7 @@ class ShowLogin extends StatelessWidget {
         return LoginNewAccScreen(
           onSubmit: vm.login,
           onSwitchForm: vm.moveToRegister,
+          isLoading: vm.isLoading,
           newAccount: false,
         );
       }
@@ -26,10 +27,12 @@ class ShowLogin extends StatelessWidget {
 class _ViewModel {
   final Function(String email, String password) login;
   final Function moveToRegister;
+  final bool isLoading;
 
   _ViewModel({
     @required this.login,
     @required this.moveToRegister,
+    @required this.isLoading,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -39,7 +42,8 @@ class _ViewModel {
       },
       moveToRegister: () {
         store.dispatch(MoveToRegisterAction());
-      } ,
+      },
+      isLoading: store.state.isLoading,
     );
   }
 }

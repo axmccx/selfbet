@@ -35,11 +35,13 @@ Middleware<AppState> _initApp() {
         print(e);
       }
     }
+    next(action);
   };
 }
 
 Middleware<AppState> _firestoreEmailSignIn() {
   return (Store store, action, NextDispatcher next) async {
+    next(action);
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     if (action is LogInAction)
       try {
@@ -51,12 +53,12 @@ Middleware<AppState> _firestoreEmailSignIn() {
       } catch (e) {
         store.dispatch(LogInFailAction(e));
       }
-    next(action);
   };
 }
 
 Middleware<AppState> _firestoreEmailCreateUser() {
   return (Store store, action, NextDispatcher next) async {
+    next(action);
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     if (action is CreateAccountAction) {
       try {
@@ -70,12 +72,12 @@ Middleware<AppState> _firestoreEmailCreateUser() {
         print(e);
       }
     }
-    next(action);
   };
 }
 
 Middleware<AppState> _firestoreLogOut() {
   return (Store store, action, NextDispatcher next) async {
+    next(action);
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     if (action is LogOutAction) {
       try {
@@ -85,6 +87,5 @@ Middleware<AppState> _firestoreLogOut() {
         print(e);
       }
     }
-    next(action);
   };
 }

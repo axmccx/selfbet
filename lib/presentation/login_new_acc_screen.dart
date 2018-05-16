@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:selfbet/presentation/loading_indicator.dart';
 
 class LoginNewAccScreen extends StatelessWidget {
   final Function(String email, String password) onSubmit;
   final Function onSwitchForm;
+  final bool isLoading;
   final bool newAccount;
 
   LoginNewAccScreen({
     @required this.onSubmit,
     @required this.onSwitchForm,
+    @required this.isLoading,
     @required this.newAccount,
   });
 
@@ -32,14 +35,22 @@ class LoginNewAccScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: new EdgeInsets.all(30.0),
-        child: new Form(
-          key: formKey,
-          child: new ListView(
-            children: buildInputs() + buildSubmitButtons(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            padding: new EdgeInsets.all(30.0),
+            child: new Form(
+              key: formKey,
+              child: new ListView(
+                children: buildInputs() + buildSubmitButtons(),
+              ),
+            ),
           ),
-        ),
+          new Align(
+            child: isLoading ? LoadingIndicator() : Container(),
+            alignment: FractionalOffset.center,
+          ),
+        ],
       ),
     );
   }

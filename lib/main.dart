@@ -18,7 +18,7 @@ class SelfbetApp extends StatelessWidget {
 
   SelfbetApp() : store = Store<AppState>(
     rootReducer,
-    initialState: AppState.loading(),
+    initialState: AppState(),
     middleware: []
      ..addAll(createMiddleware())
      ..add(LoggingMiddleware.printer()),
