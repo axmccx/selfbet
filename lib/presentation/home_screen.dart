@@ -28,13 +28,13 @@ class HomeScreen extends StatelessWidget {
 
   Widget bodySelector(AppTab tab) {
     if (tab == AppTab.dashboard) {
-      return Dashboard();
+      return DashboardContainer();
     } else if (tab == AppTab.bets) {
       return Container();
     } else if (tab == AppTab.groups) {
       return Container();
     } else {
-      return Money();
+      return MoneyContainer();
     }
   }
 

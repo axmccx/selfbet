@@ -3,8 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:selfbet/models/models.dart';
+import 'package:selfbet/presentation/dashboard_tab.dart';
 
-class Dashboard extends StatelessWidget {
+class DashboardContainer extends StatelessWidget {
   // set key
 
   @override
@@ -12,11 +13,9 @@ class Dashboard extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
-        return new Column(
-          children: <Widget>[
-            new Text("Balance: ${vm.balance}"),
-            new Text("At Stake: ${vm.atStake}"),
-          ],
+        return DashboardTab(
+          balance: vm.balance,
+          atStake: vm.atStake,
         );
       },
     );
