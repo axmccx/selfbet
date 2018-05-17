@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
     } else if (tab == AppTab.bets) {
       return Container();
     } else if (tab == AppTab.groups) {
-      return Container();
+      return GroupsContainer();
     } else {
       return MoneyContainer();
     }

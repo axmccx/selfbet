@@ -10,10 +10,10 @@ class Group {
   // number of members
 
   Group({
-    this.name,
-    this.members,
-    this.groupAtStake,
-    this.owner,
+    @required this.name,
+    @required this.members,
+    @required this.groupAtStake,
+    @required this.owner,
   });
 
   Group copyWith({
@@ -49,7 +49,7 @@ class Group {
 
   @override
   String toString() {
-    return 'Bet(Name: $name, Members: $members, Group At Stake: $groupAtStake, '
-        + 'Owner: $owner)';
+    return 'Group{Name: $name, Members: $members, Group At Stake: $groupAtStake, '
+        + 'Owner: $owner}';
   }
 }

@@ -24,6 +24,7 @@ List<Middleware<AppState>> createMiddleware() {
 
 Middleware<AppState> _initApp() {
   return (Store store, action, NextDispatcher next) async {
+    next(action);
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     if (action is InitAppAction) {
       try {
@@ -35,7 +36,6 @@ Middleware<AppState> _initApp() {
         print(e);
       }
     }
-    next(action);
   };
 }
 

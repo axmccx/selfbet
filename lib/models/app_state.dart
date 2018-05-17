@@ -75,9 +75,9 @@ class AppState {
 
   @override
   String toString() {
-    return 'AppState(isLoading: $isLoading, balance: $balance, '
+    return 'AppState{isLoading: $isLoading, balance: $balance, '
         + 'atStake: $atStake, bets: $bets, groups: $groups, '
            + 'activeTab: $activeTab, Form Type: $formType, '
-           + 'currentUser: $currentUser)';
+           + 'currentUser: $currentUser}';
   }
 }
