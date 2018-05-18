@@ -47,6 +47,14 @@ class Group {
               groupAtStake == other.groupAtStake &&
               owner == other.owner;
 
+  Map<String, Object> toJson() {
+    return {
+      "members" : members,
+      "groupAtStake" : groupAtStake,
+      "owner" : owner,
+    };
+  }
+
   @override
   String toString() {
     return 'Group{Name: $name, Members: $members, Group At Stake: $groupAtStake, '

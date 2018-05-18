@@ -5,3 +5,4 @@ export 'group.dart';
 export 'bet_type.dart';
 export 'form_type.dart';
 export 'extra_actions.dart';
+export 'user_entity.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:selfbet/presentation/loading_indicator.dart';
 
 class LoginNewAccScreen extends StatelessWidget {
-  final Function(String email, String password) onSubmit;
+  final Function onSubmit;
   final Function onSwitchForm;
   final bool isLoading;
   final bool newAccount;
@@ -21,14 +21,14 @@ class LoginNewAccScreen extends StatelessWidget {
   String _name;
   String _email;
   String _password;
-  FocusNode _focusEmail;
-  FocusNode _focusPassword;
+//  FocusNode _focusEmail;
+//  FocusNode _focusPassword;
 
   void _submit() {
     final form = formKey.currentState;
     if (form.validate()) {
       form.save();
-      onSubmit(_email, _password);
+      onSubmit(_email, _password, _name);
     }
   }
 
@@ -74,7 +74,7 @@ class LoginNewAccScreen extends StatelessWidget {
         ),
         new Padding(padding: new EdgeInsets.all(8.0)),
         new TextFormField(
-          focusNode: _focusEmail,
+          //focusNode: _focusEmail,
           decoration: new InputDecoration(
             labelText: 'Email',
           ),
@@ -85,7 +85,7 @@ class LoginNewAccScreen extends StatelessWidget {
         ),
         new Padding(padding: new EdgeInsets.all(8.0)),
         new TextFormField(
-          focusNode: _focusPassword,
+          //focusNode: _focusPassword,
           decoration: new InputDecoration(
             labelText: 'Password',
           ),
@@ -116,7 +116,7 @@ class LoginNewAccScreen extends StatelessWidget {
         ),
         new Padding(padding: new EdgeInsets.all(8.0)),
         new TextFormField(
-          focusNode: _focusPassword,
+          //focusNode: _focusPassword,
           decoration: new InputDecoration(
             labelText: 'Password',
           ),

@@ -25,7 +25,7 @@ class ShowLogin extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function(String email, String password) login;
+  final Function(String email, String pass, String name) login;
   final Function moveToRegister;
   final bool isLoading;
 
@@ -37,7 +37,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      login: (email, pass) {
+      login: (email, pass, name) {
         store.dispatch(LogInAction(email, pass));
       },
       moveToRegister: () {

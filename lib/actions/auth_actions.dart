@@ -36,12 +36,13 @@ class LogInFailAction {
 class CreateAccountAction {
   final String username;
   final String password;
+  final String name;
 
-  CreateAccountAction(this.username, this.password);
+  CreateAccountAction(this.username, this.password, this.name);
 
   @override
   String toString() {
-    return 'CreateAccount{Username: $username, Password: $password}';
+    return 'CreateAccount{Username: $username, Password: $password, Name: $name}';
   }
 }
 

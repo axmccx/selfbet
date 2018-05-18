@@ -15,14 +15,35 @@ class ConnectToDataSourceAction {
 }
 
 class LoadDashboard {
-  final int balance;
-  final int atStake;
+  final UserEntity userEntity;
 
-  LoadDashboard(this.balance, this.atStake);
+  LoadDashboard(this.userEntity);
 
   @override
   String toString() {
-    return 'LoadDashboard{balance: $balance, atStake: $atStake}';
+    return 'LoadDashboard{userEntity: $userEntity}';
+  }
+}
+
+class LoadGroups {
+  final List<Group> groups;
+
+  LoadGroups(this.groups);
+
+  @override
+  String toString() {
+    return 'LoadGroups{groups: $groups}';
+  }
+}
+
+class LoadBets {
+  final List<Bet> bets;
+
+  LoadBets(this.bets);
+
+  @override
+  String toString() {
+    return 'LoadBets{bets: $bets}';
   }
 }
 

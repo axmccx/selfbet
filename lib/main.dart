@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_logging/redux_logging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/reducers/root_reducer.dart';
 import 'package:selfbet/presentation/root_screen.dart';
 import 'package:selfbet/middleware/middleware.dart';
+import 'package:selfbet/repositories/repos.dart';
 
 
 void main() {
@@ -20,7 +23,11 @@ class SelfbetApp extends StatelessWidget {
     rootReducer,
     initialState: AppState(),
     middleware: []
-     ..addAll(createMiddleware())
+     ..addAll(createMiddleware(
+       FirebaseUserRepo(FirebaseAuth.instance, Firestore.instance),
+       FirebaseGroupsRepo(Firestore.instance),
+       FirebaseBetsRepo(Firestore.instance),
+     ))
      ..add(LoggingMiddleware.printer()),
 
   ) {

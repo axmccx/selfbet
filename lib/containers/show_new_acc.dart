@@ -25,7 +25,7 @@ class ShowNewAcc extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function(String email, String password) createAccount;
+  final Function(String email, String pass, String name) createAccount;
   final Function moveToLogin;
   final bool isLoading;
 
@@ -37,8 +37,8 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      createAccount: (email, pass) {
-        store.dispatch(CreateAccountAction(email, pass));
+      createAccount: (email, pass, name) {
+        store.dispatch(CreateAccountAction(email, pass, name));
       },
       moveToLogin: () => store.dispatch(MoveToLoginAction()),
       isLoading: store.state.isLoading,

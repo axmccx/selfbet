@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {
-  LoadingIndicator({Key key}) : super(key: key);
+  final String message;
+
+  LoadingIndicator({
+    Key key,
+    this.message = "Authenticating...",
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class LoadingIndicator extends StatelessWidget {
                 Padding( padding: EdgeInsets.all(5.0),),
                 CircularProgressIndicator(),
                 Padding( padding: EdgeInsets.all(15.0)),
-                Text("Authenticating..."),
+                Text(message),
               ],
             )
           ),

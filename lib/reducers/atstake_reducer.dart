@@ -2,9 +2,9 @@ import 'package:redux/redux.dart';
 import 'package:selfbet/actions/actions.dart';
 
 final atStakeReducer = combineReducers<int>([
-  TypedReducer<int, PlaceHolderAction>(_updateAtStake),
+  TypedReducer<int, LoadDashboard>(_updateAtStake),
 ]);
 
-int _updateAtStake(int currentStake, PlaceHolderAction action) {
-  return 0;
+int _updateAtStake(int currentStake, LoadDashboard action) {
+  return action.userEntity.atStake;
 }
