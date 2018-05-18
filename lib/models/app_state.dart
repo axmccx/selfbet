@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:meta/meta.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +16,7 @@ class AppState {
   final AppTab activeTab;
   final FormType formType;
   final FirebaseUser currentUser;
+  final StreamSubscription userStream;
 
   AppState({
     this.isLoading = false,
@@ -26,6 +29,7 @@ class AppState {
     this.activeTab = AppTab.dashboard,
     this.formType = FormType.login,
     this.currentUser,
+    this.userStream,
   });
 
   factory AppState.loading() => AppState(isLoading: true);
@@ -40,7 +44,8 @@ class AppState {
     List<Group> groups,
     AppTab activeTab,
     FormType formType,
-    FirebaseUser currentUser
+    FirebaseUser currentUser,
+    StreamSubscription userStream,
   }) {
     return AppState(
       isLoading: isLoading ?? this.isLoading,
@@ -53,6 +58,7 @@ class AppState {
       activeTab: activeTab ?? this.activeTab,
       formType: formType ?? this.formType,
       currentUser: currentUser ?? this.currentUser,
+      userStream: userStream ?? this.userStream,
     );
   }
 
@@ -67,7 +73,8 @@ class AppState {
       groups.hashCode ^
       activeTab.hashCode ^
       formType.hashCode ^
-      currentUser.hashCode;
+      currentUser.hashCode ^
+      userStream.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -83,13 +90,14 @@ class AppState {
               groups == other.groups &&
               activeTab == other.activeTab &&
               formType == other.formType &&
-              currentUser == other.currentUser;
+              currentUser == other.currentUser &&
+              userStream == other.userStream;
 
   @override
   String toString() {
     return 'AppState{name: $name, isLoading: $isLoading, balance: $balance, '
         + 'atStake: $atStake, bets: $bets, group names: $groupNames '
            + 'groups: $groups, activeTab: $activeTab, Form Type: $formType, '
-           + 'currentUser: $currentUser}';
+           + 'currentUser: $currentUser, userStream: $userStream}';
   }
 }

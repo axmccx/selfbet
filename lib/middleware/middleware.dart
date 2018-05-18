@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/actions/auth_actions.dart';
@@ -25,7 +27,10 @@ List<Middleware<AppState>> createMiddleware(
     ),
     TypedMiddleware<AppState, ConnectToDataSourceAction>(
       _firestoreConnect(userRepo, groupsRepo, betsRepo),
-    )
+    ),
+    TypedMiddleware<AppState, CreditFaucet>(
+      _firestoreCreditFaucet(userRepo),
+    ),
   ];
 }
 
@@ -87,6 +92,7 @@ Middleware<AppState> _firestoreLogOut(FirebaseUserRepo repo) {
     next(action);
     if (action is LogOutAction) {
       try {
+        store.state.userStream.cancel();
         await repo.signOut();
         store.dispatch(LogOutSuccessfulAction());
       } catch (e) {
@@ -106,9 +112,24 @@ Middleware<AppState> _firestoreConnect(
     if (action is ConnectToDataSourceAction) {
       try {
         FirebaseUser user = store.state.currentUser;
-        userRepo.userStream(user.uid).listen((userEntity) {
+        StreamSubscription userStream = userRepo.userStream(user.uid).listen((userEntity) {
           store.dispatch(LoadDashboard(userEntity));
         });
+        store.dispatch(SetUserStream(userStream));
+      } catch (e) {
+        print(e);
+      }
+    }
+  };
+}
+
+Middleware<AppState> _firestoreCreditFaucet(FirebaseUserRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    if (action is CreditFaucet) {
+      try {
+        FirebaseUser user = store.state.currentUser;
+        repo.addCredits(user.uid);
       } catch (e) {
         print(e);
       }

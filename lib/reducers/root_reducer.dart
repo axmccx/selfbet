@@ -13,5 +13,6 @@ AppState rootReducer(AppState state, action) {
     activeTab: tabsReducer(state.activeTab, action),
     formType: loginFormReducer(state.formType, action),
     currentUser: authReducer(state.currentUser, action),
+    userStream: userStreamReducer(state.userStream, action),
   );
 }

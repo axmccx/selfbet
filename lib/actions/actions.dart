@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:selfbet/models/models.dart';
 
 class InitAppAction {
@@ -11,6 +13,17 @@ class ConnectToDataSourceAction {
   @override
   String toString() {
     return 'ConnectToDataSource{}';
+  }
+}
+
+class SetUserStream{
+  final StreamSubscription userStream;
+
+  SetUserStream(this.userStream);
+
+  @override
+  String toString() {
+    return 'SetUserStream{userStream: $userStream}';
   }
 }
 

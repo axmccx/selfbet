@@ -56,4 +56,12 @@ class FirebaseUserRepo {
        );
      });
   }
+
+  Future<void> addCredits(String uid) async {
+    await firestore.collection(userPath).document(uid).updateData(
+      {
+        "balance": 2000,
+      }
+    );
+  }
 }

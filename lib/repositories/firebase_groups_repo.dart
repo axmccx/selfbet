@@ -15,8 +15,4 @@ class FirebaseGroupsRepo {
         .document(group.name)
         .setData(group.toJson());
   }
-
-//  Stream<List<Group>> groups() {
-//
-//  }
 }
