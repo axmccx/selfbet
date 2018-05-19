@@ -38,62 +38,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      groups: [
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-        Group(
-          name: "Test Group",
-          owner: "Alex M.",
-          groupAtStake: 5,
-          members: [],
-        ),
-      ],
+      groups: store.state.groups,
       loading: store.state.isLoading,
 //      showMembers: (group) => debugPrint("Group: \"${group.name}\" shows the members"),
 //      leaveGroup: (group) => debugPrint("User leaves the group"),

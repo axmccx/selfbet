@@ -36,7 +36,7 @@ class UserEntity {
   @override
   String toString() {
     return 'UserEntity{name: $name, balance: $balance, atStake: $atStake, '
-        + 'groupNames: $groupNames}';
+        'groupNames: $groupNames}';
   }
 
   static UserEntity fromJason(Map<String, Object> json) {

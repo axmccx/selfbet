@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:selfbet/presentation/loading_indicator.dart';
 
+//I must improve this class, so messy. Look at the group form.
 class LoginNewAccScreen extends StatelessWidget {
   final Function onSubmit;
   final Function onSwitchForm;
@@ -15,8 +16,8 @@ class LoginNewAccScreen extends StatelessWidget {
     @required this.newAccount,
   });
 
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
-  final formKey = new GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final formKey = GlobalKey<FormState>();
 
   String _name;
   String _email;
@@ -38,15 +39,15 @@ class LoginNewAccScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            padding: new EdgeInsets.all(30.0),
-            child: new Form(
+            padding: EdgeInsets.all(30.0),
+            child: Form(
               key: formKey,
-              child: new ListView(
+              child: ListView(
                 children: buildInputs() + buildSubmitButtons(),
               ),
             ),
           ),
-          new Align(
+          Align(
             child: isLoading ? LoadingIndicator() : Container(),
             alignment: FractionalOffset.center,
           ),
@@ -58,24 +59,24 @@ class LoginNewAccScreen extends StatelessWidget {
   List<Widget> buildInputs() {
     if (newAccount) {
       return [
-        new Image.asset(
+        Image.asset(
           'images/loginLogo.png',
           width: 75.0,
           height: 75.0,
         ),
-        new Padding(padding: new EdgeInsets.all(15.0)),
-        new TextFormField(
-          decoration: new InputDecoration(
+        Padding(padding: EdgeInsets.all(15.0)),
+        TextFormField(
+          decoration: InputDecoration(
             labelText: 'Name',
           ),
           validator: (val) =>
           val.isEmpty ? 'Name can\'t be empty' : null,
           onSaved: (val) => _name = val,
         ),
-        new Padding(padding: new EdgeInsets.all(8.0)),
-        new TextFormField(
+        Padding(padding: EdgeInsets.all(8.0)),
+        TextFormField(
           //focusNode: _focusEmail,
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Email',
           ),
           validator: (val) =>
@@ -83,10 +84,10 @@ class LoginNewAccScreen extends StatelessWidget {
           onSaved: (val) => _email = val,
           keyboardType: TextInputType.emailAddress,
         ),
-        new Padding(padding: new EdgeInsets.all(8.0)),
-        new TextFormField(
+        Padding(padding: EdgeInsets.all(8.0)),
+        TextFormField(
           //focusNode: _focusPassword,
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Password',
           ),
           validator: (val) =>
@@ -95,18 +96,18 @@ class LoginNewAccScreen extends StatelessWidget {
           obscureText: true,
           onFieldSubmitted: (s) { _submit(); },
         ),
-        new Padding(padding: new EdgeInsets.all(20.0)),
+        Padding(padding: EdgeInsets.all(20.0)),
       ];
     } else {
       return [
-        new Image.asset(
+        Image.asset(
           'images/loginLogo.png',
           width: 75.0,
           height: 75.0,
         ),
-        new Padding(padding: new EdgeInsets.all(15.0)),
-        new TextFormField(
-          decoration: new InputDecoration(
+        Padding(padding: EdgeInsets.all(15.0)),
+        TextFormField(
+          decoration: InputDecoration(
             labelText: 'Email',
           ),
           validator: (val) =>
@@ -114,10 +115,10 @@ class LoginNewAccScreen extends StatelessWidget {
           onSaved: (val) => _email = val,
           keyboardType: TextInputType.emailAddress,
         ),
-        new Padding(padding: new EdgeInsets.all(8.0)),
-        new TextFormField(
+        Padding(padding: EdgeInsets.all(8.0)),
+        TextFormField(
           //focusNode: _focusPassword,
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Password',
           ),
           validator: (val) =>
@@ -126,7 +127,7 @@ class LoginNewAccScreen extends StatelessWidget {
           //obscureText: true,
           onFieldSubmitted: (s) { _submit(); },
         ),
-        new Padding(padding: new EdgeInsets.all(20.0)),
+        Padding(padding: EdgeInsets.all(20.0)),
       ];
     }
   }
@@ -134,17 +135,17 @@ class LoginNewAccScreen extends StatelessWidget {
   List<Widget> buildSubmitButtons() {
     if (newAccount) {
       return [
-        new RaisedButton(
+        RaisedButton(
           onPressed: _submit,
-          child: new Text("Create Account"),
+          child: Text("Create Account"),
         ),
-        new Padding(padding: new EdgeInsets.all(20.0)),
-        new Center(
-          child: new InkWell(
+        Padding(padding: EdgeInsets.all(20.0)),
+        Center(
+          child: InkWell(
             onTap: onSwitchForm,
-            child: new Text(
+            child: Text(
               'Already a member? Login',
-              style: new TextStyle(
+              style: TextStyle(
                 color: Colors.black54,
                 fontSize: 17.0,
                 fontWeight: FontWeight.w500,
@@ -155,17 +156,17 @@ class LoginNewAccScreen extends StatelessWidget {
       ];
     } else {
       return [
-        new RaisedButton(
+        RaisedButton(
           onPressed: _submit,
-          child: new Text("Login"),
+          child: Text("Login"),
         ),
-        new Padding(padding: new EdgeInsets.all(20.0)),
-        new Center(
-          child: new InkWell(
+        Padding(padding: EdgeInsets.all(20.0)),
+        Center(
+          child: InkWell(
             onTap: onSwitchForm,
-            child: new Text(
+            child: Text(
               'No account yet? Create one',
-              style: new TextStyle(
+              style: TextStyle(
                 color: Colors.black54,
                 fontSize: 17.0,
                 fontWeight: FontWeight.w500,

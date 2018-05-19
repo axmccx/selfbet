@@ -16,10 +16,10 @@ class ConnectToDataSourceAction {
   }
 }
 
-class SetUserStream{
+class SetUserStreamAction{
   final StreamSubscription userStream;
 
-  SetUserStream(this.userStream);
+  SetUserStreamAction(this.userStream);
 
   @override
   String toString() {
@@ -27,10 +27,10 @@ class SetUserStream{
   }
 }
 
-class LoadDashboard {
+class LoadDashboardAction {
   final UserEntity userEntity;
 
-  LoadDashboard(this.userEntity);
+  LoadDashboardAction(this.userEntity);
 
   @override
   String toString() {
@@ -38,10 +38,10 @@ class LoadDashboard {
   }
 }
 
-class LoadGroups {
+class LoadGroupsAction {
   final List<Group> groups;
 
-  LoadGroups(this.groups);
+  LoadGroupsAction(this.groups);
 
   @override
   String toString() {
@@ -49,10 +49,10 @@ class LoadGroups {
   }
 }
 
-class LoadBets {
+class LoadBetsAction {
   final List<Bet> bets;
 
-  LoadBets(this.bets);
+  LoadBetsAction(this.bets);
 
   @override
   String toString() {
@@ -71,49 +71,57 @@ class UpdateTabAction {
   }
 }
 
-class CreditFaucet {
+class CreditFaucetAction {
   @override
   String toString() {
     return 'CreditFaucet{}';
   }
 }
 
-class PlaceBet {
+class PlaceBetAction {
   @override
   String toString() {
     return 'Placebet{}';
   }
 }
 
-class DeleteBet {
+class DeleteBetAction {
   @override
   String toString() {
     return 'DeleteBet{}';
   }
 }
 
-class RenewBet {
+class RenewBetAction {
   @override
   String toString() {
     return 'RenewBet{}';
   }
 }
 
-class JoinGroup {
+class JoinGroupAction {
+  final String groupName;
+
+  JoinGroupAction(this.groupName);
+
   @override
   String toString() {
     return 'JoingGroup{}';
   }
 }
 
-class CreateGroup {
+class CreateGroupAction {
+  final Group group;
+
+  CreateGroupAction(this.group);
+
   @override
   String toString() {
-    return 'CreateGroup{}';
+    return 'CreateGroup{group: $group}';
   }
 }
 
-class LeaveGroup {
+class LeaveGroupAction {
   @override
   String toString() {
     return 'LeaveGroup{}';

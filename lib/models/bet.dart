@@ -55,6 +55,6 @@ class Bet {
   @override
   String toString() {
     return 'Bet{Amount: $amount, Bet Type: $betType, Group: $group, '
-    + 'Freq of Occur: $occurFreq, Expiry: $expiry}';
+        'Freq of Occur: $occurFreq, Expiry: $expiry}';
   }
 }

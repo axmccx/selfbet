@@ -3,7 +3,7 @@ import 'package:selfbet/models/models.dart';
 import 'package:selfbet/containers/containers.dart';
 
 class HomeScreen extends StatelessWidget {
-  Widget appBarSelector(AppTab tab) {
+  Widget appBarSelector(BuildContext context, AppTab tab) {
     if (tab == AppTab.dashboard) {
       return AppBar(
         title: Text("Dashboard"),
@@ -18,6 +18,29 @@ class HomeScreen extends StatelessWidget {
     } else if (tab == AppTab.groups) {
       return AppBar(
         title: Text("Groups"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.group_add),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return CreateGroup();
+                },
+              ));
+            },
+
+          ),
+          IconButton(
+            icon: Icon(Icons.group),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return JoinGroup();
+                },
+              ));
+            },
+          ),
+        ],
       );
     } else {
       return AppBar(
@@ -40,10 +63,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ActiveTab(
+    return ActiveTab(
       builder: (BuildContext context, AppTab tab) {
         return Scaffold(
-          appBar: appBarSelector(tab),
+          appBar: appBarSelector(context, tab),
           body: bodySelector(tab),
           bottomNavigationBar: TabSelector(),
         );

@@ -10,7 +10,6 @@ class ExtraActionsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      distinct: true,
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
         return ExtraActionsButton(

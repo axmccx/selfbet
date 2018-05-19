@@ -45,7 +45,7 @@ class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
         balance: store.state.balance,
-        addCredits: () => store.dispatch(CreditFaucet()),
+        addCredits: () => store.dispatch(CreditFaucetAction()),
     );
   }
 }

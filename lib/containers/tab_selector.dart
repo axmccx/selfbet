@@ -8,7 +8,7 @@ import 'package:selfbet/actions/actions.dart';
 class TabSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<AppState, _ViewModel>(
       distinct: true,
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
@@ -17,21 +17,21 @@ class TabSelector extends StatelessWidget {
           onTap: vm.onTabSelected,
           type: BottomNavigationBarType.fixed,
           items: [
-            new BottomNavigationBarItem(
-              icon: new Icon(Icons.dashboard),
-              title:  new Text('Dashboard'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              title: Text('Dashboard'),
             ),
-            new BottomNavigationBarItem(
-              icon: new Icon(Icons.casino),
-              title: new Text('Bets'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.casino),
+              title: Text('Bets'),
             ),
-            new BottomNavigationBarItem(
-              icon: new Icon(Icons.group),
-              title:  new Text('Groups'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.group),
+              title:  Text('Groups'),
             ),
-            new BottomNavigationBarItem(
-              icon: new Icon(Icons.attach_money),
-              title:  new Text('Money'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.attach_money),
+              title: Text('Money'),
             ),
           ],
         );

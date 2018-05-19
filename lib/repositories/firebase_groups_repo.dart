@@ -8,11 +8,17 @@ class FirebaseGroupsRepo {
 
   final Firestore firestore;
   const FirebaseGroupsRepo(this.firestore);
-  // needs the firestore instance
 
   Future<void> createGroup(Group group) {
-    return firestore.collection(groupPath)
-        .document(group.name)
-        .setData(group.toJson());
+    return firestore.collection(groupPath).document(group.name).get()
+        .then((doc) {
+          if (doc.exists) {
+            // deal with error
+          } else {
+            firestore.collection(groupPath)
+                .document(group.name)
+                .setData(group.toJson());
+          }
+    });
   }
 }

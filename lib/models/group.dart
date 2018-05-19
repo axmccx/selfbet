@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 @immutable
 class Group {
   final String name;
-  final List<String> members;
+  final Map<String, bool> members;
   final int groupAtStake;
   final String owner;
   // thumbnail picture
@@ -49,7 +49,8 @@ class Group {
 
   Map<String, Object> toJson() {
     return {
-      "members" : members,
+      "name" : name,
+      "members": members,
       "groupAtStake" : groupAtStake,
       "owner" : owner,
     };
@@ -57,7 +58,7 @@ class Group {
 
   @override
   String toString() {
-    return 'Group{Name: $name, Members: $members, Group At Stake: $groupAtStake, '
-        + 'Owner: $owner}';
+    return 'Group{Name: $name, Members: $members, '
+        'Group At Stake: $groupAtStake, Owner: $owner}';
   }
 }

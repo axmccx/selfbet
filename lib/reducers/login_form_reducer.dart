@@ -3,8 +3,8 @@ import 'package:redux/redux.dart';
 import 'package:selfbet/models/models.dart';
 
 final loginFormReducer = combineReducers<FormType>([
-  new TypedReducer<FormType, MoveToLoginAction>(_moveToLogin),
-  new TypedReducer<FormType, MoveToRegisterAction>(_moveToRegister),
+  TypedReducer<FormType, MoveToLoginAction>(_moveToLogin),
+  TypedReducer<FormType, MoveToRegisterAction>(_moveToRegister),
 ]);
 
 FormType _moveToLogin(FormType formType, action) {

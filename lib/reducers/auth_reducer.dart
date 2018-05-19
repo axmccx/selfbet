@@ -3,8 +3,8 @@ import 'package:selfbet/actions/auth_actions.dart';
 import 'package:redux/redux.dart';
 
 final authReducer = combineReducers<FirebaseUser>([
-  new TypedReducer<FirebaseUser, LogInSuccessfulAction>(_logIn),
-  new TypedReducer<FirebaseUser, LogOutAction>(_logOut),
+  TypedReducer<FirebaseUser, LogInSuccessfulAction>(_logIn),
+  TypedReducer<FirebaseUser, LogOutAction>(_logOut),
 ]);
 
 FirebaseUser _logIn(FirebaseUser user, action) {

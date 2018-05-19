@@ -11,7 +11,6 @@ class AppState {
   final int balance;
   final int atStake;
   final List<Bet> bets;
-  final List<dynamic> groupNames;
   final List<Group> groups;
   final AppTab activeTab;
   final FormType formType;
@@ -24,7 +23,6 @@ class AppState {
     this.balance = 0,
     this.atStake = 0,
     this.bets = const [],
-    this.groupNames = const[],
     this.groups = const [],
     this.activeTab = AppTab.dashboard,
     this.formType = FormType.login,
@@ -40,7 +38,6 @@ class AppState {
     int balance,
     int atStake,
     List<Bet> bets,
-    List<String> groupNames,
     List<Group> groups,
     AppTab activeTab,
     FormType formType,
@@ -53,7 +50,6 @@ class AppState {
       balance: balance ?? this.balance,
       atStake: atStake ?? this.atStake,
       bets: bets ?? this.bets,
-      groupNames: groupNames ?? this.groupNames,
       groups: groups ?? this.groups,
       activeTab: activeTab ?? this.activeTab,
       formType: formType ?? this.formType,
@@ -69,7 +65,6 @@ class AppState {
       balance.hashCode ^
       atStake.hashCode ^
       bets.hashCode ^
-      groupNames.hashCode ^
       groups.hashCode ^
       activeTab.hashCode ^
       formType.hashCode ^
@@ -86,7 +81,6 @@ class AppState {
               balance == other.balance &&
               atStake == other.atStake &&
               bets == other.bets &&
-              groupNames == other.groupNames &&
               groups == other.groups &&
               activeTab == other.activeTab &&
               formType == other.formType &&
@@ -96,8 +90,8 @@ class AppState {
   @override
   String toString() {
     return 'AppState{name: $name, isLoading: $isLoading, balance: $balance, '
-        + 'atStake: $atStake, bets: $bets, group names: $groupNames '
-           + 'groups: $groups, activeTab: $activeTab, Form Type: $formType, '
-           + 'currentUser: $currentUser, userStream: $userStream}';
+        'atStake: $atStake, bets: $bets, groups: $groups, '
+        'activeTab: $activeTab, Form Type: $formType, '
+        'currentUser: $currentUser, userStream: $userStream}';
   }
 }

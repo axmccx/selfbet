@@ -4,11 +4,11 @@ import 'package:selfbet/actions/auth_actions.dart';
 import 'dart:async';
 
 final userStreamReducer = combineReducers<StreamSubscription>([
-  TypedReducer<StreamSubscription, SetUserStream>(_updateUserSteam),
+  TypedReducer<StreamSubscription, SetUserStreamAction>(_updateUserSteam),
   TypedReducer<StreamSubscription, LogOutSuccessfulAction>(_clearUserStream),
 ]);
 
-StreamSubscription _updateUserSteam(StreamSubscription name, SetUserStream action) {
+StreamSubscription _updateUserSteam(StreamSubscription name, SetUserStreamAction action) {
   return action.userStream;
 }
 

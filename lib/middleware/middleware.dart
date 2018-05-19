@@ -28,8 +28,11 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, ConnectToDataSourceAction>(
       _firestoreConnect(userRepo, groupsRepo, betsRepo),
     ),
-    TypedMiddleware<AppState, CreditFaucet>(
+    TypedMiddleware<AppState, CreditFaucetAction>(
       _firestoreCreditFaucet(userRepo),
+    ),
+    TypedMiddleware<AppState, CreateGroupAction>(
+      _firestoreCreateGroup(groupsRepo),
     ),
   ];
 }
@@ -102,20 +105,17 @@ Middleware<AppState> _firestoreLogOut(FirebaseUserRepo repo) {
   };
 }
 
-Middleware<AppState> _firestoreConnect(
-    FirebaseUserRepo userRepo,
-    FirebaseGroupsRepo groupsRepo,
-    FirebaseBetsRepo betsRepo,
-    ) {
+Middleware<AppState> _firestoreConnect(FirebaseUserRepo userRepo,
+    FirebaseGroupsRepo groupsRepo, FirebaseBetsRepo betsRepo,) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     if (action is ConnectToDataSourceAction) {
       try {
         FirebaseUser user = store.state.currentUser;
         StreamSubscription userStream = userRepo.userStream(user.uid).listen((userEntity) {
-          store.dispatch(LoadDashboard(userEntity));
+          store.dispatch(LoadDashboardAction(userEntity));
         });
-        store.dispatch(SetUserStream(userStream));
+        store.dispatch(SetUserStreamAction(userStream));
       } catch (e) {
         print(e);
       }
@@ -126,10 +126,24 @@ Middleware<AppState> _firestoreConnect(
 Middleware<AppState> _firestoreCreditFaucet(FirebaseUserRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
-    if (action is CreditFaucet) {
+    if (action is CreditFaucetAction) {
       try {
         FirebaseUser user = store.state.currentUser;
         repo.addCredits(user.uid);
+      } catch (e) {
+        print(e);
+      }
+    }
+  };
+}
+
+Middleware<AppState> _firestoreCreateGroup(FirebaseGroupsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    if (action is CreateGroupAction) {
+      try {
+        await repo.createGroup(action.group);
+        store.dispatch(LoadGroupsAction);
       } catch (e) {
         print(e);
       }

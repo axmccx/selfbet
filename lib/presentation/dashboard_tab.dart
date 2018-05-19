@@ -14,11 +14,11 @@ class DashboardTab extends StatelessWidget {
   Widget build(BuildContext context) {
     double realBalance = balance / 100;
     double realAtStake = atStake / 100;
-    return new Container(
+    return Container(
       padding: EdgeInsets.all(30.0),
       child: Column(
         children: <Widget>[
-          new Container(
+          Container(
             child: Text(
               "Balance:   \$${realBalance.toStringAsFixed(2)}",
               style: TextStyle(
@@ -27,9 +27,7 @@ class DashboardTab extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10.0),
-          ),
+          Padding(padding: EdgeInsets.all(10.0)),
           Text(
             "At Stake:   \$${realAtStake.toStringAsFixed(2)}",
             style: TextStyle(

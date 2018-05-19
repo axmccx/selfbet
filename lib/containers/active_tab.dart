@@ -11,7 +11,7 @@ class ActiveTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, AppTab>(
+    return StoreConnector<AppState, AppTab>(
       distinct: true,
       converter: (Store<AppState> store) => store.state.activeTab,
       builder: builder,

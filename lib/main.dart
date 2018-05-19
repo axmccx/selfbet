@@ -13,7 +13,7 @@ import 'package:selfbet/repositories/repos.dart';
 
 
 void main() {
-  runApp(new SelfbetApp());
+  runApp(SelfbetApp());
 }
 
 class SelfbetApp extends StatelessWidget {
