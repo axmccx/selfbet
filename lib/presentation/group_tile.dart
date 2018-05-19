@@ -19,9 +19,11 @@ class GroupTile extends StatelessWidget {
       onTap: onTap,
       child: Card(
         child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("${group.name}"),
-            Text("${group.owner}"),
+            Text("Name: ${group.name}"),
+            Text("Owner: ${group.owner}"),
+            Text("Total at Stake: \$${group.groupAtStake}"),
           ],
         ),
       ),

@@ -3,9 +3,9 @@ import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/models/models.dart';
 
 final groupsReducer = combineReducers<List<Group>>([
-  TypedReducer<List<Group>, PlaceHolderAction>(_updateGroups),
+  TypedReducer<List<Group>, LoadGroupsAction>(_updateGroups),
 ]);
 
-List<Group> _updateGroups(List<Group> groupList, PlaceHolderAction action) {
-  return null;
+List<Group> _updateGroups(List<Group> groupList, LoadGroupsAction action) {
+  return action.groups;
 }

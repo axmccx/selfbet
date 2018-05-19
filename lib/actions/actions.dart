@@ -27,6 +27,17 @@ class SetUserStreamAction{
   }
 }
 
+class SetGroupStreamAction{
+  final StreamSubscription groupSteam;
+
+  SetGroupStreamAction(this.groupSteam);
+
+  @override
+  String toString() {
+    return 'SetGroupStream{groupStream: $groupSteam}';
+  }
+}
+
 class LoadDashboardAction {
   final UserEntity userEntity;
 

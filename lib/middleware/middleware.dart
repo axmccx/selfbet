@@ -112,10 +112,16 @@ Middleware<AppState> _firestoreConnect(FirebaseUserRepo userRepo,
     if (action is ConnectToDataSourceAction) {
       try {
         FirebaseUser user = store.state.currentUser;
-        StreamSubscription userStream = userRepo.userStream(user.uid).listen((userEntity) {
-          store.dispatch(LoadDashboardAction(userEntity));
+        StreamSubscription userStream = userRepo.userStream(user.uid)
+            .listen((userEntity) {
+              store.dispatch(LoadDashboardAction(userEntity));
         });
         store.dispatch(SetUserStreamAction(userStream));
+        StreamSubscription groupStream = groupsRepo.groupStream(user.uid)
+          .listen((groups) {
+            store.dispatch(LoadGroupsAction(groups));
+        });
+        store.dispatch(SetGroupStreamAction(groupStream));
       } catch (e) {
         print(e);
       }

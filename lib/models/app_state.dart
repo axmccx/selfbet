@@ -16,6 +16,7 @@ class AppState {
   final FormType formType;
   final FirebaseUser currentUser;
   final StreamSubscription userStream;
+  final StreamSubscription groupStream;
 
   AppState({
     this.isLoading = false,
@@ -28,6 +29,7 @@ class AppState {
     this.formType = FormType.login,
     this.currentUser,
     this.userStream,
+    this.groupStream,
   });
 
   factory AppState.loading() => AppState(isLoading: true);
@@ -43,6 +45,7 @@ class AppState {
     FormType formType,
     FirebaseUser currentUser,
     StreamSubscription userStream,
+    StreamSubscription groupStream,
   }) {
     return AppState(
       isLoading: isLoading ?? this.isLoading,
@@ -55,6 +58,7 @@ class AppState {
       formType: formType ?? this.formType,
       currentUser: currentUser ?? this.currentUser,
       userStream: userStream ?? this.userStream,
+      groupStream: groupStream ?? this.groupStream,
     );
   }
 
@@ -69,7 +73,8 @@ class AppState {
       activeTab.hashCode ^
       formType.hashCode ^
       currentUser.hashCode ^
-      userStream.hashCode;
+      userStream.hashCode ^
+      groupStream.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -85,13 +90,14 @@ class AppState {
               activeTab == other.activeTab &&
               formType == other.formType &&
               currentUser == other.currentUser &&
-              userStream == other.userStream;
+              userStream == other.userStream &&
+              groupStream == other.groupStream;
 
   @override
   String toString() {
     return 'AppState{name: $name, isLoading: $isLoading, balance: $balance, '
         'atStake: $atStake, bets: $bets, groups: $groups, '
-        'activeTab: $activeTab, Form Type: $formType, '
-        'currentUser: $currentUser, userStream: $userStream}';
+        'activeTab: $activeTab, Form Type: $formType, currentUser: $currentUser, '
+        'userStream: $userStream, groupStream: $groupStream}';
   }
 }

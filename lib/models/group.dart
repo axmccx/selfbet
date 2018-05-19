@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 @immutable
 class Group {
   final String name;
-  final Map<String, bool> members;
+  final Map<dynamic, dynamic> members;
   final int groupAtStake;
   final String owner;
   // thumbnail picture
