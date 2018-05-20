@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:selfbet/models/models.dart';
+
+typedef OnSaveCallBack = Function(BuildContext, GlobalKey<ScaffoldState>, String);
 
 class GroupFormScreen extends StatelessWidget {
   static final _formKey = GlobalKey<FormState>();
   static final _groupNameKey = GlobalKey<FormFieldState<String>>();
+  static final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final bool isNewGroup;
-  final Function(String) onSave;
+  final OnSaveCallBack onSave;
 
   GroupFormScreen({
     @required this.isNewGroup,
@@ -19,6 +21,7 @@ class GroupFormScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return new Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
           isNewGroup ? "Create Group" : "Join Group",
@@ -48,9 +51,10 @@ class GroupFormScreen extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     onSave(
-                      _groupNameKey.currentState.value,
+                        context,
+                        _scaffoldKey,
+                        _groupNameKey.currentState.value
                     );
-                    Navigator.pop(context);
                   }
                 },
                 child: Text("Submit"),
@@ -62,3 +66,5 @@ class GroupFormScreen extends StatelessWidget {
     );
   }
 }
+
+

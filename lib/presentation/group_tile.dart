@@ -21,7 +21,12 @@ class GroupTile extends StatelessWidget {
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Name: ${group.name}"),
+            Text(
+              "${group.name}",
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
             Text("Owner: ${group.owner}"),
             Text("Total at Stake: \$${group.groupAtStake}"),
           ],

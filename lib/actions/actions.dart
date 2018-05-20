@@ -123,8 +123,10 @@ class JoinGroupAction {
 
 class CreateGroupAction {
   final Group group;
+  final Function onComplete;
+  final Function onFail;
 
-  CreateGroupAction(this.group);
+  CreateGroupAction(this.group, this.onComplete, this.onFail);
 
   @override
   String toString() {

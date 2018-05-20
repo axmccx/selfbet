@@ -4,7 +4,6 @@ import 'package:selfbet/models/models.dart';
 
 class FirebaseGroupsRepo {
   static const String groupPath = 'groups';
-  //static const String userPath = 'users';
 
   final Firestore firestore;
   const FirebaseGroupsRepo(this.firestore);
@@ -25,11 +24,11 @@ class FirebaseGroupsRepo {
     });
   }
 
-  Future<void> createGroup(Group group) {
+  Future<String> createGroup(Group group) {
     return firestore.collection(groupPath).document(group.name).get()
         .then((doc) {
           if (doc.exists) {
-            // deal with error
+            return 'Group already exists';
           } else {
             firestore.collection(groupPath)
                 .document(group.name)

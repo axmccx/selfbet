@@ -37,7 +37,6 @@ class FirebaseUserRepo {
         "balance": 0,
         "atStake": 0,
         "email": user.email,
-        "groupNames": [],
       }
     );
   }
@@ -52,7 +51,6 @@ class FirebaseUserRepo {
          doc["name"],
          doc["balance"],
          doc["atStake"],
-         doc["groupNames"],
        );
      });
   }

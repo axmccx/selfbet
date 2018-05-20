@@ -8,9 +8,9 @@ import 'package:selfbet/presentation/group_form_screen.dart';
 class JoinGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, Function(String)>(
+    return StoreConnector<AppState, Function(BuildContext, GlobalKey<ScaffoldState>, String)>(
       converter: (Store<AppState> store) {
-        return (groupName) {
+        return (context, scaffoldKey, groupName) {
           store.dispatch(JoinGroupAction(groupName));
         };
       },

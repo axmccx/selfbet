@@ -8,9 +8,18 @@ import 'package:selfbet/presentation/group_form_screen.dart';
 class CreateGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, Function(String)>(
+    return StoreConnector<AppState, OnSaveCallBack>(
       converter: (Store<AppState> store) {
-        return (groupName) {
+        return (context, scaffoldKey, groupName) {
+          _onComplete() {
+            Navigator.pop(context);
+          }
+          _onFail(error) {
+            final snackBar = SnackBar(
+              content: Text(error),
+            );
+            scaffoldKey.currentState.showSnackBar(snackBar);
+          }
           store.dispatch(CreateGroupAction(Group(
             name: groupName,
             members: {
@@ -18,7 +27,10 @@ class CreateGroup extends StatelessWidget {
             },
             groupAtStake: 0,
             owner: store.state.name,
-          )));
+          ),
+          _onComplete,
+          _onFail,
+          ));
         };
       },
       builder: (context, onSave) {
