@@ -18,7 +18,7 @@ class Group {
 
   Group copyWith({
     String name,
-    List<String> members,
+    Map<dynamic, dynamic> members,
     int groupAtStake,
     String owner,
   }) {

@@ -110,17 +110,6 @@ class RenewBetAction {
   }
 }
 
-class JoinGroupAction {
-  final String groupName;
-
-  JoinGroupAction(this.groupName);
-
-  @override
-  String toString() {
-    return 'JoingGroup{}';
-  }
-}
-
 class CreateGroupAction {
   final Group group;
   final Function onComplete;
@@ -131,6 +120,19 @@ class CreateGroupAction {
   @override
   String toString() {
     return 'CreateGroup{group: $group}';
+  }
+}
+
+class JoinGroupAction {
+  final String groupName;
+  final Function onComplete;
+  final Function onFail;
+
+  JoinGroupAction(this.groupName, this.onComplete, this.onFail);
+
+  @override
+  String toString() {
+    return 'JoingGroup{}';
   }
 }
 

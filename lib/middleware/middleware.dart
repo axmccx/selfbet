@@ -34,6 +34,9 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, CreateGroupAction>(
       _firestoreCreateGroup(groupsRepo),
     ),
+    TypedMiddleware<AppState, JoinGroupAction>(
+      _firestoreJoinGroup(groupsRepo),
+    ),
   ];
 }
 
@@ -139,19 +142,40 @@ void Function(
 ) _firestoreCreateGroup(FirebaseGroupsRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
-    if (action is CreateGroupAction) {
-      try {
-        repo.createGroup(action.group).then((msg) {
-          if (msg != null) {
-            action.onFail(msg);
-          } else {
-            action.onComplete();
-            store.dispatch(LoadGroupsAction);
-          }
-        });
-      } catch (e) {
-        print(e);
-      }
+    try {
+      repo.createGroup(action.group).then((msg) {
+        if (msg != null) {
+          action.onFail(msg);
+        } else {
+          action.onComplete();
+          store.dispatch(LoadGroupsAction);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    JoinGroupAction action,
+    NextDispatcher next,
+    ) _firestoreJoinGroup(FirebaseGroupsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      FirebaseUser user = store.state.currentUser;
+      repo.joinGroup(action.groupName, user.uid).then((msg) {
+        if (msg != null) {
+          action.onFail(msg);
+        } else {
+          action.onComplete();
+          store.dispatch(LoadGroupsAction);
+        }
+      });
+    } catch (e) {
+      print(e);
     }
   };
 }

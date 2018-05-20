@@ -20,16 +20,17 @@ class CreateGroup extends StatelessWidget {
             );
             scaffoldKey.currentState.showSnackBar(snackBar);
           }
-          store.dispatch(CreateGroupAction(Group(
-            name: groupName,
-            members: {
-              store.state.currentUser.uid: true,
-            },
-            groupAtStake: 0,
-            owner: store.state.name,
-          ),
-          _onComplete,
-          _onFail,
+          store.dispatch(CreateGroupAction(
+            Group(
+              name: groupName,
+              members: {
+                store.state.currentUser.uid: true,
+              },
+              groupAtStake: 0,
+              owner: store.state.name,
+            ),
+            _onComplete,
+            _onFail,
           ));
         };
       },

@@ -8,10 +8,23 @@ import 'package:selfbet/presentation/group_form_screen.dart';
 class JoinGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, Function(BuildContext, GlobalKey<ScaffoldState>, String)>(
+    return StoreConnector<AppState, OnSaveCallBack>(
       converter: (Store<AppState> store) {
         return (context, scaffoldKey, groupName) {
-          store.dispatch(JoinGroupAction(groupName));
+          _onComplete() {
+            Navigator.pop(context);
+          }
+          _onFail(error) {
+            final snackBar = SnackBar(
+              content: Text(error),
+            );
+            scaffoldKey.currentState.showSnackBar(snackBar);
+          }
+          store.dispatch(JoinGroupAction(
+            groupName,
+            _onComplete,
+            _onFail,
+          ));
         };
       },
       builder: (context, onSave) {

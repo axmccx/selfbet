@@ -33,7 +33,24 @@ class FirebaseGroupsRepo {
             firestore.collection(groupPath)
                 .document(group.name)
                 .setData(group.toJson());
+            return null;
           }
+    });
+  }
+
+  Future<String> joinGroup(String groupName, String uid) {
+    return firestore.collection(groupPath)
+        .document(groupName).get().then((doc) {
+      if (doc.exists) {
+        firestore.collection(groupPath).document(groupName).updateData(
+          {
+            "members.$uid": true,
+          }
+        );
+        return null;
+      } else {
+        return 'Group doesn\'t exists';
+      }
     });
   }
 }
