@@ -8,11 +8,11 @@ import 'package:selfbet/containers/app_loading.dart';
 
 class GroupList extends StatelessWidget {
   final List<Group> groups;
-  //final Function(Group) showMembers;
+  final Function showMembers;
 
   GroupList({
     @required this.groups,
-    //@required this.showMembers,
+    @required this.showMembers,
   });
 
   @override
@@ -34,7 +34,8 @@ class GroupList extends StatelessWidget {
         final group = groups[index];
         return GroupTile(
           group: group,
-          onTap: () => debugPrint("Group: \"${group.name}\" shows the members") ,
+          onTap: showMembers,
+          //onTap: () => debugPrint("Group: \"${group.name}\" shows the members") ,
         );
       },
     );

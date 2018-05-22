@@ -4,7 +4,7 @@ import 'package:selfbet/models/models.dart';
 
 class GroupTile extends StatelessWidget {
   final Group group;
-  final GestureTapCallback onTap;
+  final Function(BuildContext, Group) onTap;
   // final Function leave group
   // final Function change owner
 
@@ -15,8 +15,9 @@ class GroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double atStakeDouble = group.groupAtStake / 100;
     return new GestureDetector (
-      onTap: onTap,
+      onTap: () { onTap(context, group); },
       child: Card(
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +29,7 @@ class GroupTile extends StatelessWidget {
               ),
             ),
             Text("Owner: ${group.owner}"),
-            Text("Total at Stake: \$${group.groupAtStake}"),
+            Text("Total at Stake: \$${atStakeDouble.toStringAsFixed(2)}"),
           ],
         ),
       ),

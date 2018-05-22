@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:selfbet/models/models.dart';
+import 'package:flutter/material.dart';
 
 class InitAppAction {
   @override
@@ -57,6 +58,32 @@ class LoadGroupsAction {
   @override
   String toString() {
     return 'LoadGroups{groups: $groups}';
+  }
+}
+
+class GetGroupMembersAction{
+  final BuildContext context;
+  final Group group;
+  final Map groupMemberUids;
+
+  GetGroupMembersAction(this.context, this.group, this.groupMemberUids);
+
+  @override
+  String toString() {
+    return 'GetGroupMembersAction{groupMemberUids: $groupMemberUids}';
+  }
+}
+
+class LoadGroupMembersAction {
+  final BuildContext context;
+  final Group group;
+  final List<UserEntity> groupMembers;
+
+  LoadGroupMembersAction(this.context, this.group, this.groupMembers);
+
+  @override
+  String toString() {
+    return 'LoadGroupMembersAction{groupMembers: $groupMembers}';
   }
 }
 

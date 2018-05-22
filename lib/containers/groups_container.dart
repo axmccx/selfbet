@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/models/models.dart';
+import 'package:selfbet/containers/containers.dart';
 import 'package:selfbet/presentation/group_list.dart';
 
 
@@ -14,7 +16,7 @@ class GroupsContainer extends StatelessWidget {
       builder: (context, vm) {
         return GroupList(
           groups: vm.groups,
-          //showMembers: vm.showMembers,
+          showMembers: vm.showMembers,
         );
       },
     );
@@ -24,14 +26,14 @@ class GroupsContainer extends StatelessWidget {
 class _ViewModel {
   final List<Group> groups;
   final bool loading;
-//  final Function(Group) showMembers;
+  final Function(BuildContext, Group) showMembers;
 //  final Function(Group) leaveGroup;
 //  final Function(Group) changeOwner;
 
   _ViewModel({
     @required this.groups,
     @required this.loading,
-//    @required this.showMembers,
+    @required this.showMembers,
 //    @required this.leaveGroup,
 //    @required this.changeOwner,
   });
@@ -40,7 +42,13 @@ class _ViewModel {
     return _ViewModel(
       groups: store.state.groups,
       loading: store.state.isLoading,
-//      showMembers: (group) => debugPrint("Group: \"${group.name}\" shows the members"),
+      showMembers: (context, group) {
+        store.dispatch(GetGroupMembersAction(
+            context,
+            group,
+            group.members
+        ));
+      },
 //      leaveGroup: (group) => debugPrint("User leaves the group"),
 //      changeOwner: (group) => debugPrint("Allow the user to pick a new owner"),
     );

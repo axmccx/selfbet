@@ -62,4 +62,18 @@ class FirebaseUserRepo {
       }
     );
   }
+
+  Future<List<UserEntity>> getGroupMembers(Map groupMemberUids) async {
+    List<UserEntity> out = [];
+    for (String uid in groupMemberUids.keys) {
+      await firestore.collection(userPath).document(uid).get().then((doc) {
+        out.add(UserEntity (
+          doc["name"],
+          doc["balance"],
+          doc["atStake"],
+        ));
+      });
+    }
+    return out;
+  }
 }

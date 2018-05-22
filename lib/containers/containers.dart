@@ -8,3 +8,4 @@ export 'extra_actions_container.dart';
 export 'groups_container.dart';
 export 'create_group.dart';
 export 'join_group.dart';
+export 'display_group.dart';

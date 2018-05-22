@@ -12,6 +12,7 @@ class AppState {
   final int atStake;
   final List<Bet> bets;
   final List<Group> groups;
+  final List<UserEntity> groupMembers;
   final AppTab activeTab;
   final FormType formType;
   final FirebaseUser currentUser;
@@ -25,6 +26,7 @@ class AppState {
     this.atStake = 0,
     this.bets = const [],
     this.groups = const [],
+    this.groupMembers = const [],
     this.activeTab = AppTab.dashboard,
     this.formType = FormType.login,
     this.currentUser,
@@ -41,6 +43,7 @@ class AppState {
     int atStake,
     List<Bet> bets,
     List<Group> groups,
+    List<UserEntity> groupMembers,
     AppTab activeTab,
     FormType formType,
     FirebaseUser currentUser,
@@ -54,6 +57,7 @@ class AppState {
       atStake: atStake ?? this.atStake,
       bets: bets ?? this.bets,
       groups: groups ?? this.groups,
+      groupMembers: groupMembers ?? this.groupMembers,
       activeTab: activeTab ?? this.activeTab,
       formType: formType ?? this.formType,
       currentUser: currentUser ?? this.currentUser,
@@ -70,6 +74,7 @@ class AppState {
       atStake.hashCode ^
       bets.hashCode ^
       groups.hashCode ^
+      groupMembers.hashCode ^
       activeTab.hashCode ^
       formType.hashCode ^
       currentUser.hashCode ^
@@ -87,6 +92,7 @@ class AppState {
               atStake == other.atStake &&
               bets == other.bets &&
               groups == other.groups &&
+              groupMembers == other.groupMembers &&
               activeTab == other.activeTab &&
               formType == other.formType &&
               currentUser == other.currentUser &&
@@ -95,9 +101,18 @@ class AppState {
 
   @override
   String toString() {
-    return 'AppState{name: $name, isLoading: $isLoading, balance: $balance, '
-        'atStake: $atStake, bets: $bets, groups: $groups, '
-        'activeTab: $activeTab, Form Type: $formType, currentUser: $currentUser, '
-        'userStream: $userStream, groupStream: $groupStream}';
+    return 'AppState{'
+        'name: $name, '
+        'isLoading: $isLoading, '
+        'balance: $balance, '
+        'atStake: $atStake, '
+        'bets: $bets, '
+        'groups: $groups, '
+        'groupMembers: $groupMembers, '
+        'activeTab: $activeTab, '
+        'Form Type: $formType, '
+        'currentUser: $currentUser, '
+        'userStream: $userStream, '
+        'groupStream: $groupStream}';
   }
 }
