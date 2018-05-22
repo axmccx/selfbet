@@ -36,5 +36,4 @@ class _ViewModel {
       }
     );
   }
-  // Might need to add == and hashcode overrides
 }

@@ -1,1 +1,6 @@
-enum ExtraActions { LogOut }
+enum ExtraActions {
+  LogOut,
+  ChangeGroupOwner,
+  LeaveGroup,
+  DeleteGroup,
+}

@@ -32,18 +32,15 @@ class GroupList extends StatelessWidget {
 
   GridView _buildGridView() {
     return GridView.builder(
-
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
       ),
       itemCount: groups.length,
-      //controller: ,
       itemBuilder: (BuildContext context, int index) {
         final group = groups[index];
         return GroupTile(
           group: group,
           onTap: showMembers,
-          //onTap: () => debugPrint("Group: \"${group.name}\" shows the members") ,
         );
       },
     );

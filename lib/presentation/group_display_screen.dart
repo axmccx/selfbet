@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:selfbet/models/models.dart';
 
-class DisplayGroupScreen extends StatelessWidget {
+class GroupDisplayScreen extends StatelessWidget {
   final Group group;
   final List<UserEntity> members;
 
-  DisplayGroupScreen({
+  GroupDisplayScreen({
     @required this.group,
     @required this.members,
   });
@@ -62,9 +62,14 @@ class UserRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double atStakeDouble = user.atStake / 100;
-    return ListTile(
-      title: Text(user.name),
-      subtitle: Text("Total at Stake: \$$atStakeDouble"),
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: Text(user.name),
+          subtitle: Text("Total at Stake: \$${atStakeDouble.toStringAsFixed(2)}"),
+        ),
+        Divider(),
+      ],
     );
   }
 }

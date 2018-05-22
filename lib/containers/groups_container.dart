@@ -4,7 +4,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/models/models.dart';
-import 'package:selfbet/containers/containers.dart';
 import 'package:selfbet/presentation/group_list.dart';
 
 
