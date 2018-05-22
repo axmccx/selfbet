@@ -21,7 +21,7 @@ class RootScreen extends StatelessWidget {
             return ShowNewAcc();
           }
         } else {
-          return HomeScreen();
+          return HomeScreen(vm.isLoading);
         }
       },
     );
@@ -31,16 +31,19 @@ class RootScreen extends StatelessWidget {
 class _ViewModel {
   final FormType formType;
   final FirebaseUser user;
+  final bool isLoading;
 
   _ViewModel({
     @required this.formType,
     @required this.user,
+    @required this.isLoading,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       formType: store.state.formType,
       user: store.state.currentUser,
+      isLoading: store.state.isLoading,
     );
   }
 }

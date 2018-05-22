@@ -48,7 +48,9 @@ class LoginNewAccScreen extends StatelessWidget {
             ),
           ),
           Align(
-            child: isLoading ? LoadingIndicator() : Container(),
+            child: isLoading
+                ? LoadingIndicator("Authenticating")
+                : Container(),
             alignment: FractionalOffset.center,
           ),
         ],

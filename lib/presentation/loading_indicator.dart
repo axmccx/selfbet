@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class LoadingIndicator extends StatelessWidget {
   final String message;
 
-  LoadingIndicator({
-    Key key,
-    this.message = "Authenticating...",
-  }) : super(key: key);
+  LoadingIndicator(this.message);
 
   @override
   Widget build(BuildContext context) {

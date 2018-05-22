@@ -3,6 +3,10 @@ import 'package:selfbet/models/models.dart';
 import 'package:selfbet/containers/containers.dart';
 
 class HomeScreen extends StatelessWidget {
+  final bool isLoading;
+
+  HomeScreen(this.isLoading);
+
   Widget appBarSelector(BuildContext context, AppTab tab) {
     if (tab == AppTab.dashboard) {
       return AppBar(

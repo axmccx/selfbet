@@ -18,7 +18,15 @@ class GroupList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppLoading(builder: (context, loading) {
-      return loading ? LoadingIndicator() : _buildGridView();
+      return Stack(
+          children: <Widget>[
+            _buildGridView(),
+            Align(
+              child: loading ? LoadingIndicator("Loading") : Container(),
+              alignment: FractionalOffset.center,
+            ),
+          ],
+      );
     });
   }
 
