@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/actions/auth_actions.dart';
-import 'package:selfbet/containers/display_group.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/repositories/repos.dart';
 import 'package:redux/redux.dart';
@@ -44,6 +42,9 @@ List<Middleware<AppState>> createMiddleware(
     ),
     TypedMiddleware<AppState, LoadGroupMembersAction>(
       _firestoreLoadGroupMembers(userRepo),
+    ),
+    TypedMiddleware<AppState, ChangeGroupOwnerAction>(
+      _firestoreUpdateGroupOwner(groupsRepo),
     ),
   ];
 }
@@ -197,7 +198,10 @@ void Function(
     next(action);
     try {
       List<UserEntity> members = await repo.getGroupMembers(action.groupMemberUids);
-      store.dispatch(LoadGroupMembersAction(action.context, action.group, members));
+      store.dispatch(LoadGroupMembersAction(
+        groupMembers: members,
+        callBack: action.callBack,
+      ));
     } catch (e) {
       print(e);
     }
@@ -212,12 +216,22 @@ void Function(
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
-      Navigator.of(action.context).push(MaterialPageRoute(
-        builder: (context) {
-          return DisplayGroup(action.group);
-        },
-      ));
+      action.callBack();
+    } catch (e) {
+      print(e);
+    }
+  };
+}
 
+void Function(
+    Store<AppState> store,
+    ChangeGroupOwnerAction action,
+    NextDispatcher next,
+    ) _firestoreUpdateGroupOwner(FirebaseGroupsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.updateGroupOwner(action.groupName, action.newOwnerName);
     } catch (e) {
       print(e);
     }

@@ -4,10 +4,10 @@ import 'package:redux/redux.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/presentation/group_display_screen.dart';
 
-class DisplayGroup extends StatelessWidget {
+class GroupDisplayContainer extends StatelessWidget {
   final Group group;
 
-  DisplayGroup(this.group);
+  GroupDisplayContainer(this.group);
 
   @override
   Widget build(BuildContext context) {

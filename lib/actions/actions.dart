@@ -62,11 +62,13 @@ class LoadGroupsAction {
 }
 
 class GetGroupMembersAction{
-  final BuildContext context;
-  final Group group;
   final Map groupMemberUids;
+  final Function callBack;
 
-  GetGroupMembersAction(this.context, this.group, this.groupMemberUids);
+  GetGroupMembersAction({
+    @required this.groupMemberUids,
+    @required this.callBack
+  });
 
   @override
   String toString() {
@@ -75,11 +77,13 @@ class GetGroupMembersAction{
 }
 
 class LoadGroupMembersAction {
-  final BuildContext context;
-  final Group group;
   final List<UserEntity> groupMembers;
+  final Function callBack;
 
-  LoadGroupMembersAction(this.context, this.group, this.groupMembers);
+  LoadGroupMembersAction({
+    @required this.groupMembers,
+    @required this.callBack
+  });
 
   @override
   String toString() {
@@ -160,6 +164,19 @@ class JoinGroupAction {
   @override
   String toString() {
     return 'JoingGroup{}';
+  }
+}
+
+class ChangeGroupOwnerAction {
+  final String groupName;
+  final String newOwnerName;
+
+  ChangeGroupOwnerAction(this.groupName, this.newOwnerName);
+
+  @override
+  String toString() {
+    return 'ChangeGroupOwnerAction{groupName: $groupName, '
+        'newOwnerName: $newOwnerName}';
   }
 }
 

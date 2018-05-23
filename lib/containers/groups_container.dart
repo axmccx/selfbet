@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/presentation/group_list.dart';
+import 'package:selfbet/containers/containers.dart';
 
 
 class GroupsContainer extends StatelessWidget {
@@ -26,15 +27,11 @@ class _ViewModel {
   final List<Group> groups;
   final bool loading;
   final Function(BuildContext, Group) showMembers;
-//  final Function(Group) leaveGroup;
-//  final Function(Group) changeOwner;
 
   _ViewModel({
     @required this.groups,
     @required this.loading,
     @required this.showMembers,
-//    @required this.leaveGroup,
-//    @required this.changeOwner,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -43,13 +40,16 @@ class _ViewModel {
       loading: store.state.isLoading,
       showMembers: (context, group) {
         store.dispatch(GetGroupMembersAction(
-            context,
-            group,
-            group.members
+            groupMemberUids: group.members,
+            callBack: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return GroupDisplayContainer(group);
+                },
+              ));
+            },
         ));
       },
-//      leaveGroup: (group) => debugPrint("User leaves the group"),
-//      changeOwner: (group) => debugPrint("Allow the user to pick a new owner"),
     );
   }
 }

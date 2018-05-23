@@ -53,4 +53,13 @@ class FirebaseGroupsRepo {
       }
     });
   }
+
+  Future<void> updateGroupOwner(String groupName, String newOwnerName) {
+    return firestore.collection(groupPath)
+        .document(groupName).updateData(
+      {
+        "owner": newOwnerName,
+      }
+    );
+  }
 }

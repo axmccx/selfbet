@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/presentation/group_popup_menu.dart';
 import 'package:selfbet/actions/actions.dart';
+import 'package:selfbet/containers/containers.dart';
 
 class GroupPopupMenuContainer extends StatelessWidget {
   final Group group;
@@ -17,7 +18,17 @@ class GroupPopupMenuContainer extends StatelessWidget {
     converter: _ViewModel.fromStore,
     builder: (context, vm) {
       return GroupPopupMenu(
-          onSelected: vm.onActionSelected,
+          onSelected: (action) {
+            if (action == ExtraActions.ChangeGroupOwner) {
+              vm.changeGroupOwnerDispatch(context, group);
+            }
+            if (action == ExtraActions.LeaveGroup) {
+              debugPrint("LeaveGroup");
+            }
+            if (action == ExtraActions.DeleteGroup) {
+              debugPrint("DeleteGroup");
+            }
+          },
           canChangeOwner: (vm.name == group.owner) &&
               (group.members.length > 1),
           canLeaveGroup: (vm.name != group.owner) &&
@@ -31,26 +42,27 @@ class GroupPopupMenuContainer extends StatelessWidget {
 
 class _ViewModel {
   final String name;
-  final Function(ExtraActions) onActionSelected;
+  final Function(BuildContext, Group) changeGroupOwnerDispatch;
 
   _ViewModel({
     @required this.name,
-    @required this.onActionSelected,
+    @required this.changeGroupOwnerDispatch,
   });
 
   static _ViewModel fromStore(Store <AppState> store) {
     return _ViewModel(
       name: store.state.name,
-      onActionSelected: (action) {
-        if (action == ExtraActions.ChangeGroupOwner) {
-          debugPrint("ChangeGroupOwner");
-        }
-        if (action == ExtraActions.LeaveGroup) {
-          debugPrint("LeaveGroup");
-        }
-        if (action == ExtraActions.DeleteGroup) {
-          debugPrint("DeleteGroup");
-        }
+      changeGroupOwnerDispatch: (context, group) {
+        store.dispatch(GetGroupMembersAction(
+            groupMemberUids: group.members,
+            callBack: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return GroupOwnerChangeContainer(group);
+                },
+              ));
+            },
+        ));
       },
     );
   }

@@ -43,7 +43,7 @@ class GroupDisplayScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
-                  return UserRow(members[index]);
+                  return _UserRow(members[index]);
                 },
                 itemCount: members.length,
               ),
@@ -55,9 +55,10 @@ class GroupDisplayScreen extends StatelessWidget {
   }
 }
 
-class UserRow extends StatelessWidget {
+class _UserRow extends StatelessWidget {
   final UserEntity user;
-  const UserRow(this.user);
+
+  const _UserRow(this.user);
 
   @override
   Widget build(BuildContext context) {
