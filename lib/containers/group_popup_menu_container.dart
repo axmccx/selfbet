@@ -23,10 +23,54 @@ class GroupPopupMenuContainer extends StatelessWidget {
               vm.changeGroupOwnerDispatch(context, group);
             }
             if (action == ExtraActions.LeaveGroup) {
-              debugPrint("LeaveGroup");
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  content:  Text(
+                    "Leave group?",
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: const Text('CANCEL'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }
+                    ),
+                    FlatButton(
+                      child: const Text('LEAVE'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        vm.leaveGroupDispatch(group.name);
+                      }
+                    )
+                  ],
+                ),
+              );
             }
             if (action == ExtraActions.DeleteGroup) {
-              debugPrint("DeleteGroup");
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  content:  Text(
+                    "Delete group?",
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                        child: const Text('CANCEL'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }
+                    ),
+                    new FlatButton(
+                        child: const Text('DELETE'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          vm.deleteGroupDispatch(group.name);
+                        }
+                    )
+                  ],
+                ),
+              );
             }
           },
           canChangeOwner: (vm.name == group.owner) &&
@@ -43,10 +87,14 @@ class GroupPopupMenuContainer extends StatelessWidget {
 class _ViewModel {
   final String name;
   final Function(BuildContext, Group) changeGroupOwnerDispatch;
+  final Function(String) leaveGroupDispatch;
+  final Function(String) deleteGroupDispatch;
 
   _ViewModel({
     @required this.name,
     @required this.changeGroupOwnerDispatch,
+    @required this.leaveGroupDispatch,
+    @required this.deleteGroupDispatch,
   });
 
   static _ViewModel fromStore(Store <AppState> store) {
@@ -58,11 +106,17 @@ class _ViewModel {
             callBack: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) {
-                  return GroupOwnerChangeContainer(group);
+                  return GroupOwnerChangeContainer(group.name);
                 },
               ));
             },
         ));
+      },
+      leaveGroupDispatch: (groupName) {
+        store.dispatch(LeaveGroupAction(groupName));
+      },
+      deleteGroupDispatch: (groupName) {
+        store.dispatch(DeleteGroupAction(groupName));
       },
     );
   }

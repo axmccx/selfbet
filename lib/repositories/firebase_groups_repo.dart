@@ -62,4 +62,23 @@ class FirebaseGroupsRepo {
       }
     );
   }
+
+  Future<void> leaveGroup(String groupName, String uid) {
+    return firestore.collection(groupPath)
+        .document(groupName).get().then((doc) {
+          Map members = doc["members"];
+          members.remove(uid);
+          firestore.collection(groupPath)
+              .document(groupName).updateData(
+            {
+              "members": members,
+            }
+          );
+    });
+  }
+
+  Future<void> deleteGroup(String groupName) {
+    return firestore.collection(groupPath)
+        .document(groupName).delete();
+  }
 }

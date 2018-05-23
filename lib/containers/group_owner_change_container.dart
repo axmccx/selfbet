@@ -6,9 +6,9 @@ import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/presentation/group_owner_change_screen.dart';
 
 class GroupOwnerChangeContainer extends StatelessWidget {
-  final Group group;
+  final String groupName;
 
-  GroupOwnerChangeContainer(this.group);
+  GroupOwnerChangeContainer(this.groupName);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,10 @@ class GroupOwnerChangeContainer extends StatelessWidget {
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
         return GroupOwnerChangeScreen(
-          group: group,
+          groupName: groupName,
           members: vm.groupMembers,
           onSelect: (newOwner) {
-            vm.onNewOwnerSelected(group.name, newOwner);
+            vm.onNewOwnerSelected(groupName, newOwner);
           }
         );
       },

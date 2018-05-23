@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:selfbet/models/models.dart';
 
 class GroupOwnerChangeScreen extends StatefulWidget {
-  final Group group;
+  final String groupName;
   final List<UserEntity> members;
   final Function(String) onSelect;
 
   GroupOwnerChangeScreen({
-    @required this.group,
+    @required this.groupName,
     @required this.members,
     @required this.onSelect,
   });
@@ -40,7 +40,7 @@ class _GroupOwnerChangeScreenState extends State<GroupOwnerChangeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Choose a new owner for ${widget.group.name}",
+              "Choose a new owner for ${widget.groupName}",
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w400,

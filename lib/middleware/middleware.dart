@@ -46,6 +46,12 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, ChangeGroupOwnerAction>(
       _firestoreUpdateGroupOwner(groupsRepo),
     ),
+    TypedMiddleware<AppState, LeaveGroupAction>(
+      _firestoreLeaveGroup(groupsRepo),
+    ),
+    TypedMiddleware<AppState, DeleteGroupAction>(
+      _firestoreDeleteGroup(groupsRepo),
+    ),
   ];
 }
 
@@ -232,6 +238,37 @@ void Function(
     next(action);
     try {
       repo.updateGroupOwner(action.groupName, action.newOwnerName);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    LeaveGroupAction action,
+    NextDispatcher next,
+    ) _firestoreLeaveGroup(FirebaseGroupsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      FirebaseUser user = store.state.currentUser;
+      repo.leaveGroup(action.groupName, user.uid);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    DeleteGroupAction action,
+    NextDispatcher next,
+    ) _firestoreDeleteGroup(FirebaseGroupsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.deleteGroup(action.groupName);
     } catch (e) {
       print(e);
     }

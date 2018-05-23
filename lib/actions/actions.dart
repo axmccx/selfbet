@@ -181,9 +181,24 @@ class ChangeGroupOwnerAction {
 }
 
 class LeaveGroupAction {
+  final String groupName;
+
+  LeaveGroupAction(this.groupName);
+
   @override
   String toString() {
-    return 'LeaveGroup{}';
+    return 'LeaveGroup{groupName: $groupName}';
+  }
+}
+
+class DeleteGroupAction {
+  final String groupName;
+
+  DeleteGroupAction(this.groupName);
+
+  @override
+  String toString() {
+    return 'DeleteGroup{groupName: $groupName}';
   }
 }
 
