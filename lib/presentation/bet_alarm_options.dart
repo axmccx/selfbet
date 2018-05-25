@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class BetAlarmOptions extends StatefulWidget {
+  BetAlarmOptions({ Key key }) : super(key: key);
+
   @override
-  _BetAlarmOptionsState createState() => new _BetAlarmOptionsState();
+  BetAlarmOptionsState createState() => new BetAlarmOptionsState();
 }
 
-class _BetAlarmOptionsState extends State<BetAlarmOptions> {
+class BetAlarmOptionsState extends State<BetAlarmOptions> {
   TimeOfDay _time = TimeOfDay(hour: 6, minute: 30);
   int _selectedFreq = 0;
+
+  Map getOptionsMap() {
+    return {
+      "time": _time,
+      "frequency": _selectedFreq,
+    };
+  }
 
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(

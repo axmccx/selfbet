@@ -22,6 +22,7 @@ class PlaceBetScreen extends StatefulWidget {
 
 class _PlaceBetScreenState extends State<PlaceBetScreen> {
   static final _formKey = GlobalKey<FormState>();
+  static final _alarmOptionsKey = GlobalKey<BetAlarmOptionsState>();
 
   int _selectAmount;
   String _selectedGroupName;
@@ -34,13 +35,31 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         return BetCommsOptions();
       }
       case BetType.alarmClock: {
-        return BetAlarmOptions();
+        return BetAlarmOptions(key: _alarmOptionsKey);
       }
       case BetType.location: {
         return BetLocationOptions();
       }
       default: {
         return Container();
+      }
+    }
+  }
+
+  setSelectedOptions() {
+    switch(_selectedType) {
+      case BetType.comms: {
+        break;
+      }
+      case BetType.alarmClock: {
+        _selectedOptions = _alarmOptionsKey.currentState.getOptionsMap();
+        break;
+      }
+      case BetType.location: {
+        break;
+      }
+      default: {
+        break;
       }
     }
   }
@@ -73,6 +92,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         final form = _formKey.currentState;
         if (form.validate()) {
           form.save();
+          setSelectedOptions();
           widget.onSubmit(
             _selectAmount,
             _selectedType,
@@ -110,6 +130,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     width: 80.0,
+                    height: 45.0,
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(
