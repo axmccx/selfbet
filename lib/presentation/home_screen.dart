@@ -18,6 +18,18 @@ class HomeScreen extends StatelessWidget {
     } else if (tab == AppTab.bets) {
       return AppBar(
         title: Text("Bets"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return PlaceBetContainer();
+                },
+              ));
+            },
+          ),
+        ],
       );
     } else if (tab == AppTab.groups) {
       return AppBar(

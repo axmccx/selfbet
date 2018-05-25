@@ -121,9 +121,13 @@ class CreditFaucetAction {
 }
 
 class PlaceBetAction {
+  final Bet bet;
+
+  PlaceBetAction(this.bet);
+
   @override
   String toString() {
-    return 'Placebet{}';
+    return 'Placebet{Bet: $bet}';
   }
 }
 

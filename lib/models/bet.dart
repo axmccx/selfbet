@@ -4,42 +4,47 @@ import 'package:selfbet/models/models.dart';
 @immutable
 class Bet {
   final int amount;
-  final BetType betType;
-  final Group group;
-  final int occurFreq;
-  final int expiry;
+  final String groupName;
+  final BetType type;
+  final bool isExpired;
+  final DateTime expiryDate;
+  final Map options;
 
   Bet({
     this.amount,
-    this.betType,
-    this.group,
-    this.occurFreq,
-    this.expiry,
+    this.groupName,
+    this.type,
+    this.isExpired,
+    this.expiryDate,
+    this.options,
   });
 
   Bet copyWith({
     int amount,
-    BetType betType,
     Group group,
-    int occurFreq,
-    int expiry,
+    BetType type,
+    bool isExpired,
+    DateTime expiryDate,
+    Map options,
   }) {
     return Bet(
       amount: amount ?? this.amount,
-      betType: betType ?? this.betType,
-      group: group ?? this.group,
-      occurFreq: occurFreq ?? this.occurFreq,
-      expiry: expiry ?? this.expiry,
+      groupName: groupName ?? this.groupName,
+      type: type ?? this.type,
+      isExpired: isExpired ?? this.isExpired,
+      expiryDate: expiryDate ?? this.expiryDate,
+      options: options ?? this.options,
     );
   }
 
   @override
   int get hashCode =>
       amount.hashCode ^
-      betType.hashCode ^
-      group.hashCode ^
-      occurFreq.hashCode ^
-      expiry.hashCode;
+      groupName.hashCode ^
+      type.hashCode ^
+      isExpired.hashCode ^
+      expiryDate.hashCode ^
+      options.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -47,14 +52,20 @@ class Bet {
           other is Bet &&
               runtimeType == other.runtimeType &&
               amount == other.amount &&
-              betType == other.betType &&
-              group == other.group &&
-              occurFreq == other.occurFreq &&
-              expiry == other.expiry;
+              groupName == other.groupName &&
+              type == other.type &&
+              isExpired == other.isExpired &&
+              expiryDate == other.expiryDate &&
+              options == other.options;
 
   @override
   String toString() {
-    return 'Bet{Amount: $amount, Bet Type: $betType, Group: $group, '
-        'Freq of Occur: $occurFreq, Expiry: $expiry}';
+    return 'Bet{Amount: $amount, '
+        'groupName: $groupName, '
+        'Type: $type, '
+        'isExpired: $isExpired, '
+        'expiryDate: $expiryDate, '
+        'options: $options}';
+        //'$freq, period: $period}';
   }
 }

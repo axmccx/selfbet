@@ -6,7 +6,7 @@ typedef OnSaveCallBack = Function(BuildContext, GlobalKey<ScaffoldState>, String
 class GroupFormScreen extends StatelessWidget {
   static final _formKey = GlobalKey<FormState>();
   static final _groupNameKey = GlobalKey<FormFieldState<String>>();
-  static final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  static final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final bool isNewGroup;
   final OnSaveCallBack onSave;
