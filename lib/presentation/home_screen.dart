@@ -3,9 +3,12 @@ import 'package:selfbet/models/models.dart';
 import 'package:selfbet/containers/containers.dart';
 
 class HomeScreen extends StatelessWidget {
+  static final _scaffoldKey = GlobalKey<ScaffoldState>();
   final bool isLoading;
+  final List<Group> groups;
+  final int balance;
 
-  HomeScreen(this.isLoading);
+  HomeScreen(this.isLoading, this.groups, this.balance);
 
   Widget appBarSelector(BuildContext context, AppTab tab) {
     if (tab == AppTab.dashboard) {
@@ -22,11 +25,25 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return PlaceBetContainer();
-                },
-              ));
+              if (balance < 1) {
+                final snackBar = SnackBar(
+                  content: Text("You need a least \$1 to place a bet"),
+                );
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+              debugPrint("You need a least \$1 to place a bet");
+              } else if (groups.length == 0) {
+                final snackBar = SnackBar(
+                  content: Text("You're not a member of any group!"),
+                );
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+                debugPrint("You're not a member of any group!");
+              } else {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return PlaceBetContainer();
+                  },
+                ));
+              }
             },
           ),
         ],
@@ -82,6 +99,7 @@ class HomeScreen extends StatelessWidget {
     return ActiveTab(
       builder: (BuildContext context, AppTab tab) {
         return Scaffold(
+          key: _scaffoldKey,
           appBar: appBarSelector(context, tab),
           body: bodySelector(tab),
           bottomNavigationBar: TabSelector(),
