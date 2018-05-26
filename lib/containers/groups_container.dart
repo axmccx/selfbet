@@ -25,19 +25,16 @@ class GroupsContainer extends StatelessWidget {
 
 class _ViewModel {
   final List<Group> groups;
-  final bool loading;
   final Function(BuildContext, Group) showMembers;
 
   _ViewModel({
     @required this.groups,
-    @required this.loading,
     @required this.showMembers,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       groups: store.state.groups,
-      loading: store.state.isLoading,
       showMembers: (context, group) {
         store.dispatch(GetGroupMembersAction(
             groupMemberUids: group.members,

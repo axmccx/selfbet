@@ -5,6 +5,21 @@ enum BetType {
   mock
 }
 
+BetType stringToBetType(String type) {
+  switch(type) {
+    case 'BetType.alarmClock': {
+      return BetType.alarmClock;
+    }
+    case 'BetType.comms': {
+      return BetType.comms;
+    }
+    case 'BetType.location': {
+      return BetType.location;
+    }
+  }
+  return BetType.mock;
+}
+
 String typeToString(BetType type) {
   switch(type) {
     case BetType.alarmClock: {

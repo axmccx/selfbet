@@ -14,5 +14,6 @@ AppState rootReducer(AppState state, action) {
     formType: loginFormReducer(state.formType, action),
     currentUser: authReducer(state.currentUser, action),
     userStream: userStreamReducer(state.userStream, action),
+    betStream: betStreamReducer(state.betStream, action),
   );
 }

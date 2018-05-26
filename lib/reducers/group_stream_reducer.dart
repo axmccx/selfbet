@@ -9,7 +9,7 @@ final groupStreamReducer = combineReducers<StreamSubscription>([
 ]);
 
 StreamSubscription _updateGroupSteam(StreamSubscription name, SetGroupStreamAction action) {
-  return action.groupSteam;
+  return action.groupStream;
 }
 
 Null _clearGroupStream(StreamSubscription name, LogOutSuccessfulAction action) {

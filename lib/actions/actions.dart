@@ -29,13 +29,24 @@ class SetUserStreamAction{
 }
 
 class SetGroupStreamAction{
-  final StreamSubscription groupSteam;
+  final StreamSubscription groupStream;
 
-  SetGroupStreamAction(this.groupSteam);
+  SetGroupStreamAction(this.groupStream);
 
   @override
   String toString() {
-    return 'SetGroupStream{groupStream: $groupSteam}';
+    return 'SetGroupStream{groupStream: $groupStream}';
+  }
+}
+
+class SetBetStreamAction{
+  final StreamSubscription betStream;
+
+  SetBetStreamAction(this.betStream);
+
+  @override
+  String toString() {
+    return 'SetBetStream{betStream: $betStream}';
   }
 }
 

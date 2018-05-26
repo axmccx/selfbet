@@ -12,3 +12,4 @@ export 'group_display_container.dart';
 export 'group_popup_menu_container.dart';
 export 'group_owner_change_container.dart';
 export 'place_bet_container.dart';
+export 'bet_container.dart';

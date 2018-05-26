@@ -135,6 +135,11 @@ Middleware<AppState> _firestoreConnect(FirebaseUserRepo userRepo,
           store.dispatch(LoadGroupsAction(groups));
       });
       store.dispatch(SetGroupStreamAction(groupStream));
+      StreamSubscription betSteam = betsRepo.betStream(user.uid)
+        .listen((bets) {
+          store.dispatch(LoadBetsAction(bets));
+      });
+      store.dispatch(SetBetStreamAction(betSteam));
     } catch (e) {
       print(e);
     }
@@ -286,7 +291,8 @@ void Function(
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
-      repo.placeBet(action.bet);
+      FirebaseUser user = store.state.currentUser;
+      repo.placeBet(action.bet, user.uid);
     } catch (e) {
       print(e);
     }

@@ -14,7 +14,8 @@ class BetAlarmOptionsState extends State<BetAlarmOptions> {
 
   Map getOptionsMap() {
     return {
-      "time": _time,
+      "hour": _time.hour,
+      "minutes": _time.minute,
       "frequency": _selectedFreq,
     };
   }

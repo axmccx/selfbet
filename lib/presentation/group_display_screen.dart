@@ -66,6 +66,9 @@ class _UserRow extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
+          leading: CircleAvatar(
+              child: Text(user.name[0]),
+          ),
           title: Text(user.name),
           subtitle: Text("Total at Stake: \$${atStakeDouble.toStringAsFixed(2)}"),
         ),

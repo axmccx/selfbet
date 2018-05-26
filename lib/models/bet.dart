@@ -66,7 +66,6 @@ class Bet {
       "isExpired": isExpired,
       "expiryDate": expiryDate.toIso8601String(),
       "options": options,
-      // user
     };
   }
 

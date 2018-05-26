@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
     if (tab == AppTab.dashboard) {
       return DashboardContainer();
     } else if (tab == AppTab.bets) {
-      return Container();
+      return BetsContainer();
     } else if (tab == AppTab.groups) {
       return GroupsContainer();
     } else {
