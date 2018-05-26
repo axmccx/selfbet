@@ -58,14 +58,27 @@ class Bet {
               expiryDate == other.expiryDate &&
               options == other.options;
 
+  Map<String, Object> toJson() {
+    return {
+      "amount": amount,
+      "group": groupName,
+      "type": type.toString(),
+      "isExpired": isExpired,
+      "expiryDate": expiryDate.toIso8601String(),
+      "options": options,
+      // user
+    };
+  }
+
   @override
   String toString() {
-    return 'Bet{Amount: $amount, '
+    return 'Bet{'
+        'Amount: $amount, '
         'groupName: $groupName, '
         'Type: $type, '
         'isExpired: $isExpired, '
         'expiryDate: $expiryDate, '
-        'options: $options}';
-        //'$freq, period: $period}';
+        'options: $options'
+        '}';
   }
 }

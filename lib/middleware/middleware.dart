@@ -52,6 +52,9 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, DeleteGroupAction>(
       _firestoreDeleteGroup(groupsRepo),
     ),
+    TypedMiddleware<AppState, PlaceBetAction>(
+      _firestorePlaceBet(betsRepo),
+    ),
   ];
 }
 
@@ -269,6 +272,21 @@ void Function(
     next(action);
     try {
       repo.deleteGroup(action.groupName);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    PlaceBetAction action,
+    NextDispatcher next,
+    ) _firestorePlaceBet(FirebaseBetsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.placeBet(action.bet);
     } catch (e) {
       print(e);
     }
