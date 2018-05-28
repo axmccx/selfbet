@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 
 class BetTileBuilder {
   final Bet bet;
+  final Function(Bet) onExpireBet;
+  final Function(Bet) onDeleteBet;
+  final Function(Bet) onRenewBet;
   double amount;
   Icon icon;
   Widget leftColumn;
@@ -11,7 +14,12 @@ class BetTileBuilder {
   List<Widget> actions;
 
 
-  BetTileBuilder(this.bet) {
+  BetTileBuilder({
+    @required this.bet,
+    @required this.onExpireBet,
+    @required this.onDeleteBet,
+    @required this.onRenewBet,
+  }) {
     amount = bet.amount / 100;
     leftColumn = _buildLeftCol();
     switch(bet.type) {
@@ -69,7 +77,7 @@ class BetTileBuilder {
             child: Text("Expire*"),
             onPressed: bet.isExpired
                 ? null
-                : () { debugPrint("Expire Bet!"); },
+                : () { onExpireBet(bet); },
           ),
         );
         break;
@@ -120,7 +128,7 @@ class BetTileBuilder {
       RaisedButton(
         child: Text("Renew"),
         onPressed: bet.isExpired
-            ? () { debugPrint("Renew Bet!"); }
+            ? () { onRenewBet(bet); }
             : null,
       ),
       Container(
@@ -129,7 +137,7 @@ class BetTileBuilder {
       RaisedButton(
         child: Text("Delete"),
         onPressed: bet.isExpired
-            ? () { debugPrint("Delete Bet!"); }
+            ? () { onDeleteBet(bet); }
             : null,
       ),
       Container(

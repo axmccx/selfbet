@@ -37,6 +37,9 @@ class _ViewModel {
       balance: store.state.balance,
       groups: store.state.groups,
       onSubmit: (amount, type, groupName, options) {
+        bool winCond;
+        if (type == BetType.alarmClock) { winCond = true; }
+        else { winCond = false; }
         store.dispatch(PlaceBetAction(Bet(
           uid: store.state.currentUser.uid,
           amount: amount,
@@ -44,7 +47,7 @@ class _ViewModel {
           groupName: groupName,
           isExpired: false,
           expiryDate: DateTime.now().add(Duration(days: 7)),
-          winCond: false,
+          winCond: winCond,
           options: options,
         )));
       }

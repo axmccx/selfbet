@@ -55,6 +55,15 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, PlaceBetAction>(
       _firestorePlaceBet(userRepo, betsRepo),
     ),
+    TypedMiddleware<AppState, ExpireBetAction>(
+      _firestoreExpireBet(betsRepo),
+    ),
+    TypedMiddleware<AppState, DeleteBetAction>(
+      _firestoreDeleteBet(betsRepo),
+    ),
+    TypedMiddleware<AppState, RenewBetAction>(
+      _firestoreRenewBet(betsRepo),
+    ),
   ];
 }
 
@@ -292,7 +301,52 @@ void Function(
     next(action);
     try {
       userRepo.reduceBalance(action.bet.uid, action.bet.amount);
-      betsRepo.placeBet(action.bet, action.bet.uid);
+      betsRepo.placeBet(action.bet);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    ExpireBetAction action,
+    NextDispatcher next,
+    ) _firestoreExpireBet(FirebaseBetsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.expireBet(action.bet);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    DeleteBetAction action,
+    NextDispatcher next,
+    ) _firestoreDeleteBet(FirebaseBetsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.deleteBet(action.bet);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    RenewBetAction action,
+    NextDispatcher next,
+    ) _firestoreRenewBet(FirebaseBetsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.renewBet(action.bet);
     } catch (e) {
       print(e);
     }

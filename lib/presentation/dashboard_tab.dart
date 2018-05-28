@@ -17,6 +17,7 @@ class DashboardTab extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(30.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             child: Text(

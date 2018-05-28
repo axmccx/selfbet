@@ -5,14 +5,25 @@ import 'package:selfbet/presentation/bet_tile_builder.dart';
 
 class BetTile extends StatelessWidget {
   final Bet bet;
+  final Function onExpireBet;   //temp function for testing
+  final Function onDeleteBet;
+  final Function onRenewBet;
 
   BetTile({
     @required this.bet,
+    @required this.onExpireBet,
+    @required this.onDeleteBet,
+    @required this.onRenewBet,
   });
 
   @override
   Widget build(BuildContext context) {
-    BetTileBuilder builtTile = BetTileBuilder(bet);
+    BetTileBuilder builtTile = BetTileBuilder(
+        bet: bet,
+        onExpireBet: onExpireBet,
+        onDeleteBet: onDeleteBet,
+        onRenewBet: onRenewBet,
+    );
     return new Column(
       children: <Widget>[
         ExpansionTile(

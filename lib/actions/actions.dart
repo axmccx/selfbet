@@ -143,6 +143,10 @@ class PlaceBetAction {
 }
 
 class DeleteBetAction {
+  final Bet bet;
+
+  DeleteBetAction(this.bet);
+
   @override
   String toString() {
     return 'DeleteBet{}';
@@ -150,9 +154,24 @@ class DeleteBetAction {
 }
 
 class RenewBetAction {
+  final Bet bet;
+
+  RenewBetAction(this.bet);
+
   @override
   String toString() {
     return 'RenewBet{}';
+  }
+}
+
+class ExpireBetAction {  //Temp action for testing
+  final Bet bet;
+
+  ExpireBetAction(this.bet);
+
+  @override
+  String toString() {
+    return 'ExpireBet{bet: $bet}';
   }
 }
 
@@ -214,12 +233,5 @@ class DeleteGroupAction {
   @override
   String toString() {
     return 'DeleteGroup{groupName: $groupName}';
-  }
-}
-
-class PlaceHolderAction{
-  @override
-  String toString() {
-    return 'PlaceHolder{}';
   }
 }
