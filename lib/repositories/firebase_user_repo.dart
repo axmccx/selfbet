@@ -56,11 +56,12 @@ class FirebaseUserRepo {
   }
 
   Future<void> addCredits(String uid) async {
-    await firestore.collection(userPath).document(uid).updateData(
-      {
-        "balance": 2000,
-      }
-    );
+    await firestore.collection(userPath).document(uid).get().then((doc) {
+     int newBalance = doc["balance"] + 2000;
+     firestore.collection(userPath).document(uid).updateData({
+       "balance": newBalance,
+     });
+    });
   }
 
   Future<List<UserEntity>> getGroupMembers(Map groupMemberUids) async {
@@ -75,5 +76,18 @@ class FirebaseUserRepo {
       });
     }
     return out;
+  }
+
+  Future<void> reduceBalance(String uid, int amount) {
+    return firestore.collection(userPath)
+        .document(uid).get().then((doc) {
+      int newBalance = doc["balance"] - amount;
+      firestore.collection(userPath)
+          .document(uid).updateData(
+          {
+            "balance": newBalance,
+          }
+      );
+    });
   }
 }

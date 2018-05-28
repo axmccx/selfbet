@@ -53,7 +53,7 @@ List<Middleware<AppState>> createMiddleware(
       _firestoreDeleteGroup(groupsRepo),
     ),
     TypedMiddleware<AppState, PlaceBetAction>(
-      _firestorePlaceBet(betsRepo),
+      _firestorePlaceBet(userRepo, betsRepo),
     ),
   ];
 }
@@ -287,12 +287,12 @@ void Function(
     Store<AppState> store,
     PlaceBetAction action,
     NextDispatcher next,
-    ) _firestorePlaceBet(FirebaseBetsRepo repo) {
+    ) _firestorePlaceBet(FirebaseUserRepo userRepo, FirebaseBetsRepo betsRepo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
-      FirebaseUser user = store.state.currentUser;
-      repo.placeBet(action.bet, user.uid);
+      userRepo.reduceBalance(action.bet.uid, action.bet.amount);
+      betsRepo.placeBet(action.bet, action.bet.uid);
     } catch (e) {
       print(e);
     }

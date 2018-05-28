@@ -8,10 +8,12 @@ import 'package:selfbet/presentation/bet_location_options.dart';
 typedef OnBetSubmit = Function(int, BetType, String, Map);
 
 class PlaceBetScreen extends StatefulWidget {
+  final int balance;
   final List<Group> groups;
   final OnBetSubmit onSubmit;
 
   PlaceBetScreen({
+    @required this.balance,
     @required this.groups,
     @required this.onSubmit,
   });
@@ -143,14 +145,19 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
                           if (val.isEmpty) { return 'Empty!'; }
                           final num = double.parse(val);
                           if (num < 1) { return 'Must be >= 1'; }
-                          if (((num*100)%1) != 0) { return 'Invalid'; }
+                          debugPrint((val.length).toString() );
+                          if (val.length > 5) { return 'Invalid'; }
+                          if ((double.parse(val) * 100).round()
+                              > widget.balance) {
+                            return 'Too much!';
+                          }
                           return null;
                         } on FormatException {
                           return 'Invalid';
                         }
                       },
                       onSaved: (val) =>
-                        _selectAmount = (double.parse(val) * 100).toInt(),
+                        _selectAmount = (double.parse(val) * 100).round(),
                     ),
                   ),
                 ],

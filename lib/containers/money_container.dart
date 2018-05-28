@@ -14,7 +14,7 @@ class MoneyContainer extends StatelessWidget {
         builder: (context, vm) {
           return MoneyTab(
             callback: () {
-              if (vm.balance == 0) {
+              if ((vm.balance + vm.atStake) < 100) {
                 vm.addCredits();
                 final snackBar = SnackBar(
                   content: Text("Added \$20 to your account"),
@@ -22,7 +22,7 @@ class MoneyContainer extends StatelessWidget {
                 Scaffold.of(context).showSnackBar(snackBar);
               } else {
                 final snackBar = SnackBar(
-                  content: Text("Balance must be zero!"),
+                  content: Text("Balance and At-Stake must be less than \$1!"),
                 );
                 Scaffold.of(context).showSnackBar(snackBar);
               }
@@ -35,16 +35,19 @@ class MoneyContainer extends StatelessWidget {
 
 class _ViewModel {
   final int balance;
+  final int atStake;
   final Function addCredits;
 
   _ViewModel({
     @required this.balance,
+    @required this. atStake,
     @required this.addCredits,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
         balance: store.state.balance,
+        atStake: store.state.atStake,
         addCredits: () => store.dispatch(CreditFaucetAction()),
     );
   }

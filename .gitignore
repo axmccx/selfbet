@@ -87,7 +87,9 @@ build\ios/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 #Firebase cloud functions node modules
-cloudFunctions/functions/node_modules
+firebase/functions/node_modules
+firebase/.firebaserc
+firebase/npm-debug.log
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
