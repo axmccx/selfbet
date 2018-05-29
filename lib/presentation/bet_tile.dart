@@ -8,12 +8,14 @@ class BetTile extends StatelessWidget {
   final Function onExpireBet;   //temp function for testing
   final Function onDeleteBet;
   final Function onRenewBet;
+  final Function onSnoozeAlarmBet;
 
   BetTile({
     @required this.bet,
     @required this.onExpireBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
+    @required this.onSnoozeAlarmBet,
   });
 
   @override
@@ -23,6 +25,7 @@ class BetTile extends StatelessWidget {
         onExpireBet: onExpireBet,
         onDeleteBet: onDeleteBet,
         onRenewBet: onRenewBet,
+        onSnoozeAlarmBet: onSnoozeAlarmBet,
     );
     return new Column(
       children: <Widget>[

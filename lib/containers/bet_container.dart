@@ -17,6 +17,7 @@ class BetsContainer extends StatelessWidget {
           onExpireBet: vm.onExpireBet,
           onDeleteBet: vm.onDeleteBet,
           onRenewBet: vm.onRenewBet,
+          onSnoozeAlarmBet: vm.onSnoozeAlarmBet,
         );
       },
     );
@@ -28,12 +29,14 @@ class _ViewModel {
   final Function(Bet) onExpireBet;  // temp function for testing
   final Function(Bet) onDeleteBet;
   final Function(Bet) onRenewBet;
+  final Function(Bet) onSnoozeAlarmBet;
 
   _ViewModel({
     @required this.bets,
     @required this.onExpireBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
+    @required this.onSnoozeAlarmBet,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -47,6 +50,9 @@ class _ViewModel {
       },
       onRenewBet: (bet) {
         store.dispatch(RenewBetAction(bet));
+      },
+      onSnoozeAlarmBet: (bet) {
+        store.dispatch(SnoozeAlarmBetAction(bet));
       },
     );
   }

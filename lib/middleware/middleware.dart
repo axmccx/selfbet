@@ -64,6 +64,9 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, RenewBetAction>(
       _firestoreRenewBet(betsRepo),
     ),
+    TypedMiddleware<AppState, SnoozeAlarmBetAction>(
+      _firestoreSnoozeAlarmBet(betsRepo),
+    ),
   ];
 }
 
@@ -347,6 +350,21 @@ void Function(
     next(action);
     try {
       repo.renewBet(action.bet);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    SnoozeAlarmBetAction action,
+    NextDispatcher next,
+    ) _firestoreSnoozeAlarmBet(FirebaseBetsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.snoozeAlarmBet(action.bet);
     } catch (e) {
       print(e);
     }

@@ -5,6 +5,7 @@ const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const userPath = "users";
+const betPath = "bets";
 exports.onBetPlaced = functions.firestore
     .document('bets/{betID}')
     .onCreate((snap, context) => {
@@ -50,5 +51,23 @@ exports.onBetDeleted = functions.firestore
         .catch(err => {
         console.log('Error getting document', err);
     });
+});
+exports.onBetModified = functions.firestore
+    .document('bets/{betID}')
+    .onUpdate((snap, context) => {
+    const prevBet = snap.before.data();
+    const newBet = snap.after.data();
+    if ((prevBet.winCond !== newBet.winCond) && (!prevBet.isExpired)) {
+        const betRef = db.collection(betPath).doc(snap.after.id);
+        return betRef.update({
+            isExpired: true,
+        })
+            .catch(err => {
+            console.log('Error getting document', err);
+        });
+    }
+    else {
+        return 'onBetModified: no change';
+    }
 });
 //# sourceMappingURL=index.js.map

@@ -7,6 +7,7 @@ class BetTileBuilder {
   final Function(Bet) onExpireBet;
   final Function(Bet) onDeleteBet;
   final Function(Bet) onRenewBet;
+  final Function(Bet) onSnoozeAlarmBet;
   double amount;
   Icon icon;
   Widget leftColumn;
@@ -20,6 +21,7 @@ class BetTileBuilder {
     @required this.onExpireBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
+    @required this.onSnoozeAlarmBet,
   }) {
     amount = bet.amount / 100;
     rightColumn = _getStatusLabel();
@@ -48,7 +50,8 @@ class BetTileBuilder {
           children: <Widget>[
             Text("Amount \$${amount.toStringAsFixed(2)}"),
             Text("Time: ${bet.options['hour']}:${bet.options['minutes']}"),
-            Text("Snoozes Left: ${bet.options['frequency']}"),
+            Text("Snoozes Left: "
+                "${bet.options['count']}/${bet.options['frequency']}"),
           ],
         );
         devMenu = Container(
@@ -78,7 +81,7 @@ class BetTileBuilder {
                     child: Text("Snooze"),
                     onPressed: bet.isExpired
                         ? null
-                        : () { debugPrint("Snoozing alarm!"); },
+                        : () { onSnoozeAlarmBet(bet); },
                   ),
                 ],
               ),

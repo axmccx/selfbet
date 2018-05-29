@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:selfbet/models/models.dart';
 
@@ -46,10 +47,37 @@ class FirebaseBetsRepo {
   }
 
   Future<void> renewBet(Bet bet) {
-    return firestore.collection(betPath).document(bet.betId).updateData({
-      "isExpired": false,
-      "expiryDate": DateTime.now().add(Duration(days: 7)).toIso8601String(),
-      // TODO deal with resetting bet options
-    });
+    if (bet.type == BetType.alarmClock) {
+      return firestore.collection(betPath).document(bet.betId).updateData({
+        "isExpired": false,
+        "expiryDate": DateTime.now().add(Duration(days: 7)).toIso8601String(),
+        "options.count": bet.options['frequency'],
+        "winCond": true,
+      });
+    } else {
+      return firestore.collection(betPath).document(bet.betId).updateData({
+        "isExpired": false,
+        "expiryDate": DateTime.now().add(Duration(days: 7)).toIso8601String(),
+        "winCond": false,
+      });
+    }
+  }
+
+  Future<void> snoozeAlarmBet(Bet bet) {
+    if (bet.type == BetType.alarmClock) {
+      int newCount = bet.options['count'] - 1;
+      if (newCount < 0) {
+        return firestore.collection(betPath).document(bet.betId).updateData({
+          "winCond": false,
+        });
+      } else {
+        return firestore.collection(betPath).document(bet.betId).updateData({
+          "options.count": newCount,
+        });
+      }
+    } else {
+      debugPrint("Wrong bet type!!");
+      return null;
+    }
   }
 }

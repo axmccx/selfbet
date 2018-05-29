@@ -175,6 +175,17 @@ class ExpireBetAction {  //Temp action for testing
   }
 }
 
+class SnoozeAlarmBetAction {
+  final Bet bet;
+
+  SnoozeAlarmBetAction(this.bet);
+
+  @override
+  String toString() {
+    return 'SnoozeAlarmBet{bet: $bet}';
+  }
+}
+
 class CreateGroupAction {
   final Group group;
   final Function onComplete;

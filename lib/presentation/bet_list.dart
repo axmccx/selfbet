@@ -9,12 +9,14 @@ class BetList extends StatelessWidget {
   final Function onExpireBet;
   final Function onDeleteBet;
   final Function onRenewBet;
+  final Function onSnoozeAlarmBet;
 
   BetList({
     @required this.bets,
     @required this.onExpireBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
+    @required this.onSnoozeAlarmBet,
   });
 
   @override
@@ -28,6 +30,7 @@ class BetList extends StatelessWidget {
           onExpireBet: onExpireBet,
           onDeleteBet: onDeleteBet,
           onRenewBet: onRenewBet,
+          onSnoozeAlarmBet: onSnoozeAlarmBet,
         );
       },
     );

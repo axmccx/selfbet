@@ -17,6 +17,7 @@ class BetAlarmOptionsState extends State<BetAlarmOptions> {
       "hour": _time.hour,
       "minutes": _time.minute,
       "frequency": _selectedFreq,
+      "count": _selectedFreq,
     };
   }
 
