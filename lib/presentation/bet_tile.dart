@@ -38,12 +38,13 @@ class BetTile extends StatelessWidget {
             ],
           ),
           children: <Widget>[
-            Padding(padding: EdgeInsets.all(10.0)),
-            Row(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: builtTile.actions,
+              children: <Widget>[
+                builtTile.expandMenu,
+                builtTile.devMenu,
+              ],
             ),
-            Padding(padding: EdgeInsets.all(10.0)),
           ],
         ),
         Divider(),

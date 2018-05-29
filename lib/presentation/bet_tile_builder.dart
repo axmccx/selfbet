@@ -11,7 +11,8 @@ class BetTileBuilder {
   Icon icon;
   Widget leftColumn;
   Widget rightColumn;
-  List<Widget> actions;
+  Widget expandMenu;
+  Widget devMenu;
 
 
   BetTileBuilder({
@@ -21,87 +22,271 @@ class BetTileBuilder {
     @required this.onRenewBet,
   }) {
     amount = bet.amount / 100;
-    leftColumn = _buildLeftCol();
+    rightColumn = _getStatusLabel();
+    expandMenu = Container(
+      margin: EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "Group: ${bet.groupName}",
+            style: TextStyle(
+              fontSize: 16.0,
+            ),
+          ),
+          _getExpiryLine(),
+          Padding(padding: EdgeInsets.all(5.0)),
+          _defaultActions(),
+        ],
+      ),
+    );
     switch(bet.type) {
       case BetType.alarmClock: {
         icon = Icon(Icons.alarm);
-        rightColumn = Column(
+        leftColumn = Column(         // left column
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Text("Amount \$${amount.toStringAsFixed(2)}"),
             Text("Time: ${bet.options['hour']}:${bet.options['minutes']}"),
             Text("Snoozes Left: ${bet.options['frequency']}"),
           ],
         );
-        actions = []..addAll(_defaultActions())..add(
-          RaisedButton(
-            child: Text("Snooze*"),
-            onPressed: bet.isExpired
-                ? null
-                : () { debugPrint("Snoozing alarm!"); },
+        devMenu = Container(
+          margin: EdgeInsets.fromLTRB(20.0,  0.0, 20.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Dev options",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(5.0)),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Expire"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { onExpireBet(bet); },
+                  ),
+                  Container(
+                    width: 30.0,
+                  ),
+                  RaisedButton(
+                    child: Text("Snooze"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { debugPrint("Snoozing alarm!"); },
+                  ),
+                ],
+              ),
+            ],
           ),
         );
         break;
       }
       case BetType.comms: {
         icon = Icon(Icons.contact_phone);
-        rightColumn = Column(
+        leftColumn = Column(         // left column
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(),
+            Text("Amount \$${amount.toStringAsFixed(2)}"),
+            Text("Contact Count: 0"),
           ],
         );
-        actions = []..addAll(_defaultActions());
+        devMenu = Container(
+          margin: EdgeInsets.fromLTRB(20.0,  0.0, 20.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Dev options",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(5.0)),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Expire"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { onExpireBet(bet); },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
         break;
       }
       case BetType.location: {
         icon = Icon(Icons.location_on);
-        rightColumn = Column(
+        leftColumn = Column(         // left column
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Progress: 0/2"),
+            Text("Amount \$${amount.toStringAsFixed(2)}"),
+            Text("Visit Count: 0"),
           ],
         );
-        actions = []..addAll(_defaultActions());
+        devMenu = Container(
+          margin: EdgeInsets.fromLTRB(20.0,  0.0, 20.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Dev options",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(5.0)),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Expire"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { onExpireBet(bet); },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
         break;
       }
       case BetType.mock: {
         icon = Icon(Icons.input);
-        rightColumn = Column(
+        leftColumn = Column(         // left column
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Mock"),
+            Text("Amount \$${amount.toStringAsFixed(2)}"),
+            Text("Mock \nIncrement Bet"),
           ],
         );
-        actions = []..addAll(_defaultActions())..add(
-          RaisedButton(
-            child: Text("Expire*"),
-            onPressed: bet.isExpired
-                ? null
-                : () { onExpireBet(bet); },
+        devMenu = Container(
+          margin: EdgeInsets.fromLTRB(20.0,  0.0, 20.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Dev options",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(5.0)),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Expire"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { onExpireBet(bet); },
+                  ),
+                  Container(
+                    width: 30.0,
+                  ),
+                  RaisedButton(
+                    child: Text("Win"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { debugPrint("Set bet's winning condition!"); },
+                  ),
+                ],
+              ),
+            ],
           ),
         );
         break;
       }
       default: {
         icon = Icon(Icons.input);
-        rightColumn = Column(
+        leftColumn = Column(         // left column
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Mock"),
+            Text("Amount \$${amount.toStringAsFixed(2)}"),
+            Text("Mock \nIncrement Bet"),
           ],
+        );
+        devMenu = Container(
+          margin: EdgeInsets.fromLTRB(20.0,  0.0, 20.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Dev options",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(5.0)),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Expire"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { onExpireBet(bet); },
+                  ),
+                  Container(
+                    width: 30.0,
+                  ),
+                  RaisedButton(
+                    child: Text("Win"),
+                    onPressed: bet.isExpired
+                        ? null
+                        : () { debugPrint("Set bet's winning condition!"); },
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
         break;
       }
     }
   }
 
-  Widget _buildLeftCol () {
-    return Column(         // left column
+  Widget _getStatusLabel() {
+    Widget label;
+    if (!bet.isExpired) {
+      label = Text(
+        "Active",
+        style: TextStyle(
+          fontSize: 20.0,
+          color: Colors.blueAccent,
+        ),
+      );
+    }
+    if (bet.isExpired && bet.winCond) {
+      label = Text(
+        "Won!",
+        style: TextStyle(
+          fontSize: 20.0,
+          color: Colors.green,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
+    if (bet.isExpired && !bet.winCond) {
+      label = Text(
+        "Lost!",
+        style: TextStyle(
+          fontSize: 20.0,
+          color: Colors.redAccent,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Amount \$${amount.toStringAsFixed(2)}"),
-        Text("Group: ${bet.groupName}"),
-        _getExpiryLine(),
+        label,
       ],
     );
   }
@@ -120,29 +305,28 @@ class BetTileBuilder {
     }
   }
 
-  List<Widget> _defaultActions() {
-    return [
-      Container(
-        width: 20.0,
-      ),
-      RaisedButton(
-        child: Text("Renew"),
-        onPressed: bet.isExpired
-            ? () { onRenewBet(bet); }
-            : null,
-      ),
-      Container(
-        width: 30.0,
-      ),
-      RaisedButton(
-        child: Text("Delete"),
-        onPressed: bet.isExpired
-            ? () { onDeleteBet(bet); }
-            : null,
-      ),
-      Container(
-        width: 60.0,
-      ),
-    ];
+  Widget _defaultActions() {
+    return Row(
+      children: <Widget>[
+        RaisedButton(
+          child: Text("Renew"),
+          onPressed: bet.isExpired
+              ? () { onRenewBet(bet); }
+              : null,
+        ),
+        Container(
+          width: 30.0,
+        ),
+        RaisedButton(
+          child: Text("Delete"),
+          onPressed: bet.isExpired
+              ? () { onDeleteBet(bet); }
+              : null,
+        ),
+        Container(
+          width: 60.0,
+        ),
+      ],
+    );
   }
 }
