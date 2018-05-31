@@ -126,7 +126,7 @@ class LoginNewAccScreen extends StatelessWidget {
           validator: (val) =>
           val.length < 6 ? 'Password too short.' : null,
           onSaved: (val) => _password = val,
-          //obscureText: true,
+          obscureText: true,
           onFieldSubmitted: (s) { _submit(); },
         ),
         Padding(padding: EdgeInsets.all(20.0)),
