@@ -10,3 +10,5 @@ export 'package:selfbet/reducers/tabs_reducer.dart';
 export 'package:selfbet/reducers/user_stream_reducer.dart';
 export 'package:selfbet/reducers/group_members_reducer.dart';
 export 'package:selfbet/reducers/bet_stream_reducer.dart';
+export 'package:selfbet/reducers/bet_transacts_reducer.dart';
+export 'package:selfbet/reducers/bet_transact_stream_reducer.dart';

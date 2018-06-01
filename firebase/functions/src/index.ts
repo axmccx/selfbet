@@ -13,11 +13,15 @@ function generateLostBet(bet) {
     return db.collection(groupPath).doc(bet.group).get().then((doc) => {
         const group = doc.data();
         const members = group.members;
-        const membersList = Object.keys(members).filter(elem => {
+        const membersList = {}; 
+        Object.keys(members).map(uid => {
+            membersList[uid] = true;
+        });
+        const recipientsList = Object.keys(members).filter(elem => {
             return elem !== bet.uid;
         });
         let errorCheck = false;
-        const userList = membersList.map(uid => {
+        const userList = recipientsList.map(uid => {
             const userMap = db.collection(userPath).doc(uid).get().then(user => {
                 return {
                     balance: user.data().balance,
@@ -64,11 +68,13 @@ function generateLostBet(bet) {
             });
             // write the transaction document for everyone to see...
             return db.collection(transactionPath).add({
+                "uid": bet.uid,
                 "amount": bet.amount,
-                "isWon": false,
-                "date": Date.now(),
+                "group": bet.group,
                 "betType": bet.type,
-                "user": bet.uid,
+                "date": Date.now(),
+                "isWon": false,
+                "members": membersList,
                 "recipients": betSplitMap,
             }).catch(function(error) {
                 console.error("Error adding document: ", error);
@@ -179,11 +185,14 @@ export const onBetModified = functions.firestore
         } else if (!prevBet.isExpired && newBet.isExpired) {
             if (newBet.winCond) {
                 return db.collection(transactionPath).add({
-                    "isWon": newBet.winCond,
-                    "date": Date.now(),
-                    "betType": newBet.type,
-                    "user": newBet.uid,
+                    "uid": newBet.uid,
+                    "amount": newBet.amount,
                     "group": newBet.group,
+                    "betType": newBet.type,
+                    "date": Date.now(),
+                    "isWon": newBet.winCond,
+                    "members": { [newBet.uid]: true, },
+                    "recipients": {},
                 }); 
             } else {
                 //reduce the user's atStake by bet amount

@@ -8,6 +8,7 @@ class FirebaseUserRepo {
   final FirebaseAuth auth;
   final Firestore firestore;
   static const String userPath = 'users';
+  static const String betTransacPath = 'transactions';
 
   const FirebaseUserRepo(this.auth, this.firestore);
 
@@ -53,6 +54,26 @@ class FirebaseUserRepo {
          doc["atStake"],
        );
      });
+  }
+
+  Stream<List<BetTransact>> betTransactStream(String uid) {
+    return firestore.collection(betTransacPath)
+        .where('members.' + uid, isEqualTo: true)
+        .snapshots
+        .map((snapshot) {
+          return snapshot.documents.map((doc) {
+            BetType type = stringToBetType(doc['betType']);
+            return BetTransact(
+              uid: doc['uid'],
+              amount: doc['amount'] as int,
+              groupName: doc['group'],
+              betType: type,
+              date: doc['date'] as int,
+              isWon: doc['isWon'] as bool,
+              recipients: doc['recipients'],
+            );
+          }).toList();
+    });
   }
 
   Future<void> addCredits(String uid) async {

@@ -13,12 +13,14 @@ class AppState {
   final List<Bet> bets;
   final List<Group> groups;
   final List<UserEntity> groupMembers;
+  final List<BetTransact> betTransacts;
   final AppTab activeTab;
   final FormType formType;
   final FirebaseUser currentUser;
   final StreamSubscription userStream;
   final StreamSubscription groupStream;
   final StreamSubscription betStream;
+  final StreamSubscription betTransactStream;
 
   AppState({
     this.isLoading = false,
@@ -28,12 +30,14 @@ class AppState {
     this.bets = const [],
     this.groups = const [],
     this.groupMembers = const [],
+    this.betTransacts = const [],
     this.activeTab = AppTab.dashboard,
     this.formType = FormType.login,
     this.currentUser,
     this.userStream,
     this.groupStream,
     this.betStream,
+    this.betTransactStream,
   });
 
   factory AppState.loading() => AppState(isLoading: true);
@@ -46,12 +50,14 @@ class AppState {
     List<Bet> bets,
     List<Group> groups,
     List<UserEntity> groupMembers,
+    List<BetTransact> betTransacts,
     AppTab activeTab,
     FormType formType,
     FirebaseUser currentUser,
     StreamSubscription userStream,
     StreamSubscription groupStream,
     StreamSubscription betStream,
+    StreamSubscription betTransactStream,
   }) {
     return AppState(
       isLoading: isLoading ?? this.isLoading,
@@ -61,12 +67,14 @@ class AppState {
       bets: bets ?? this.bets,
       groups: groups ?? this.groups,
       groupMembers: groupMembers ?? this.groupMembers,
+      betTransacts: betTransacts ?? this.betTransacts,
       activeTab: activeTab ?? this.activeTab,
       formType: formType ?? this.formType,
       currentUser: currentUser ?? this.currentUser,
       userStream: userStream ?? this.userStream,
       groupStream: groupStream ?? this.groupStream,
       betStream:  betStream ?? this.betStream,
+      betTransactStream: betTransactStream ?? this.betTransactStream,
     );
   }
 
@@ -79,12 +87,14 @@ class AppState {
       bets.hashCode ^
       groups.hashCode ^
       groupMembers.hashCode ^
+      betTransacts.hashCode ^
       activeTab.hashCode ^
       formType.hashCode ^
       currentUser.hashCode ^
       userStream.hashCode ^
       groupStream.hashCode ^
-      betStream.hashCode;
+      betStream.hashCode ^
+      betTransactStream.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -98,12 +108,14 @@ class AppState {
               bets == other.bets &&
               groups == other.groups &&
               groupMembers == other.groupMembers &&
+              betTransacts == other.betTransacts &&
               activeTab == other.activeTab &&
               formType == other.formType &&
               currentUser == other.currentUser &&
               userStream == other.userStream &&
               groupStream == other.groupStream &&
-              betStream == other.betStream;
+              betStream == other.betStream &&
+              betTransactStream == other.betTransactStream;
 
   @override
   String toString() {
@@ -115,12 +127,14 @@ class AppState {
         'bets: $bets, '
         'groups: $groups, '
         'groupMembers: $groupMembers, '
+        'betTransacts: $betTransacts, '
         'activeTab: $activeTab, '
         'Form Type: $formType, '
         'currentUser: $currentUser, '
         'userStream: $userStream, '
         'groupStream: $groupStream, '
-        'betStream: $betStream'
+        'betStream: $betStream, '
+        'betTransactStream: $betTransactStream'
         '}';
   }
 }

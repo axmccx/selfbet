@@ -6,3 +6,4 @@ export 'bet_params.dart';
 export 'form_type.dart';
 export 'extra_actions.dart';
 export 'user_entity.dart';
+export 'bet_transact.dart';

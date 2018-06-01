@@ -10,10 +10,13 @@ AppState rootReducer(AppState state, action) {
     bets: betsReducer(state.bets, action),
     groups: groupsReducer(state.groups, action),
     groupMembers: groupMembersReducer(state.groupMembers, action),
+    betTransacts: betTransactsReducer(state.betTransacts, action),
     activeTab: tabsReducer(state.activeTab, action),
     formType: loginFormReducer(state.formType, action),
     currentUser: authReducer(state.currentUser, action),
     userStream: userStreamReducer(state.userStream, action),
     betStream: betStreamReducer(state.betStream, action),
+    betTransactStream: betTransactStreamReducer(
+        state.betTransactStream, action),
   );
 }

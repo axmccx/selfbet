@@ -126,6 +126,9 @@ Middleware<AppState> _firestoreLogOut(FirebaseUserRepo repo) {
     next(action);
     try {
       store.state.userStream.cancel();
+      store.state.groupStream.cancel();
+      store.state.betStream.cancel();
+      store.state.betTransactStream.cancel();
       await repo.signOut();
       store.dispatch(LogOutSuccessfulAction());
     } catch (e) {
@@ -155,6 +158,11 @@ Middleware<AppState> _firestoreConnect(FirebaseUserRepo userRepo,
           store.dispatch(LoadBetsAction(bets));
       });
       store.dispatch(SetBetStreamAction(betSteam));
+      StreamSubscription betTransactStream = userRepo.betTransactStream(user.uid)
+        .listen((betTransacts) {
+          store.dispatch(LoadBetTransactAction(betTransacts));
+      });
+      store.dispatch(SetBetTransactStreamAction(betTransactStream));
     } catch (e) {
       print(e);
     }

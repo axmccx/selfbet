@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 class InitAppAction {
   @override
   String toString() {
-    return 'InitApp{}';
+    return 'InitAppAction{}';
   }
 }
 
 class ConnectToDataSourceAction {
   @override
   String toString() {
-    return 'ConnectToDataSource{}';
+    return 'ConnectToDataSourceAction{}';
   }
 }
 
@@ -24,7 +24,7 @@ class SetUserStreamAction{
 
   @override
   String toString() {
-    return 'SetUserStream{userStream: $userStream}';
+    return 'SetUserStreamAction{userStream: $userStream}';
   }
 }
 
@@ -35,7 +35,7 @@ class SetGroupStreamAction{
 
   @override
   String toString() {
-    return 'SetGroupStream{groupStream: $groupStream}';
+    return 'SetGroupStreamAction{groupStream: $groupStream}';
   }
 }
 
@@ -46,7 +46,18 @@ class SetBetStreamAction{
 
   @override
   String toString() {
-    return 'SetBetStream{betStream: $betStream}';
+    return 'SetBetStreamAction{betStream: $betStream}';
+  }
+}
+
+class SetBetTransactStreamAction{
+  final StreamSubscription betTransactStream;
+
+  SetBetTransactStreamAction(this.betTransactStream);
+
+  @override
+  String toString() {
+    return 'SetBetTransactStreamAction{betTransactStream: $betTransactStream}';
   }
 }
 
@@ -57,7 +68,7 @@ class LoadDashboardAction {
 
   @override
   String toString() {
-    return 'LoadDashboard{userEntity: $userEntity}';
+    return 'LoadDashboardAction{userEntity: $userEntity}';
   }
 }
 
@@ -68,7 +79,7 @@ class LoadGroupsAction {
 
   @override
   String toString() {
-    return 'LoadGroups{groups: $groups}';
+    return 'LoadGroupsAction{groups: $groups}';
   }
 }
 
@@ -109,8 +120,20 @@ class LoadBetsAction {
 
   @override
   String toString() {
-    return 'LoadBets{bets: $bets}';
+    return 'LoadBetsAction{bets: $bets}';
   }
+}
+
+class LoadBetTransactAction {
+  final List<BetTransact> betTransacts;
+
+  LoadBetTransactAction(this.betTransacts);
+
+  @override
+  String toString() {
+    return 'LoadBetTransactAction{betTransacts: $betTransacts}';
+  }
+
 }
 
 class UpdateTabAction {
@@ -120,14 +143,14 @@ class UpdateTabAction {
 
   @override
   String toString() {
-    return 'UpdateTab{newTab: $newTab}';
+    return 'UpdateTabAction{newTab: $newTab}';
   }
 }
 
 class CreditFaucetAction {
   @override
   String toString() {
-    return 'CreditFaucet{}';
+    return 'CreditFaucetAction{}';
   }
 }
 
@@ -138,7 +161,7 @@ class PlaceBetAction {
 
   @override
   String toString() {
-    return 'Placebet{Bet: $bet}';
+    return 'PlacebetAction{Bet: $bet}';
   }
 }
 
@@ -149,7 +172,7 @@ class DeleteBetAction {
 
   @override
   String toString() {
-    return 'DeleteBet{}';
+    return 'DeleteBetAction{}';
   }
 }
 
@@ -160,7 +183,7 @@ class RenewBetAction {
 
   @override
   String toString() {
-    return 'RenewBet{}';
+    return 'RenewBetAction{}';
   }
 }
 
@@ -171,7 +194,7 @@ class ExpireBetAction {  //Temp action for testing
 
   @override
   String toString() {
-    return 'ExpireBet{bet: $bet}';
+    return 'ExpireBetAction{bet: $bet}';
   }
 }
 
@@ -182,7 +205,7 @@ class SetWinBetAction {
 
   @override
   String toString() {
-    return 'SetWinBetAction';
+    return 'SetWinBetAction{bet: $bet}';
   }
 }
 
@@ -193,7 +216,7 @@ class SnoozeAlarmBetAction {
 
   @override
   String toString() {
-    return 'SnoozeAlarmBet{bet: $bet}';
+    return 'SnoozeAlarmBetAction{bet: $bet}';
   }
 }
 
@@ -206,7 +229,7 @@ class CreateGroupAction {
 
   @override
   String toString() {
-    return 'CreateGroup{group: $group}';
+    return 'CreateGroupAction{group: $group}';
   }
 }
 
@@ -219,7 +242,7 @@ class JoinGroupAction {
 
   @override
   String toString() {
-    return 'JoingGroup{}';
+    return 'JoingGroupAction{groupName: $groupName}';
   }
 }
 
@@ -243,7 +266,7 @@ class LeaveGroupAction {
 
   @override
   String toString() {
-    return 'LeaveGroup{groupName: $groupName}';
+    return 'LeaveGroupAction{groupName: $groupName}';
   }
 }
 
@@ -254,6 +277,6 @@ class DeleteGroupAction {
 
   @override
   String toString() {
-    return 'DeleteGroup{groupName: $groupName}';
+    return 'DeleteGroupAction{groupName: $groupName}';
   }
 }
