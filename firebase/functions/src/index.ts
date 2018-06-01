@@ -16,16 +16,29 @@ function generateLostBet(bet) {
         const membersList = Object.keys(members).filter(elem => {
             return elem !== bet.uid;
         });
+        let errorCheck = false;
         const userList = membersList.map(uid => {
-            return db.collection(userPath).doc(uid).get().then(user => {
-                const userMap = {
+            const userMap = db.collection(userPath).doc(uid).get().then(user => {
+                return {
                     balance: user.data().balance,
                     atStake: user.data().atStake,
                     uid: uid,
                 }; 
-                return userMap;
+            }).catch(err => {
+                console.log('Error getting user\'s doc for userMap', err);
+                errorCheck = true;
+                return {
+                    balance: 0,
+                    atStake: 0,
+                    uid: uid,
+                };
             });
+            return userMap;
         });
+        // poor error checking...
+        if (errorCheck) {
+            return;
+        }
         Promise.all(userList).then(readyUserList => {
             // calculate the amount to be split for each user
             const receiverCount = readyUserList.length;
@@ -60,6 +73,8 @@ function generateLostBet(bet) {
             }).catch(function(error) {
                 console.error("Error adding document: ", error);
             });
+        }).catch(err => {
+            console.log('Error waiting for userList', err);
         });
     });
 }
@@ -177,8 +192,12 @@ export const onBetModified = functions.firestore
                     const newAtStake = user.data().atStake - newBet.amount;
                     db.collection(userPath).doc(newBet.uid).update({
                         atStake: newAtStake,
+                    }).catch(err => {
+                        console.log('Error updating user\'s atStake', err);
                     });
-                });
+                }).catch(err => {
+                    console.log('Error getting userDoc', err);
+                });;
                 // get the list of users in the bet's group
                 return generateLostBet(newBet)
                 .catch(err => {
