@@ -16,6 +16,8 @@ class DashboardContainer extends StatelessWidget {
         return DashboardTab(
           balance: vm.balance,
           atStake: vm.atStake,
+          betTransacts: vm.betTransacts,
+          uid: vm.uid,
         );
       },
     );
@@ -26,18 +28,24 @@ class _ViewModel {
   final bool loading;
   final int balance;
   final int atStake;
+  final List<BetTransact> betTransacts;
+  final String uid;
 
   _ViewModel({
     @required this.loading,
     @required this.balance,
-    @required this.atStake
+    @required this.atStake,
+    @required this.betTransacts,
+    @required this.uid,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
         loading: store.state.isLoading,
         balance: store.state.balance,
-        atStake: store.state.atStake
+        atStake: store.state.atStake,
+        betTransacts: store.state.betTransacts,
+        uid: store.state.currentUser.uid,
     );
   }
 }

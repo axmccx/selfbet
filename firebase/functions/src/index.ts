@@ -44,17 +44,25 @@ function generateLostBet(bet) {
             return;
         }
         Promise.all(userList).then(readyUserList => {
+            //console.log(`${readyUserList}`);
             // calculate the amount to be split for each user
             const receiverCount = readyUserList.length;
+            readyUserList.forEach(userMap => {
+                if(userMap.atStake < 1) {
+                    userMap.atStake = 1;
+                }
+            });
             const totalAtStakeProd = readyUserList
             .reduce((prevVal, userMap) => {
+                console.log(`${userMap.atStake}`);
                 return prevVal * userMap.atStake;
             }, 1);
+            console.log(`${totalAtStakeProd}`);
             const betSplitMap = {};
             const betBalMap = new Map;
             readyUserList.forEach(userMap => {
                 betSplitMap[userMap.uid] = calcWinnings(bet.amount, 
-                    receiverCount, userMap.atStake, totalAtStakeProd);
+                    receiverCount, userMap.atStake, totalAtStakeProd);    
                 betBalMap.set(userMap.uid, userMap.balance 
                     + betSplitMap[userMap.uid]);
             });
