@@ -8,7 +8,7 @@ class FirebaseUserRepo {
   final FirebaseAuth auth;
   final Firestore firestore;
   static const String userPath = 'users';
-  static const String betTransacPath = 'transactions';
+  static const String betTransactPath = 'transactions';
 
   const FirebaseUserRepo(this.auth, this.firestore);
 
@@ -57,7 +57,7 @@ class FirebaseUserRepo {
   }
 
   Stream<List<BetTransact>> betTransactStream(String uid) {
-    return firestore.collection(betTransacPath)
+    return firestore.collection(betTransactPath)
         .where('members.' + uid, isEqualTo: true)
         .snapshots
         .map((snapshot) {
@@ -68,7 +68,7 @@ class FirebaseUserRepo {
               amount: doc['amount'] as int,
               groupName: doc['group'],
               betType: type,
-              date: doc['date'] as int,
+              date: DateTime.fromMillisecondsSinceEpoch(doc['date'] as int),
               isWon: doc['isWon'] as bool,
               recipients: doc['recipients'],
             );

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 class MoneyTab extends StatelessWidget {
+  final String name;
   final Function callback;
 
   MoneyTab({
+    @required this.name,
     @required this.callback,
   });
 
@@ -26,6 +28,8 @@ class MoneyTab extends StatelessWidget {
               ),
             ),
           ),
+          Padding(padding: EdgeInsets.all(30.0)),
+          Text("Currently logged in as: \n$name"),
         ],
       ),
     );

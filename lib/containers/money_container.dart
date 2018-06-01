@@ -13,6 +13,7 @@ class MoneyContainer extends StatelessWidget {
         converter: _ViewModel.fromStore,
         builder: (context, vm) {
           return MoneyTab(
+            name: vm.name,
             callback: () {
               if ((vm.balance + vm.atStake) < 100) {
                 vm.addCredits();
@@ -34,11 +35,13 @@ class MoneyContainer extends StatelessWidget {
 }
 
 class _ViewModel {
+  final String name;
   final int balance;
   final int atStake;
   final Function addCredits;
 
   _ViewModel({
+    @required this.name,
     @required this.balance,
     @required this. atStake,
     @required this.addCredits,
@@ -46,6 +49,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
+        name: store.state.name,
         balance: store.state.balance,
         atStake: store.state.atStake,
         addCredits: () => store.dispatch(CreditFaucetAction()),

@@ -7,7 +7,7 @@ class BetTransact {
   final int amount;
   final String groupName;
   final BetType betType;
-  final int date;
+  final DateTime date;
   final bool isWon;
   final Map recipients;
 
@@ -26,9 +26,9 @@ class BetTransact {
     int amount,
     String groupName,
     BetType betType,
-    int date,
+    DateTime date,
     bool isWon,
-    Map recipents,
+    Map recipients,
   }) {
     return BetTransact(
       uid: uid ?? this.uid,
@@ -37,7 +37,7 @@ class BetTransact {
       betType: betType ?? this.betType,
       date: date ?? this.date,
       isWon: isWon ?? this.isWon,
-      recipients: recipents ?? this.recipients,
+      recipients: recipients ?? this.recipients,
     );
   }
 

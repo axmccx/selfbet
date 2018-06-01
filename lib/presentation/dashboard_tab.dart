@@ -8,12 +8,14 @@ class DashboardTab extends StatelessWidget {
   final int atStake;
   final List<BetTransact> betTransacts;
   final String uid;
+  final Function showBetTransact;
 
   DashboardTab({
     @required this.balance,
     @required this.atStake,
     @required this.betTransacts,
     @required this.uid,
+    @required this.showBetTransact,
   });
 
   @override
@@ -21,7 +23,6 @@ class DashboardTab extends StatelessWidget {
     double realBalance = balance / 100;
     double realAtStake = atStake / 100;
     return Container(
-      //padding: EdgeInsets.all(30.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -53,6 +54,7 @@ class DashboardTab extends StatelessWidget {
           TransactionList(
             betTransacts: betTransacts,
             uid: uid,
+            showBetTransact: showBetTransact,
           ),
         ],
       ),

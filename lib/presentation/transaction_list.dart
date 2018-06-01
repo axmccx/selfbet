@@ -5,10 +5,12 @@ import 'package:selfbet/presentation/transaction_tile.dart';
 class TransactionList extends StatelessWidget {
   final List<BetTransact> betTransacts;
   final String uid;
+  final Function showBetTransact;
 
   TransactionList({
     @required this.betTransacts,
     @required this.uid,
+    @required this.showBetTransact,
   });
 
   @override
@@ -20,7 +22,7 @@ class TransactionList extends StatelessWidget {
           final transaction = betTransacts[index];
           return TransactionTile(
             transaction: transaction,
-            onTap: null,
+            onTap: showBetTransact,
             uid: uid,
           );
         },

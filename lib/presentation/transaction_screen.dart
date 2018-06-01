@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:selfbet/models/models.dart';
 
-class TransactionTile extends StatelessWidget {
+class TransactionScreen extends StatelessWidget {
   final BetTransact transaction;
-  final Function(BuildContext, BetTransact, String) onTap;
   final String uid;
 
-  TransactionTile({
-    @required this.transaction,
-    @required this.onTap,
-    @required this.uid,
-  });
+  TransactionScreen(this.transaction, this.uid);
 
   Widget getLabelText(BetTransact transaction) {
     if (transaction.isWon) {
@@ -21,6 +15,7 @@ class TransactionTile extends StatelessWidget {
         style: TextStyle(
           color: Colors.green,
           fontWeight: FontWeight.w500,
+          fontSize: 24.0,
         ),
       );
     } else if (!transaction.isWon && transaction.uid == uid) {
@@ -29,6 +24,7 @@ class TransactionTile extends StatelessWidget {
         style: TextStyle(
           color: Colors.redAccent,
           fontWeight: FontWeight.w500,
+          fontSize: 24.0,
         ),
       );
     } else {
@@ -37,6 +33,7 @@ class TransactionTile extends StatelessWidget {
         style: TextStyle(
           color: Colors.blueAccent,
           fontWeight: FontWeight.w500,
+          fontSize: 24.0,
         ),
       );
     }
@@ -84,37 +81,35 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          title: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "${DateFormat.yMMMMd().format(transaction.date)}",
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  getLabelText(transaction),
-                ],
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Column(
-                children: <Widget>[
-                  getAmount(transaction),
-                ],
-              ),
-            ],
-          ),
-          onTap: () { onTap(context, transaction, uid); },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Transaction"),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(30.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                getLabelText(transaction),
+                Expanded(
+                  child: Container(),
+                ),
+                getAmount(transaction),
+              ],
+            ),
+            Divider(),
+            Text("Group: ${transaction.groupName}"),
+            Text("Date: ${DateFormat.yMMMMd().format(transaction.date)}"),
+            Text("Bet Amount: \$${(transaction.amount/100).toStringAsFixed(2)}"),
+            Padding(padding: EdgeInsets.all(5.0)),
+            Text("Who placed the bet: \n${transaction.uid}"),
+            Padding(padding: EdgeInsets.all(5.0)),
+            Text("Recipients: \n${transaction.recipients}"),
+          ],
         ),
-        Divider(),
-      ],
+      ),
     );
   }
 }

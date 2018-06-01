@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/presentation/dashboard_tab.dart';
+import 'package:selfbet/presentation/transaction_screen.dart';
 
 class DashboardContainer extends StatelessWidget {
   // set key
@@ -18,6 +19,7 @@ class DashboardContainer extends StatelessWidget {
           atStake: vm.atStake,
           betTransacts: vm.betTransacts,
           uid: vm.uid,
+          showBetTransact: vm.showBetTransact,
         );
       },
     );
@@ -30,6 +32,7 @@ class _ViewModel {
   final int atStake;
   final List<BetTransact> betTransacts;
   final String uid;
+  final Function(BuildContext, BetTransact, String) showBetTransact;
 
   _ViewModel({
     @required this.loading,
@@ -37,6 +40,7 @@ class _ViewModel {
     @required this.atStake,
     @required this.betTransacts,
     @required this.uid,
+    @required this.showBetTransact,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -46,6 +50,13 @@ class _ViewModel {
         atStake: store.state.atStake,
         betTransacts: store.state.betTransacts,
         uid: store.state.currentUser.uid,
+        showBetTransact: (context, transaction, uid) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return TransactionScreen(transaction, uid);
+            },
+          ));
+        }
     );
   }
 }
