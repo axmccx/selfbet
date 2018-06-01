@@ -6,6 +6,7 @@ import 'package:selfbet/presentation/bet_tile_builder.dart';
 class BetTile extends StatelessWidget {
   final Bet bet;
   final Function onExpireBet;   //temp function for testing
+  final Function onWinBet;      // temp function for testing
   final Function onDeleteBet;
   final Function onRenewBet;
   final Function onSnoozeAlarmBet;
@@ -13,6 +14,7 @@ class BetTile extends StatelessWidget {
   BetTile({
     @required this.bet,
     @required this.onExpireBet,
+    @required this.onWinBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
     @required this.onSnoozeAlarmBet,
@@ -23,6 +25,7 @@ class BetTile extends StatelessWidget {
     BetTileBuilder builtTile = BetTileBuilder(
         bet: bet,
         onExpireBet: onExpireBet,
+        onWinBet: onWinBet,
         onDeleteBet: onDeleteBet,
         onRenewBet: onRenewBet,
         onSnoozeAlarmBet: onSnoozeAlarmBet,

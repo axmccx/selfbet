@@ -7,6 +7,7 @@ import 'package:selfbet/presentation/bet_tile.dart';
 class BetList extends StatelessWidget {
   final List<Bet> bets;
   final Function onExpireBet;
+  final Function onWinBet;
   final Function onDeleteBet;
   final Function onRenewBet;
   final Function onSnoozeAlarmBet;
@@ -14,6 +15,7 @@ class BetList extends StatelessWidget {
   BetList({
     @required this.bets,
     @required this.onExpireBet,
+    @required this.onWinBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
     @required this.onSnoozeAlarmBet,
@@ -28,6 +30,7 @@ class BetList extends StatelessWidget {
         return BetTile(
           bet: bet,
           onExpireBet: onExpireBet,
+          onWinBet: onWinBet,
           onDeleteBet: onDeleteBet,
           onRenewBet: onRenewBet,
           onSnoozeAlarmBet: onSnoozeAlarmBet,

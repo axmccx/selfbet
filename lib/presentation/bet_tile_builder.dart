@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 class BetTileBuilder {
   final Bet bet;
   final Function(Bet) onExpireBet;
+  final Function(Bet) onWinBet;
   final Function(Bet) onDeleteBet;
   final Function(Bet) onRenewBet;
   final Function(Bet) onSnoozeAlarmBet;
@@ -19,6 +20,7 @@ class BetTileBuilder {
   BetTileBuilder({
     @required this.bet,
     @required this.onExpireBet,
+    @required this.onWinBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
     @required this.onSnoozeAlarmBet,
@@ -198,7 +200,7 @@ class BetTileBuilder {
                     child: Text("Win"),
                     onPressed: bet.isExpired
                         ? null
-                        : () { debugPrint("Set bet's winning condition!"); },
+                        : () { onWinBet(bet); },
                   ),
                 ],
               ),

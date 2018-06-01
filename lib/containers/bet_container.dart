@@ -15,8 +15,58 @@ class BetsContainer extends StatelessWidget {
         return BetList(
           bets: vm.bets,
           onExpireBet: vm.onExpireBet,
+          onWinBet: vm.onWinBet,
           onDeleteBet: vm.onDeleteBet,
-          onRenewBet: vm.onRenewBet,
+          onRenewBet: (bet) {
+            if (vm.balance < bet.amount) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    AlertDialog(
+                      content: Text(
+                        "That balance is looking too short man",
+                      ),
+                      actions: <Widget>[
+                        new FlatButton(
+                            child: const Text('Yes, I am poor'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }
+                        ),
+                      ],
+                    ),
+              );
+            } else if (!bet.winCond){
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    AlertDialog(
+                      content: Text(
+                        "Renewing bet of "
+                            "\$${(bet.amount/100).toStringAsFixed(2)} "
+                            "Are you sure?",
+                      ),
+                      actions: <Widget>[
+                        new FlatButton(
+                            child: const Text('Do it!'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              vm.onRenewBet(bet);
+                            }
+                        ),
+                        new FlatButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }
+                        ),
+                      ],
+                    ),
+              );
+            } else {
+              vm.onRenewBet(bet);
+            }
+          },
           onSnoozeAlarmBet: vm.onSnoozeAlarmBet,
         );
       },
@@ -25,15 +75,19 @@ class BetsContainer extends StatelessWidget {
 }
 
 class _ViewModel {
+  final int balance;
   final List<Bet> bets;
   final Function(Bet) onExpireBet;  // temp function for testing
+  final Function(Bet) onWinBet;     // temp function for testing
   final Function(Bet) onDeleteBet;
   final Function(Bet) onRenewBet;
   final Function(Bet) onSnoozeAlarmBet;
 
   _ViewModel({
+    @required this.balance,
     @required this.bets,
     @required this.onExpireBet,
+    @required this.onWinBet,
     @required this.onDeleteBet,
     @required this.onRenewBet,
     @required this.onSnoozeAlarmBet,
@@ -41,9 +95,13 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
+      balance: store.state.balance,
       bets: store.state.bets,
       onExpireBet: (bet) {
         store.dispatch(ExpireBetAction(bet));
+      },
+      onWinBet: (bet) {
+        store.dispatch(SetWinBetAction(bet));
       },
       onDeleteBet: (bet) {
         store.dispatch(DeleteBetAction(bet));

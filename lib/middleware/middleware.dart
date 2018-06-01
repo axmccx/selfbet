@@ -55,7 +55,7 @@ List<Middleware<AppState>> createMiddleware(
     TypedMiddleware<AppState, PlaceBetAction>(
       _firestorePlaceBet(userRepo, betsRepo),
     ),
-    TypedMiddleware<AppState, ExpireBetAction>(
+    TypedMiddleware<AppState, ExpireBetAction>(  // temporary for testing
       _firestoreExpireBet(betsRepo),
     ),
     TypedMiddleware<AppState, DeleteBetAction>(
@@ -66,6 +66,9 @@ List<Middleware<AppState>> createMiddleware(
     ),
     TypedMiddleware<AppState, SnoozeAlarmBetAction>(
       _firestoreSnoozeAlarmBet(betsRepo),
+    ),
+    TypedMiddleware<AppState, SetWinBetAction>(  // temporary for testing
+      _firestoreSetWinBet(betsRepo),
     ),
   ];
 }
@@ -365,6 +368,21 @@ void Function(
     next(action);
     try {
       repo.snoozeAlarmBet(action.bet);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    SetWinBetAction action,
+    NextDispatcher next,
+    ) _firestoreSetWinBet(FirebaseBetsRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      repo.setWinBet(action.bet);
     } catch (e) {
       print(e);
     }

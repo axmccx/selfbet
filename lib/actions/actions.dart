@@ -175,6 +175,17 @@ class ExpireBetAction {  //Temp action for testing
   }
 }
 
+class SetWinBetAction {
+  final Bet bet;
+
+  SetWinBetAction(this.bet);
+
+  @override
+  String toString() {
+    return 'SetWinBetAction';
+  }
+}
+
 class SnoozeAlarmBetAction {
   final Bet bet;
 

@@ -80,4 +80,10 @@ class FirebaseBetsRepo {
       return null;
     }
   }
+
+  Future<void> setWinBet(Bet bet) {
+    return firestore.collection(betPath).document(bet.betId).updateData({
+      "winCond": true,
+    });
+  }
 }

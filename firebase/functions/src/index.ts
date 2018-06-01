@@ -163,8 +163,8 @@ export const onBetModified = functions.firestore
             .catch(err => {
                 console.log('Error getting document', err);
             });
-        } else if ((prevBet.winCond !== newBet.winCond) && 
-            (!newBet.isExpired)) {
+        } else if ((prevBet.isExpired && !newBet.isExpired) && 
+            (!prevBet.winCond)) {
                 const userRef = db.collection(userPath).doc(newBet.uid);
                 return userRef.get().then(doc => {
                     const newBalance = doc.data().balance - newBet.amount;
