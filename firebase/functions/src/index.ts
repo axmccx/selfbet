@@ -133,33 +133,33 @@ export const onBetPlaced = functions.firestore
         });
 });
 
-export const onBetDeleted = functions.firestore
-    .document('bets/{betID}')
-    .onDelete((snap, context) => {
-        const delBet = snap.data();
-        if (delBet.winCond) {
-            const userRef = db.collection(userPath).doc(delBet.uid);
-            return userRef.get().then(doc => {
-                    if (!doc.exists) {
-                    console.log(`No such user:${delBet.uid}`);
-                } else {
-                    const newBalance = doc.data().balance + delBet.amount;
-                    const newAtStake = doc.data().atStake - delBet.amount;
-                    userRef.update({
-                        balance: newBalance,
-                        atStake: newAtStake,
-                    }).catch(err => {
-                        console.log('Error updating document', err);
-                    });
-                }
-            })
-            .catch(err => {
-                console.log('Error getting document', err);
-            });
-        } else {
-            return "no money change";
-        }
-});
+// export const onBetDeleted = functions.firestore
+//     .document('bets/{betID}')
+//     .onDelete((snap, context) => {
+//         const delBet = snap.data();
+//         if (delBet.winCond) {
+//             const userRef = db.collection(userPath).doc(delBet.uid);
+//             return userRef.get().then(doc => {
+//                     if (!doc.exists) {
+//                     console.log(`No such user:${delBet.uid}`);
+//                 } else {
+//                     const newBalance = doc.data().balance + delBet.amount;
+//                     const newAtStake = doc.data().atStake - delBet.amount;
+//                     userRef.update({
+//                         balance: newBalance,
+//                         atStake: newAtStake,
+//                     }).catch(err => {
+//                         console.log('Error updating document', err);
+//                     });
+//                 }
+//             })
+//             .catch(err => {
+//                 console.log('Error getting document', err);
+//             });
+//         } else {
+//             return "no money change";
+//         }
+// });
 
 export const onBetModified = functions.firestore
     .document('bets/{betID}')
@@ -167,7 +167,7 @@ export const onBetModified = functions.firestore
         const prevBet = snap.before.data();
         const newBet = snap.after.data();
         // if bet's win condition changes and not expired, set isExpited
-        // else if lost bet was renewed, update balance and atStake
+        // else if bet was renewed, update balance and atStake
         // else if bet was just set isExpire, deal with outcome. 
         if ((prevBet.winCond !== newBet.winCond) && (!prevBet.isExpired)) {
             const betRef = db.collection(betPath).doc(snap.after.id);
@@ -177,21 +177,39 @@ export const onBetModified = functions.firestore
             .catch(err => {
                 console.log('Error getting document', err);
             });
-        } else if ((prevBet.isExpired && !newBet.isExpired) && 
-            (!prevBet.winCond)) {
-                const userRef = db.collection(userPath).doc(newBet.uid);
-                return userRef.get().then(doc => {
-                    const newBalance = doc.data().balance - newBet.amount;
-                    const newAtStake = doc.data().atStake + newBet.amount;
-                    userRef.update({
-                        balance: newBalance,
-                        atStake: newAtStake,
-                    }).catch(err => {
-                        console.log('Error updating document', err);
-                    });
+        } else if (prevBet.isExpired && !newBet.isExpired) {
+            const userRef = db.collection(userPath).doc(newBet.uid);
+            return userRef.get().then(doc => {
+                const newBalance = doc.data().balance - newBet.amount;
+                const newAtStake = doc.data().atStake + newBet.amount;
+                userRef.update({
+                    balance: newBalance,
+                    atStake: newAtStake,
+                }).catch(err => {
+                    console.log('Error updating document', err);
                 });
+            });
         } else if (!prevBet.isExpired && newBet.isExpired) {
+            // bet was won, update balance and create new won transaction entry
             if (newBet.winCond) {
+                const userRef = db.collection(userPath).doc(newBet.uid);
+                userRef.get().then(doc => {
+                        if (!doc.exists) {
+                        console.log(`No such user:${newBet.uid}`);
+                    } else {
+                        const newBalance = doc.data().balance + newBet.amount;
+                        const newAtStake = doc.data().atStake - newBet.amount;
+                        userRef.update({
+                            balance: newBalance,
+                            atStake: newAtStake,
+                        }).catch(err => {
+                            console.log('Error updating document', err);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log('Error getting document', err);
+                });
                 return db.collection(transactionPath).add({
                     "uid": newBet.uid,
                     "amount": newBet.amount,
@@ -201,7 +219,7 @@ export const onBetModified = functions.firestore
                     "isWon": newBet.winCond,
                     "members": { [newBet.uid]: true, },
                     "recipients": {},
-                }); 
+                });     
             } else {
                 //reduce the user's atStake by bet amount
                 db.collection(userPath).doc(newBet.uid).get().then(

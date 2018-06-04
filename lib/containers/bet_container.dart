@@ -36,35 +36,33 @@ class BetsContainer extends StatelessWidget {
                       ],
                     ),
               );
-            } else if (!bet.winCond){
+            } else {
               showDialog(
                 context: context,
                 builder: (BuildContext context) =>
-                    AlertDialog(
-                      content: Text(
-                        "Renewing bet of "
-                            "\$${(bet.amount/100).toStringAsFixed(2)} "
-                            "Are you sure?",
-                      ),
-                      actions: <Widget>[
-                        new FlatButton(
-                            child: const Text('Do it!'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              vm.onRenewBet(bet);
-                            }
-                        ),
-                        new FlatButton(
-                            child: const Text('Cancel'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            }
-                        ),
-                      ],
+                  AlertDialog(
+                    content: Text(
+                      "Renewing bet of "
+                          "\$${(bet.amount/100).toStringAsFixed(2)} "
+                          "Are you sure?",
                     ),
+                    actions: <Widget>[
+                      new FlatButton(
+                          child: const Text('Do it!'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            vm.onRenewBet(bet);
+                          }
+                      ),
+                      new FlatButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }
+                      ),
+                    ],
+                  ),
               );
-            } else {
-              vm.onRenewBet(bet);
             }
           },
           onSnoozeAlarmBet: vm.onSnoozeAlarmBet,
