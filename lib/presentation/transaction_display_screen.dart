@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:selfbet/models/models.dart';
 
-class TransactionScreen extends StatelessWidget {
+class TransactionDisplayScreen extends StatelessWidget {
   final BetTransact transaction;
   final String uid;
+  final List<UserEntity> members;
 
-  TransactionScreen(this.transaction, this.uid);
+  TransactionDisplayScreen({
+    @required this.transaction,
+    @required this.uid,
+    @required this.members,
+  });
 
-  Widget getLabelText(BetTransact transaction) {
+  Widget getLabelText() {
     if (transaction.isWon) {
       return Text(
         'WON',
@@ -39,7 +44,7 @@ class TransactionScreen extends StatelessWidget {
     }
   }
 
-  Widget getAmount(BetTransact transaction) {
+  Widget getAmount() {
     if (transaction.isWon) {
       return Container();
     } else if (!transaction.isWon && transaction.uid == uid) {
@@ -79,6 +84,26 @@ class TransactionScreen extends StatelessWidget {
     }
   }
 
+  Widget getBetOwner() {
+    if (transaction.isWon) {
+      return Text('Congratulations! You won this bet!');
+    } else if (!transaction.isWon && transaction.uid == uid) {
+      return Text('You lost this bet!');
+    } else {
+      return Text('${members[0].name} lost this best');
+    }
+  }
+
+  Widget getReceiversList() {
+    if (transaction.isWon) {
+      return Container();
+    } else if (!transaction.isWon && transaction.uid == uid) {
+      return Container();
+    } else {
+      return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,24 +117,67 @@ class TransactionScreen extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                getLabelText(transaction),
+                getLabelText(),
                 Expanded(
                   child: Container(),
                 ),
-                getAmount(transaction),
+                getAmount(),
               ],
             ),
             Divider(),
             Text("Group: ${transaction.groupName}"),
-            Text("Date: ${DateFormat.yMMMMd().format(transaction.date)}"),
+            Text("Transfer Date: ${DateFormat.yMMMMd().format(transaction.date)}"),
             Text("Bet Amount: \$${(transaction.amount/100).toStringAsFixed(2)}"),
             Padding(padding: EdgeInsets.all(5.0)),
-            Text("Who placed the bet: \n${transaction.uid}"),
+            getBetOwner(),
             Padding(padding: EdgeInsets.all(5.0)),
-            Text("Recipients: \n${transaction.recipients}"),
+            (!transaction.isWon) ? Text("Recipients:") : Container(),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  if (index != 0) {
+                    return _UserRow(members[index], uid);
+                  } else {
+                    return Container();
+                  }
+                },
+                itemCount: members.length,
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _UserRow extends StatelessWidget {
+  final UserEntity user;
+  final String uid;
+
+  const _UserRow(this.user, this.uid);
+
+  @override
+  Widget build(BuildContext context) {
+    double amountTrans = user.amountTrans / 100;
+    return Column(
+      children: <Widget>[
+        ListTile(
+          leading: CircleAvatar(
+            child: Text(user.name[0]),
+          ),
+          title: Row(
+            children: <Widget>[
+              (user.uid == uid) ? Text("You") : Text(user.name),
+              Expanded(
+                child: Container(),
+              ),
+              Text("\$${amountTrans.toStringAsFixed(2)}"),
+            ],
+          ),
+        ),
+        Divider(),
+      ],
     );
   }
 }

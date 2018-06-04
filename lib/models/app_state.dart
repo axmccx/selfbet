@@ -12,7 +12,7 @@ class AppState {
   final int atStake;
   final List<Bet> bets;
   final List<Group> groups;
-  final List<UserEntity> groupMembers;
+  final List<UserEntity> membersOf;
   final List<BetTransact> betTransacts;
   final AppTab activeTab;
   final FormType formType;
@@ -29,7 +29,7 @@ class AppState {
     this.atStake = 0,
     this.bets = const [],
     this.groups = const [],
-    this.groupMembers = const [],
+    this.membersOf = const [],
     this.betTransacts = const [],
     this.activeTab = AppTab.dashboard,
     this.formType = FormType.login,
@@ -49,7 +49,7 @@ class AppState {
     int atStake,
     List<Bet> bets,
     List<Group> groups,
-    List<UserEntity> groupMembers,
+    List<UserEntity> membersOf,
     List<BetTransact> betTransacts,
     AppTab activeTab,
     FormType formType,
@@ -66,7 +66,7 @@ class AppState {
       atStake: atStake ?? this.atStake,
       bets: bets ?? this.bets,
       groups: groups ?? this.groups,
-      groupMembers: groupMembers ?? this.groupMembers,
+      membersOf: membersOf ?? this.membersOf,
       betTransacts: betTransacts ?? this.betTransacts,
       activeTab: activeTab ?? this.activeTab,
       formType: formType ?? this.formType,
@@ -86,7 +86,7 @@ class AppState {
       atStake.hashCode ^
       bets.hashCode ^
       groups.hashCode ^
-      groupMembers.hashCode ^
+      membersOf.hashCode ^
       betTransacts.hashCode ^
       activeTab.hashCode ^
       formType.hashCode ^
@@ -107,7 +107,7 @@ class AppState {
               atStake == other.atStake &&
               bets == other.bets &&
               groups == other.groups &&
-              groupMembers == other.groupMembers &&
+              membersOf == other.membersOf &&
               betTransacts == other.betTransacts &&
               activeTab == other.activeTab &&
               formType == other.formType &&
@@ -126,7 +126,7 @@ class AppState {
         'atStake: $atStake, '
         'bets: $bets, '
         'groups: $groups, '
-        'groupMembers: $groupMembers, '
+        'membersOf: $membersOf, '
         'betTransacts: $betTransacts, '
         'activeTab: $activeTab, '
         'Form Type: $formType, '

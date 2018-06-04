@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:selfbet/models/models.dart';
-import 'transaction_list.dart';
+import 'package:selfbet/containers/containers.dart';
+import 'package:selfbet/presentation/loading_indicator.dart';
+import 'package:selfbet/presentation/transaction_list.dart';
 
 class DashboardTab extends StatelessWidget {
   final int balance;
@@ -20,6 +22,20 @@ class DashboardTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return AppLoading(builder: (context, loading) {
+      return Stack(
+        children: <Widget>[
+          _buildDashboardTab(),
+          Align(
+            child: loading ? LoadingIndicator("Loading") : Container(),
+            alignment: FractionalOffset.center,
+          ),
+        ],
+      );
+    });
+  }
+
+  Widget _buildDashboardTab() {
     double realBalance = balance / 100;
     double realAtStake = atStake / 100;
     return Container(

@@ -38,7 +38,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      groupMembers: store.state.groupMembers,
+      groupMembers: store.state.membersOf,
       onNewOwnerSelected: (groupName, newOwner) {
         store.dispatch(ChangeGroupOwnerAction(groupName, newOwner));
       }

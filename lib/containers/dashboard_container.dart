@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:selfbet/actions/actions.dart';
 import 'package:selfbet/models/models.dart';
+import 'package:selfbet/containers/containers.dart';
 import 'package:selfbet/presentation/dashboard_tab.dart';
-import 'package:selfbet/presentation/transaction_screen.dart';
 
 class DashboardContainer extends StatelessWidget {
   // set key
@@ -51,10 +52,15 @@ class _ViewModel {
         betTransacts: store.state.betTransacts,
         uid: store.state.currentUser.uid,
         showBetTransact: (context, transaction, uid) {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) {
-              return TransactionScreen(transaction, uid);
-            },
+          store.dispatch(GetTransactionMembersAction(
+            transaction: transaction,
+              callBack: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return TransactionDisplayContainer(transaction, uid);
+                  },
+                ));
+              },
           ));
         }
     );

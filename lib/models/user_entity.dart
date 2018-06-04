@@ -1,44 +1,47 @@
+import 'package:flutter/foundation.dart';
+
 class UserEntity {
+  final String uid;
   final String name;
   final int balance;
   final int atStake;
+  final int amountTrans;
 
-  UserEntity(this.name, this.balance, this.atStake);
+  UserEntity({
+    @required this.uid,
+    @required this.name,
+    @required this.balance,
+    @required this.atStake,
+    this.amountTrans,
+  });
 
   @override
   int get hashCode =>
+      uid.hashCode ^
       name.hashCode ^
       balance.hashCode ^
-      atStake.hashCode;
+      atStake.hashCode ^
+      amountTrans.hashCode;
 
   @override
   bool operator ==(other) =>
       identical(this, other) ||
       other is UserEntity &&
           runtimeType == other.runtimeType &&
+          uid == other.uid &&
           name == other.name &&
           balance == other.balance &&
-          atStake == other.atStake;
-
-
-  Map<String, Object> toJson() {
-    return {
-      "name": name,
-      "balance": balance,
-      "atStake": atStake,
-    };
-  }
+          atStake == other.atStake &&
+          amountTrans == other.amountTrans;
 
   @override
   String toString() {
-    return 'UserEntity{name: $name, balance: $balance, atStake: $atStake}';
-  }
-
-  static UserEntity fromJason(Map<String, Object> json) {
-    return UserEntity(
-      json["name"],
-      json["balance"],
-      json["atStake"],
-    );
+    return 'UserEntity{'
+        'uid: $uid, '
+        'name: $name, '
+        'balance: $balance, '
+        'atStake: $atStake, '
+        'amountTrans: $amountTrans, '
+        '}';
   }
 }

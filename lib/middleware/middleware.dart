@@ -41,7 +41,7 @@ List<Middleware<AppState>> createMiddleware(
       _firestoreGetGroupMembers(userRepo),
     ),
     TypedMiddleware<AppState, LoadGroupMembersAction>(
-      _firestoreLoadGroupMembers(userRepo),
+      _firestoreLoadGroupMembers(),
     ),
     TypedMiddleware<AppState, ChangeGroupOwnerAction>(
       _firestoreUpdateGroupOwner(groupsRepo),
@@ -69,6 +69,12 @@ List<Middleware<AppState>> createMiddleware(
     ),
     TypedMiddleware<AppState, SetWinBetAction>(  // temporary for testing
       _firestoreSetWinBet(betsRepo),
+    ),
+    TypedMiddleware<AppState, GetTransactionMembersAction>(
+      _firestoreGetTransactionMembers(userRepo),
+    ),
+    TypedMiddleware<AppState, LoadTransactionMembersAction>(
+      _firestoreLoadTransactionMembers(),
     ),
   ];
 }
@@ -249,7 +255,7 @@ void Function(
     Store<AppState> store,
     LoadGroupMembersAction action,
     NextDispatcher next,
-    ) _firestoreLoadGroupMembers(FirebaseUserRepo repo) {
+    ) _firestoreLoadGroupMembers() {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
@@ -391,6 +397,40 @@ void Function(
     next(action);
     try {
       repo.setWinBet(action.bet);
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    GetTransactionMembersAction action,
+    NextDispatcher next,
+    ) _firestoreGetTransactionMembers(FirebaseUserRepo repo) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      List<UserEntity> members = await repo.getTransactionMembers(action.transaction);
+      store.dispatch(LoadTransactionMembersAction(
+        transactMembers: members,
+        callBack: action.callBack,
+      ));
+    } catch (e) {
+      print(e);
+    }
+  };
+}
+
+void Function(
+    Store<AppState> store,
+    LoadTransactionMembersAction action,
+    NextDispatcher next,
+    ) _firestoreLoadTransactionMembers() {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    try {
+      action.callBack();
     } catch (e) {
       print(e);
     }

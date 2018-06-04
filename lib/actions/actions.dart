@@ -113,6 +113,36 @@ class LoadGroupMembersAction {
   }
 }
 
+class GetTransactionMembersAction{
+  final BetTransact transaction;
+  final Function callBack;
+
+  GetTransactionMembersAction({
+    @required this.transaction,
+    @required this.callBack
+  });
+
+  @override
+  String toString() {
+    return 'GetTransactionMembersAction{transaction: $transaction}';
+  }
+}
+
+class LoadTransactionMembersAction {
+  final List<UserEntity> transactMembers;
+  final Function callBack;
+
+  LoadTransactionMembersAction({
+    @required this.transactMembers,
+    @required this.callBack
+  });
+
+  @override
+  String toString() {
+    return 'LoadTransactionMembersAction{transactMembers: $transactMembers}';
+  }
+}
+
 class LoadBetsAction {
   final List<Bet> bets;
 

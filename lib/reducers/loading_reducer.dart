@@ -8,6 +8,8 @@ final loadingReducer = combineReducers<bool>([
   TypedReducer<bool, CreateAccountAction>(_setLoading),
   TypedReducer<bool, GetGroupMembersAction>(_setLoading),
   TypedReducer<bool, LoadGroupMembersAction>(_setLoaded),
+  TypedReducer<bool, GetTransactionMembersAction>(_setLoading),
+  TypedReducer<bool, LoadTransactionMembersAction>(_setLoaded),
 ]);
 
 bool _setLoaded(bool state, action) {

@@ -49,9 +49,10 @@ class FirebaseUserRepo {
   Stream<UserEntity> userStream(String uid) {
      return firestore.collection(userPath).document(uid).snapshots.map((doc) {
        return UserEntity (
-         doc["name"],
-         doc["balance"],
-         doc["atStake"],
+         uid: uid,
+         name: doc["name"],
+         balance: doc["balance"],
+         atStake: doc["atStake"],
        );
      });
   }
@@ -90,9 +91,10 @@ class FirebaseUserRepo {
     for (String uid in groupMemberUids.keys) {
       await firestore.collection(userPath).document(uid).get().then((doc) {
         out.add(UserEntity (
-          doc["name"],
-          doc["balance"],
-          doc["atStake"],
+          uid: uid,
+          name: doc["name"],
+          balance: doc["balance"],
+          atStake:  doc["atStake"],
         ));
       });
     }
@@ -111,4 +113,30 @@ class FirebaseUserRepo {
       );
     });
   }
+
+  Future<List<UserEntity>> getTransactionMembers(BetTransact transaction) async {
+    List<UserEntity> out = [];
+    await firestore.collection(userPath).document(transaction.uid).get().then((doc) {
+      out.add(UserEntity (
+        uid: transaction.uid,
+        name: doc["name"],
+        balance: doc["balance"],
+        atStake:  doc["atStake"],
+        amountTrans: transaction.amount,
+      ));
+    });
+    for (String uid in transaction.recipients.keys) {
+      await firestore.collection(userPath).document(uid).get().then((doc) {
+        out.add(UserEntity (
+          uid: uid,
+          name: doc["name"],
+          balance: doc["balance"],
+          atStake:  doc["atStake"],
+          amountTrans: transaction.recipients[uid],
+        ));
+      });
+    }
+    return out;
+  }
+
 }

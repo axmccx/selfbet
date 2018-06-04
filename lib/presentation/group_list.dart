@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:selfbet/models/models.dart';
 import 'package:selfbet/presentation/loading_indicator.dart';
 import 'package:selfbet/presentation/group_tile.dart';
-import 'package:selfbet/containers/app_loading.dart';
+import 'package:selfbet/containers/containers.dart';
 
 
 class GroupList extends StatelessWidget {

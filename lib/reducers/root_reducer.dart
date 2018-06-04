@@ -9,7 +9,7 @@ AppState rootReducer(AppState state, action) {
     atStake: atStakeReducer(state.atStake, action),
     bets: betsReducer(state.bets, action),
     groups: groupsReducer(state.groups, action),
-    groupMembers: groupMembersReducer(state.groupMembers, action),
+    membersOf: membersOfReducer(state.membersOf, action),
     betTransacts: betTransactsReducer(state.betTransacts, action),
     activeTab: tabsReducer(state.activeTab, action),
     formType: loginFormReducer(state.formType, action),
