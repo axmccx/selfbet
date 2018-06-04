@@ -25,7 +25,7 @@ class ShowLogin extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function(String email, String pass, String name) login;
+  final OnLoginCallBack login;
   final Function moveToRegister;
   final bool isLoading;
 
@@ -37,8 +37,14 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      login: (email, pass, name) {
-        store.dispatch(LogInAction(email, pass));
+      login: (context, scaffoldKey, email, pass, name) {
+        _onLoginFail() {
+          final snackBar = SnackBar(
+            content: Text("Authentication Error"),
+          );
+          scaffoldKey.currentState.showSnackBar(snackBar);
+        }
+        store.dispatch(LogInAction(email, pass, _onLoginFail));
       },
       moveToRegister: () {
         store.dispatch(MoveToRegisterAction());

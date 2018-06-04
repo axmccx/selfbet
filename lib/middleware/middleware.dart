@@ -79,7 +79,11 @@ List<Middleware<AppState>> createMiddleware(
   ];
 }
 
-Middleware<AppState> _initApp(FirebaseUserRepo repo) {
+void Function(
+    Store<AppState> store,
+    InitAppAction action,
+    NextDispatcher next,
+    ) _initApp(FirebaseUserRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
@@ -94,7 +98,11 @@ Middleware<AppState> _initApp(FirebaseUserRepo repo) {
   };
 }
 
-Middleware<AppState> _firestoreEmailSignIn(FirebaseUserRepo repo) {
+void Function(
+    Store<AppState> store,
+    LogInAction action,
+    NextDispatcher next,
+    ) _firestoreEmailSignIn(FirebaseUserRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
@@ -105,12 +113,17 @@ Middleware<AppState> _firestoreEmailSignIn(FirebaseUserRepo repo) {
       store.dispatch(LogInSuccessfulAction(user: user));
       store.dispatch(ConnectToDataSourceAction());
     } catch (e) {
+      action.onFail();
       store.dispatch(LogInFailAction(e));
     }
   };
 }
 
-Middleware<AppState> _firestoreEmailCreateUser(FirebaseUserRepo repo) {
+void Function(
+    Store<AppState> store,
+    CreateAccountAction action,
+    NextDispatcher next,
+    ) _firestoreEmailCreateUser(FirebaseUserRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
@@ -120,14 +133,18 @@ Middleware<AppState> _firestoreEmailCreateUser(FirebaseUserRepo repo) {
         action.name,
       );
       store.dispatch(MoveToLoginAction());
-      store.dispatch(LogInAction(action.username, action.password));
+      store.dispatch(LogInAction(action.username, action.password, action.onFail));
     } catch (e) {
       print(e);
     }
   };
 }
 
-Middleware<AppState> _firestoreLogOut(FirebaseUserRepo repo) {
+void Function(
+    Store<AppState> store,
+    LogOutAction action,
+    NextDispatcher next,
+    ) _firestoreLogOut(FirebaseUserRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
@@ -143,7 +160,11 @@ Middleware<AppState> _firestoreLogOut(FirebaseUserRepo repo) {
   };
 }
 
-Middleware<AppState> _firestoreConnect(FirebaseUserRepo userRepo,
+void Function(
+    Store<AppState> store,
+    ConnectToDataSourceAction action,
+    NextDispatcher next,
+    ) _firestoreConnect(FirebaseUserRepo userRepo,
     FirebaseGroupsRepo groupsRepo, FirebaseBetsRepo betsRepo,) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
@@ -175,7 +196,11 @@ Middleware<AppState> _firestoreConnect(FirebaseUserRepo userRepo,
   };
 }
 
-Middleware<AppState> _firestoreCreditFaucet(FirebaseUserRepo repo) {
+void Function(
+    Store<AppState> store,
+    CreditFaucetAction action,
+    NextDispatcher next,
+    ) _firestoreCreditFaucet(FirebaseUserRepo repo) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {

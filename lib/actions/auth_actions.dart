@@ -4,12 +4,13 @@ import 'package:flutter/foundation.dart';
 class LogInAction {
   final String username;
   final String password;
+  final Function onFail;
 
-  LogInAction(this.username, this.password);
+  LogInAction(this.username, this.password, this.onFail);
 
   @override
   String toString() {
-    return 'LogIn{Username: $username, Password: $password}';
+    return 'LogInAction{Username: $username, Password: $password}';
   }
 }
 
@@ -20,16 +21,18 @@ class LogInSuccessfulAction {
 
   @override
   String toString() {
-    return 'LogInSuccessful{user: $user}';
+    return 'LogInSuccessfulAction{user: $user}';
   }
 }
 
 class LogInFailAction {
   final dynamic error;
+
   LogInFailAction(this.error);
+
   @override
   String toString() {
-    return 'LogInFail{There was an error loggin in: $error}';
+    return 'LogInFailAction{error: $error}';
   }
 }
 
@@ -37,40 +40,40 @@ class CreateAccountAction {
   final String username;
   final String password;
   final String name;
+  final Function onFail;
 
-  CreateAccountAction(this.username, this.password, this.name);
+  CreateAccountAction(this.username, this.password, this.name, this.onFail);
 
   @override
   String toString() {
-    return 'CreateAccount{Username: $username, Password: $password, Name: $name}';
+    return 'CreateAccountAction{Username: $username, Password: $password, Name: $name}';
   }
 }
 
 class LogOutAction {
   @override
   String toString() {
-    return 'LogOut{}';
+    return 'LogOutAction{}';
   }
 }
 
 class LogOutSuccessfulAction {
-  LogOutSuccessfulAction();
   @override
   String toString() {
-    return 'LogOut{user: null}';
+    return 'LogOutSuccessfulAction{}';
   }
 }
 
 class MoveToRegisterAction {
   @override
   String toString() {
-    return 'MovetoRegister{}';
+    return 'MoveToRegisterAction{}';
   }
 }
 
 class MoveToLoginAction {
   @override
   String toString() {
-    return 'MoveToLogin{}';
+    return 'MoveToLoginAction{}';
   }
 }

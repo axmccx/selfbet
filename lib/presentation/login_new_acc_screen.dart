@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:selfbet/presentation/loading_indicator.dart';
 
+typedef OnLoginCallBack = Function(BuildContext,  GlobalKey<ScaffoldState>, String, String, String);
+
 //I must improve this class, so messy. Look at the group form.
 class LoginNewAccScreen extends StatelessWidget {
-  final Function onSubmit;
+  static final _formKey = GlobalKey<FormState>();
+  static final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final OnLoginCallBack onSubmit;
   final Function onSwitchForm;
   final bool isLoading;
   final bool newAccount;
@@ -16,34 +21,30 @@ class LoginNewAccScreen extends StatelessWidget {
     @required this.newAccount,
   });
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
-
   String _name;
   String _email;
   String _password;
-//  FocusNode _focusEmail;
-//  FocusNode _focusPassword;
 
-  void _submit() {
-    final form = formKey.currentState;
+  void _submit(BuildContext context) {
+    final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
-      onSubmit(_email, _password, _name);
+      onSubmit(context, _scaffoldKey, _email, _password, _name);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(30.0),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: ListView(
-                children: buildInputs() + buildSubmitButtons(),
+                children: buildInputs(context) + buildSubmitButtons(context),
               ),
             ),
           ),
@@ -58,7 +59,7 @@ class LoginNewAccScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> buildInputs() {
+  List<Widget> buildInputs(BuildContext context) {
     if (newAccount) {
       return [
         Image.asset(
@@ -96,7 +97,7 @@ class LoginNewAccScreen extends StatelessWidget {
           val.length < 6 ? 'Password too short.' : null,
           onSaved: (val) => _password = val,
           obscureText: true,
-          onFieldSubmitted: (s) { _submit(); },
+          onFieldSubmitted: (s) { _submit(context); },
         ),
         Padding(padding: EdgeInsets.all(20.0)),
       ];
@@ -127,18 +128,18 @@ class LoginNewAccScreen extends StatelessWidget {
           val.length < 6 ? 'Password too short.' : null,
           onSaved: (val) => _password = val,
           obscureText: true,
-          onFieldSubmitted: (s) { _submit(); },
+          onFieldSubmitted: (s) { _submit(context); },
         ),
         Padding(padding: EdgeInsets.all(20.0)),
       ];
     }
   }
 
-  List<Widget> buildSubmitButtons() {
+  List<Widget> buildSubmitButtons(BuildContext context) {
     if (newAccount) {
       return [
         RaisedButton(
-          onPressed: _submit,
+          onPressed: () { _submit(context); },
           child: Text("Create Account"),
         ),
         Padding(padding: EdgeInsets.all(20.0)),
@@ -159,7 +160,7 @@ class LoginNewAccScreen extends StatelessWidget {
     } else {
       return [
         RaisedButton(
-          onPressed: _submit,
+          onPressed: () { _submit(context); },
           child: Text("Login"),
         ),
         Padding(padding: EdgeInsets.all(20.0)),

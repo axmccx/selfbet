@@ -19,7 +19,6 @@ class GroupFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

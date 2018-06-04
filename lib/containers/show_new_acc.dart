@@ -25,7 +25,7 @@ class ShowNewAcc extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function(String email, String pass, String name) createAccount;
+  final OnLoginCallBack createAccount;
   final Function moveToLogin;
   final bool isLoading;
 
@@ -37,8 +37,14 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      createAccount: (email, pass, name) {
-        store.dispatch(CreateAccountAction(email, pass, name));
+      createAccount: (context, scaffoldKey, email, pass, name) {
+        _onLoginFail() {
+          final snackBar = SnackBar(
+            content: Text("Authentication Error"),
+          );
+          scaffoldKey.currentState.showSnackBar(snackBar);
+        }
+        store.dispatch(CreateAccountAction(email, pass, name, _onLoginFail));
       },
       moveToLogin: () => store.dispatch(MoveToLoginAction()),
       isLoading: store.state.isLoading,
