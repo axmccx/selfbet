@@ -15,7 +15,7 @@ function generateLostBet(bet) {
         const members = group.members;
         const membersList = {}; 
         Object.keys(members).map(uid => {
-            membersList[uid] = true;
+            membersList[uid] = Date.now();
         });
         const recipientsList = Object.keys(members).filter(elem => {
             return elem !== bet.uid;
@@ -189,7 +189,7 @@ export const onBetModified = functions.firestore
                     "betType": newBet.type,
                     "date": Date.now(),
                     "isWon": newBet.winCond,
-                    "members": { [newBet.uid]: true, },
+                    "members": { [newBet.uid]: Date.now(), },
                     "recipients": {},
                 });     
             } else {

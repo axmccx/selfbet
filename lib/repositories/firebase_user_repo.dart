@@ -59,7 +59,8 @@ class FirebaseUserRepo {
 
   Stream<List<BetTransact>> betTransactStream(String uid) {
     return firestore.collection(betTransactPath)
-        .where('members.' + uid, isEqualTo: true)
+        .where('members.' + uid, isGreaterThan: 0)
+        .orderBy('members.' + uid, descending: true)
         .snapshots
         .map((snapshot) {
           return snapshot.documents.map((doc) {
