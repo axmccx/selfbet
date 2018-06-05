@@ -78,7 +78,8 @@ class Bet {
 
   Map<String, Object> toJson() {
     return {
-      "uid": { uid: DateTime.now().millisecondsSinceEpoch, },
+      "uid": uid,
+      "uidDate": { uid: DateTime.now().millisecondsSinceEpoch, },
       "amount": amount,
       "group": groupName,
       "type": type.toString(),

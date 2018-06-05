@@ -107,10 +107,12 @@ class FirebaseUserRepo {
     return firestore.collection(userPath)
         .document(uid).get().then((doc) {
       int newBalance = doc["balance"] - amount;
+      int newAtStake = doc["atStake"] + amount;
       firestore.collection(userPath)
           .document(uid).updateData(
           {
             "balance": newBalance,
+            "atStake": newAtStake,
           }
       );
     });

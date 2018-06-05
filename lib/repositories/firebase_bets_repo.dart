@@ -11,8 +11,8 @@ class FirebaseBetsRepo {
 
   Stream<List<Bet>> betStream(String uid) {
     return firestore.collection(betPath)
-        .where('uid.' + uid, isGreaterThan: 0)
-        .orderBy('uid.' + uid)
+        .where('uidDate.' + uid, isGreaterThan: 0)
+        .orderBy('uidDate.' + uid)
         .snapshots
         .map((snapshot) {
           return snapshot.documents.map((doc) {
@@ -50,7 +50,7 @@ class FirebaseBetsRepo {
   Future<void> renewBet(Bet bet) {
     if (bet.type == BetType.alarmClock) {
       return firestore.collection(betPath).document(bet.betId).updateData({
-        "uid": { bet.uid: DateTime.now().millisecondsSinceEpoch, },
+        "uidDate": { bet.uid: DateTime.now().millisecondsSinceEpoch, },
         "isExpired": false,
         "expiryDate": DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch,
         "options.count": bet.options['frequency'],
@@ -58,7 +58,7 @@ class FirebaseBetsRepo {
       });
     } else {
       return firestore.collection(betPath).document(bet.betId).updateData({
-        "uid": { bet.uid: DateTime.now().millisecondsSinceEpoch, },
+        "uidDate": { bet.uid: DateTime.now().millisecondsSinceEpoch, },
         "isExpired": false,
         "expiryDate": DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch,
         "winCond": false,

@@ -8,7 +8,6 @@ const groupPath = "groups";
 const betPath = "bets";
 const transactionPath = "transactions";
 
-
 function generateLostBet(bet) {
     return db.collection(groupPath).doc(bet.group).get().then((doc) => {
         const group = doc.data();
@@ -55,10 +54,8 @@ function generateLostBet(bet) {
                 }
             });
             const totalAtStakeProd = readyUserList.reduce((prevVal, userMap) => {
-                console.log(`${userMap.atStake}`);
                 return prevVal * userMap.atStake;
             }, 1);
-            console.log(`${totalAtStakeProd}`);
             const betSplitMap = {};
             const betBalMap = new Map;
             readyUserList.forEach(userMap => {
@@ -112,28 +109,6 @@ function calcWinnings(
         return 0;
     }
 } 
-
-export const onBetPlaced = functions.firestore
-    .document('bets/{betID}')
-    .onCreate((snap, context) => {
-        const newBet = snap.data();
-        const userRef = db.collection(userPath).doc(newBet.uid);
-        return userRef.get().then(doc => {
-            if (!doc.exists) {
-                console.log(`No such user:${newBet.uid}`);
-            } else {
-                const newAtStake = doc.data().atStake + newBet.amount;
-                userRef.update({
-                    atStake: newAtStake
-                }).catch(err => {
-                    console.log('Error updating document', err);
-                });
-            }
-        })
-        .catch(err => {
-            console.log('Error getting document', err);
-        });
-});
 
 export const onBetModified = functions.firestore
     .document('bets/{betID}')
