@@ -5,7 +5,7 @@ import 'package:selfbet/presentation/bet_alarm_options.dart';
 import 'package:selfbet/presentation/bet_comms.options.dart';
 import 'package:selfbet/presentation/bet_location_options.dart';
 
-typedef OnBetSubmit = Function(int, BetType, String, Map);
+typedef OnBetSubmit = Function(int, BetType, Group, Map);
 
 class PlaceBetScreen extends StatefulWidget {
   final int balance;
@@ -27,7 +27,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
   static final _alarmOptionsKey = GlobalKey<BetAlarmOptionsState>();
 
   int _selectAmount;
-  String _selectedGroupName;
+  Group _selectedGroup;
   BetType _selectedType;
   Map _selectedOptions;
 
@@ -75,7 +75,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         );
         Scaffold.of(context).showSnackBar(snackBar);
       };
-    } else if (_selectedGroupName == null) {
+    } else if (_selectedGroup == null) {
       return () {
         final snackBar = SnackBar(
           content: Text("Please select a group"),
@@ -89,6 +89,16 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         );
         Scaffold.of(context).showSnackBar(snackBar);
       };
+    } else if (_selectedGroup.members.length < 2) {
+      return () {
+        final snackBar = SnackBar(
+          duration: Duration(seconds: 8),
+          content: Text("You are the only member in the selected group.\n"
+              "Who will receive your money if you lose? :)\n"
+              "Ask a friend to join ${_selectedGroup.name}."),
+        );
+        Scaffold.of(context).showSnackBar(snackBar);
+      };
     } else {
       return () {
         final form = _formKey.currentState;
@@ -98,7 +108,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
           widget.onSubmit(
             _selectAmount,
             _selectedType,
-            _selectedGroupName,
+            _selectedGroup,
             _selectedOptions,
           );
           Navigator.pop(context);
@@ -175,19 +185,19 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20.0),
-                    child: DropdownButton<String>(
-                      value: _selectedGroupName,
+                    child: DropdownButton<Group>(
+                      value: _selectedGroup,
                       items: widget.groups.map((group) {
-                        return DropdownMenuItem<String>(
+                        return DropdownMenuItem<Group>(
                           child: Text(
                             group.name,
                           ),
-                          value: group.name,
+                          value: group,
                         );
                       }).toList(),
-                      onChanged: (String groupName) {
+                      onChanged: (Group group) {
                         setState(() {
-                          _selectedGroupName = groupName;
+                          _selectedGroup = group;
                         });
                       },
                     ),

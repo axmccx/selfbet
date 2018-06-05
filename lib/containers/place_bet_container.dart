@@ -36,7 +36,7 @@ class _ViewModel {
     return _ViewModel(
       balance: store.state.balance,
       groups: store.state.groups,
-      onSubmit: (amount, type, groupName, options) {
+      onSubmit: (amount, type, group, options) {
         bool winCond;
         if (type == BetType.alarmClock) { winCond = true; }
         else { winCond = false; }
@@ -44,7 +44,7 @@ class _ViewModel {
           uid: store.state.currentUser.uid,
           amount: amount,
           type: type,
-          groupName: groupName,
+          groupName: group.name,
           isExpired: false,
           expiryDate: DateTime.now().add(Duration(days: 7)),
           winCond: winCond,

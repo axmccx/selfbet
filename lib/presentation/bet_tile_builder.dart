@@ -245,7 +245,7 @@ class BetTileBuilder {
                     child: Text("Win"),
                     onPressed: bet.isExpired
                         ? null
-                        : () { debugPrint("Set bet's winning condition!"); },
+                        : () { onWinBet(bet); },
                   ),
                 ],
               ),

@@ -18,7 +18,31 @@ class BetsContainer extends StatelessWidget {
           onWinBet: vm.onWinBet,
           onDeleteBet: vm.onDeleteBet,
           onRenewBet: (bet) {
-            if (vm.balance < bet.amount) {
+            Group selectedGroup = vm.groups.where((group) {
+              return group.name == bet.groupName;
+            }).toList().first;
+            if (selectedGroup.members.length < 2) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    AlertDialog(
+                      content: Text(
+                        "You are the only member in the group ${selectedGroup.name}. "
+                            "Who will receive your money if you lose? :)\n\n"
+                            "Ask a friend to join the group so you can renew the bet.",
+                      ),
+                      actions: <Widget>[
+                        new FlatButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }
+                        ),
+                      ],
+                    ),
+              );
+            }
+            else if (vm.balance < bet.amount) {
               showDialog(
                 context: context,
                 builder: (BuildContext context) =>
@@ -75,6 +99,7 @@ class BetsContainer extends StatelessWidget {
 class _ViewModel {
   final int balance;
   final List<Bet> bets;
+  final List<Group> groups;
   final Function(Bet) onExpireBet;  // temp function for testing
   final Function(Bet) onWinBet;     // temp function for testing
   final Function(Bet) onDeleteBet;
@@ -84,6 +109,7 @@ class _ViewModel {
   _ViewModel({
     @required this.balance,
     @required this.bets,
+    @required this.groups,
     @required this.onExpireBet,
     @required this.onWinBet,
     @required this.onDeleteBet,
@@ -95,6 +121,7 @@ class _ViewModel {
     return _ViewModel(
       balance: store.state.balance,
       bets: store.state.bets,
+      groups: store.state.groups,
       onExpireBet: (bet) {
         store.dispatch(ExpireBetAction(bet));
       },
