@@ -110,12 +110,12 @@ class TransactionDisplayScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Transaction"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 10.0),
+            child: Row(
               children: <Widget>[
                 getLabelText(),
                 Expanded(
@@ -124,28 +124,41 @@ class TransactionDisplayScreen extends StatelessWidget {
                 getAmount(),
               ],
             ),
-            Divider(),
-            Text("Group: ${transaction.groupName}"),
-            Text("Transfer Date: ${DateFormat.yMMMMd().format(transaction.date)}"),
-            Text("Bet Amount: \$${(transaction.amount/100).toStringAsFixed(2)}"),
-            Padding(padding: EdgeInsets.all(5.0)),
-            getBetOwner(),
-            Padding(padding: EdgeInsets.all(5.0)),
-            (!transaction.isWon) ? Text("Recipients:") : Container(),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  if (index != 0) {
-                    return _UserRow(members[index], uid);
-                  } else {
-                    return Container();
-                  }
-                },
-                itemCount: members.length,
-              ),
+          ),
+          Divider(color: Colors.grey),
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Group: ${transaction.groupName}"),
+                Text("Transfer Date: ${DateFormat.yMMMMd().format(transaction.date)}"),
+                Text("Bet Amount: \$${(transaction.amount/100).toStringAsFixed(2)}"),
+                Padding(padding: EdgeInsets.all(5.0)),
+                getBetOwner(),
+                Padding(padding: EdgeInsets.all(5.0)),
+                (!transaction.isWon) ? Text("Recipients:") : Container(),
+              ],
             ),
-          ],
-        ),
+          ),
+          Divider(color: Colors.grey),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                if (index != 0) {
+                  return _UserRow(
+                      members[index],
+                      uid,
+                      transaction.calcedAtStake[members[index].uid]
+                  );
+                } else {
+                  return Container();
+                }
+              },
+              itemCount: members.length,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -154,12 +167,14 @@ class TransactionDisplayScreen extends StatelessWidget {
 class _UserRow extends StatelessWidget {
   final UserEntity user;
   final String uid;
+  final int calcedAtStake;
 
-  const _UserRow(this.user, this.uid);
+  const _UserRow(this.user, this.uid, this.calcedAtStake);
 
   @override
   Widget build(BuildContext context) {
     double amountTrans = user.amountTrans / 100;
+    double atStake = calcedAtStake / 100;
     return Column(
       children: <Widget>[
         ListTile(
@@ -175,8 +190,9 @@ class _UserRow extends StatelessWidget {
               Text("\$${amountTrans.toStringAsFixed(2)}"),
             ],
           ),
+          subtitle: Text("At stake when lost: \$${atStake.toStringAsFixed(2)}"),
         ),
-        Divider(),
+        Divider(color: Colors.grey),
       ],
     );
   }

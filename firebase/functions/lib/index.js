@@ -46,13 +46,14 @@ function generateLostBet(bet) {
             //console.log(`${readyUserList}`);
             // calculate the amount to be split for each user
             const receiverCount = readyUserList.length;
+            const calcedAtStakeMap = {};
             readyUserList.forEach(userMap => {
-                if (userMap.atStake < 1) {
-                    userMap.atStake = 1;
+                calcedAtStakeMap[userMap.uid] = userMap.atStake;
+                if (userMap.atStake < 100) {
+                    userMap.atStake = 100;
                 }
             });
-            const totalAtStakeProd = readyUserList
-                .reduce((prevVal, userMap) => {
+            const totalAtStakeProd = readyUserList.reduce((prevVal, userMap) => {
                 console.log(`${userMap.atStake}`);
                 return prevVal * userMap.atStake;
             }, 1);
@@ -81,6 +82,7 @@ function generateLostBet(bet) {
                 "date": Date.now(),
                 "isWon": false,
                 "members": membersList,
+                "calcedAtStake": calcedAtStakeMap,
                 "recipients": betSplitMap,
             }).catch(function (error) {
                 console.error("Error adding document: ", error);
@@ -186,6 +188,7 @@ exports.onBetModified = functions.firestore
                 "date": Date.now(),
                 "isWon": newBet.winCond,
                 "members": { [newBet.uid]: Date.now(), },
+                "calcedAtStake": {},
                 "recipients": {},
             });
         }

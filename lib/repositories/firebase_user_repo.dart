@@ -72,6 +72,7 @@ class FirebaseUserRepo {
               betType: type,
               date: DateTime.fromMillisecondsSinceEpoch(doc['date'] as int),
               isWon: doc['isWon'] as bool,
+              calcedAtStake: doc['calcedAtStake'],
               recipients: doc['recipients'],
             );
           }).toList();

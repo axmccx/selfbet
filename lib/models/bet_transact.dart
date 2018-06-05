@@ -9,6 +9,7 @@ class BetTransact {
   final BetType betType;
   final DateTime date;
   final bool isWon;
+  final Map calcedAtStake;
   final Map recipients;
 
   BetTransact({
@@ -18,6 +19,7 @@ class BetTransact {
     this.betType,
     this.date,
     this.isWon,
+    this.calcedAtStake,
     this.recipients,
   });
 
@@ -28,6 +30,7 @@ class BetTransact {
     BetType betType,
     DateTime date,
     bool isWon,
+    Map calcedAtStake,
     Map recipients,
   }) {
     return BetTransact(
@@ -37,6 +40,7 @@ class BetTransact {
       betType: betType ?? this.betType,
       date: date ?? this.date,
       isWon: isWon ?? this.isWon,
+      calcedAtStake: calcedAtStake ?? this.calcedAtStake,
       recipients: recipients ?? this.recipients,
     );
   }
@@ -49,6 +53,7 @@ class BetTransact {
       betType.hashCode ^
       date.hashCode ^
       isWon.hashCode ^
+      calcedAtStake.hashCode ^
       recipients.hashCode;
 
   @override
@@ -62,6 +67,7 @@ class BetTransact {
               betType == other.betType &&
               date == other.date &&
               isWon == other.isWon &&
+              calcedAtStake == other.calcedAtStake &&
               recipients == other.recipients;
 
   Map<String, Object> toJson() {
@@ -72,6 +78,7 @@ class BetTransact {
       "betType": betType,
       "date": date,
       "isWOn": isWon,
+      "calcedAtStake": calcedAtStake,
       "recipients": recipients,
     };
   }
@@ -85,6 +92,7 @@ class BetTransact {
         'betType: $betType, '
         'date: $date, '
         'isWon: $isWon, '
+        'calcedAtStake, $calcedAtStake, '
         'recipients: $recipients,'
         '}';
   }
