@@ -41,14 +41,17 @@ class FirebaseGroupsRepo {
   Future<String> joinGroup(String groupName, String uid) {
     return firestore.collection(groupPath)
         .document(groupName).get().then((doc) {
-      if (doc.exists) {
+      if (doc.exists && doc.data['members'].containsKey(uid)) {
+        return 'Already member of group $groupName';
+      } else if (doc.exists) {
         firestore.collection(groupPath).document(groupName).updateData(
-          {
-            "members.$uid": true,
-          }
+            {
+              "members.$uid": true,
+            }
         );
         return null;
-      } else {
+      }
+      else {
         return 'Group doesn\'t exists';
       }
     });
