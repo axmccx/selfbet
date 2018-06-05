@@ -26,7 +26,7 @@ class ShowLogin extends StatelessWidget {
 
 class _ViewModel {
   final OnLoginCallBack login;
-  final Function moveToRegister;
+  final Function(GlobalKey<FormState>) moveToRegister;
   final bool isLoading;
 
   _ViewModel({
@@ -46,7 +46,8 @@ class _ViewModel {
         }
         store.dispatch(LogInAction(email, pass, _onLoginFail));
       },
-      moveToRegister: () {
+      moveToRegister: (formKey) {
+        formKey.currentState.reset();
         store.dispatch(MoveToRegisterAction());
       },
       isLoading: store.state.isLoading,

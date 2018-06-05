@@ -145,7 +145,7 @@ class LoginNewAccScreen extends StatelessWidget {
         Padding(padding: EdgeInsets.all(20.0)),
         Center(
           child: InkWell(
-            onTap: onSwitchForm,
+            onTap: () { onSwitchForm(_formKey); },
             child: Text(
               'Already a member? Login',
               style: TextStyle(
@@ -166,7 +166,7 @@ class LoginNewAccScreen extends StatelessWidget {
         Padding(padding: EdgeInsets.all(20.0)),
         Center(
           child: InkWell(
-            onTap: onSwitchForm,
+            onTap: () { onSwitchForm(_formKey); },
             child: Text(
               'No account yet? Create one',
               style: TextStyle(

@@ -133,34 +133,6 @@ export const onBetPlaced = functions.firestore
         });
 });
 
-// export const onBetDeleted = functions.firestore
-//     .document('bets/{betID}')
-//     .onDelete((snap, context) => {
-//         const delBet = snap.data();
-//         if (delBet.winCond) {
-//             const userRef = db.collection(userPath).doc(delBet.uid);
-//             return userRef.get().then(doc => {
-//                     if (!doc.exists) {
-//                     console.log(`No such user:${delBet.uid}`);
-//                 } else {
-//                     const newBalance = doc.data().balance + delBet.amount;
-//                     const newAtStake = doc.data().atStake - delBet.amount;
-//                     userRef.update({
-//                         balance: newBalance,
-//                         atStake: newAtStake,
-//                     }).catch(err => {
-//                         console.log('Error updating document', err);
-//                     });
-//                 }
-//             })
-//             .catch(err => {
-//                 console.log('Error getting document', err);
-//             });
-//         } else {
-//             return "no money change";
-//         }
-// });
-
 export const onBetModified = functions.firestore
     .document('bets/{betID}')
     .onUpdate((snap, context) => {

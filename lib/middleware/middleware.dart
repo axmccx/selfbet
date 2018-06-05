@@ -127,7 +127,7 @@ void Function(
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
-      repo.createUserEmailPass(
+      await repo.createUserEmailPass(
         action.username,
         action.password,
         action.name,
@@ -135,7 +135,8 @@ void Function(
       store.dispatch(MoveToLoginAction());
       store.dispatch(LogInAction(action.username, action.password, action.onFail));
     } catch (e) {
-      print(e);
+      action.onFail();
+      store.dispatch(LogInFailAction(e));
     }
   };
 }
