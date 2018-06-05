@@ -78,12 +78,12 @@ class Bet {
 
   Map<String, Object> toJson() {
     return {
-      "uid": uid,
+      "uid": { uid: DateTime.now().millisecondsSinceEpoch, },
       "amount": amount,
       "group": groupName,
       "type": type.toString(),
       "isExpired": isExpired,
-      "expiryDate": expiryDate.toIso8601String(),
+      "expiryDate": expiryDate.millisecondsSinceEpoch,
       "winCond": winCond,
       "options": options,
     };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:selfbet/models/models.dart';
 
 class GroupDisplayScreen extends StatelessWidget {
@@ -18,38 +19,58 @@ class GroupDisplayScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("${group.name}"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "Group Name: ${group.name}",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.w400,
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 30.0, 15.0, 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Group Name: ${group.name}",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10.0)),
+                Text(
+                  "Stake in Group: \$${atStakeDouble.toStringAsFixed(2)}",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10.0)),
+                Row(
+                  children: <Widget>[
+                    Text("Members"),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Text("At Stake"),
+                  ],
+                ),
+
+              ],
             ),
-            Padding(padding: EdgeInsets.all(10.0)),
-            Text(
-              "Stake in Group: \$${atStakeDouble.toStringAsFixed(2)}",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.w400,
-              ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                DateTime joinDate = DateTime.fromMillisecondsSinceEpoch(
+                    group.members[members[index].uid]
+                );
+                return _UserRow(
+                    members[index],
+                    joinDate,
+                );
+              },
+              itemCount: members.length,
             ),
-            Padding(padding: EdgeInsets.all(10.0)),
-            Text("Members:"),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return _UserRow(members[index]);
-                },
-                itemCount: members.length,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -57,8 +78,9 @@ class GroupDisplayScreen extends StatelessWidget {
 
 class _UserRow extends StatelessWidget {
   final UserEntity user;
+  final DateTime joinDate;
 
-  const _UserRow(this.user);
+  const _UserRow(this.user, this.joinDate);
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +91,16 @@ class _UserRow extends StatelessWidget {
           leading: CircleAvatar(
               child: Text(user.name[0]),
           ),
-          title: Text(user.name),
-          subtitle: Text("Total at Stake: \$${atStakeDouble.toStringAsFixed(2)}"),
+          title: Row(
+            children: <Widget>[
+              Text(user.name),
+              Expanded(
+                child: Container(),
+              ),
+              Text("\$${atStakeDouble.toStringAsFixed(2)}"),
+            ],
+          ),
+          subtitle: Text("Joined: ${DateFormat.yMMMMd().format(joinDate)}"),
         ),
         Divider(),
       ],

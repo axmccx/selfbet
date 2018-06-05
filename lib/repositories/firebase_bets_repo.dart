@@ -11,20 +11,21 @@ class FirebaseBetsRepo {
 
   Stream<List<Bet>> betStream(String uid) {
     return firestore.collection(betPath)
-        .where('uid', isEqualTo: uid)
+        .where('uid.' + uid, isGreaterThan: 0)
+        .orderBy('uid.' + uid)
         .snapshots
         .map((snapshot) {
           return snapshot.documents.map((doc) {
             BetType type = stringToBetType(doc['type']);
-            DateTime expiryDate = DateTime.parse(doc['expiryDate']);
+            int expiryDate = doc['expiryDate'] as int;
             return Bet(
-              uid: doc['uid'],
+              uid: uid,
               betId: doc.documentID,
               amount: doc['amount'] as int,
               groupName: doc['group'],
               type: type,
               isExpired: doc['isExpired'] as bool,
-              expiryDate: expiryDate,
+              expiryDate: DateTime.fromMillisecondsSinceEpoch(expiryDate),
               winCond: doc['winCond'] as bool,
               options: doc['options'],
             );
@@ -49,15 +50,17 @@ class FirebaseBetsRepo {
   Future<void> renewBet(Bet bet) {
     if (bet.type == BetType.alarmClock) {
       return firestore.collection(betPath).document(bet.betId).updateData({
+        "uid": { bet.uid: DateTime.now().millisecondsSinceEpoch, },
         "isExpired": false,
-        "expiryDate": DateTime.now().add(Duration(days: 7)).toIso8601String(),
+        "expiryDate": DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch,
         "options.count": bet.options['frequency'],
         "winCond": true,
       });
     } else {
       return firestore.collection(betPath).document(bet.betId).updateData({
+        "uid": { bet.uid: DateTime.now().millisecondsSinceEpoch, },
         "isExpired": false,
-        "expiryDate": DateTime.now().add(Duration(days: 7)).toIso8601String(),
+        "expiryDate": DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch,
         "winCond": false,
       });
     }

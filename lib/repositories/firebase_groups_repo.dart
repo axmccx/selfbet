@@ -10,7 +10,8 @@ class FirebaseGroupsRepo {
 
   Stream<List<Group>> groupStream(String uid) {
     return firestore.collection(groupPath)
-        .where('members.' + uid, isEqualTo: true)
+        .where('members.' + uid, isGreaterThan: 0)
+        .orderBy('members.' + uid)
         .snapshots
         .map((snapshot) {
           return snapshot.documents.map((doc) {
@@ -46,7 +47,7 @@ class FirebaseGroupsRepo {
       } else if (doc.exists) {
         firestore.collection(groupPath).document(groupName).updateData(
             {
-              "members.$uid": true,
+              "members.$uid": DateTime.now().millisecondsSinceEpoch,
             }
         );
         return null;
