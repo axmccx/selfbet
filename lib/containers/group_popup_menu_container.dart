@@ -47,6 +47,25 @@ class GroupPopupMenuContainer extends StatelessWidget {
                         ],
                       ),
                 );
+              } else if (group.members.length < 3 && group.groupAtStake > 0) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        content: Text(
+                          "You can't leave this group, the only other member has active bets. "
+                              "You could earn money if they lose!",
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                          ),
+                        ],
+                      ),
+                );
               } else if (expiredBetInGroup.length > 0) {
                 showDialog(
                   context: context,
