@@ -11,12 +11,11 @@ const transactionPath = "transactions";
 function generateLostBet(bet) {
     return db.collection(groupPath).doc(bet.group).get().then((doc) => {
         const group = doc.data();
-        const members = group.members;
         const membersList = {}; 
-        Object.keys(members).map(uid => {
+        Object.keys(group.members).map(uid => {
             membersList[uid] = Date.now();
         });
-        const recipientsList = Object.keys(members).filter(elem => {
+        const recipientsList = Object.keys(group.members).filter(elem => {
             return elem !== bet.uid;
         });
         let errorCheck = false;
@@ -24,7 +23,7 @@ function generateLostBet(bet) {
             const userMap = db.collection(userPath).doc(uid).get().then(user => {
                 return {
                     balance: user.data().balance,
-                    atStake: user.data().atStake,
+                    atStake: group.membersAtStake[uid],
                     uid: uid,
                 }; 
             }).catch(err => {
@@ -43,7 +42,6 @@ function generateLostBet(bet) {
             return;
         }
         Promise.all(userList).then(readyUserList => {
-            //console.log(`${readyUserList}`);
             // calculate the amount to be split for each user
             const receiverCount = readyUserList.length;
             const calcedAtStakeMap = {};
