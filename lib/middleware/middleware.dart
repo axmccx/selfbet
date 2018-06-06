@@ -53,7 +53,7 @@ List<Middleware<AppState>> createMiddleware(
       _firestoreDeleteGroup(groupsRepo),
     ),
     TypedMiddleware<AppState, PlaceBetAction>(
-      _firestorePlaceBet(userRepo, betsRepo),
+      _firestorePlaceBet(userRepo, groupsRepo, betsRepo),
     ),
     TypedMiddleware<AppState, ExpireBetAction>(  // temporary for testing
       _firestoreExpireBet(betsRepo),
@@ -62,7 +62,7 @@ List<Middleware<AppState>> createMiddleware(
       _firestoreDeleteBet(betsRepo),
     ),
     TypedMiddleware<AppState, RenewBetAction>(
-      _firestoreRenewBet(betsRepo),
+      _firestoreRenewBet(userRepo, groupsRepo, betsRepo),
     ),
     TypedMiddleware<AppState, SnoozeAlarmBetAction>(
       _firestoreSnoozeAlarmBet(betsRepo),
@@ -342,11 +342,20 @@ void Function(
     Store<AppState> store,
     PlaceBetAction action,
     NextDispatcher next,
-    ) _firestorePlaceBet(FirebaseUserRepo userRepo, FirebaseBetsRepo betsRepo) {
+    ) _firestorePlaceBet(
+    FirebaseUserRepo userRepo,
+    FirebaseGroupsRepo groupsRepo,
+    FirebaseBetsRepo betsRepo
+    ) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
-      userRepo.reduceBalance(action.bet.uid, action.bet.amount);
+      userRepo.updateBalanceAtStake(action.bet.uid, action.bet.amount);
+      groupsRepo.updateGroupAtStake(
+          action.bet.groupName,
+          action.bet.uid,
+          action.bet.amount,
+      );
       betsRepo.placeBet(action.bet);
     } catch (e) {
       print(e);
@@ -388,11 +397,21 @@ void Function(
     Store<AppState> store,
     RenewBetAction action,
     NextDispatcher next,
-    ) _firestoreRenewBet(FirebaseBetsRepo repo) {
+    ) _firestoreRenewBet(
+    FirebaseUserRepo userRepo,
+    FirebaseGroupsRepo groupsRepo,
+    FirebaseBetsRepo betsRepo
+    ) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
     try {
-      repo.renewBet(action.bet);
+      userRepo.updateBalanceAtStake(action.bet.uid, action.bet.amount);
+      groupsRepo.updateGroupAtStake(
+        action.bet.groupName,
+        action.bet.uid,
+        action.bet.amount,
+      );
+      betsRepo.renewBet(action.bet);
     } catch (e) {
       print(e);
     }

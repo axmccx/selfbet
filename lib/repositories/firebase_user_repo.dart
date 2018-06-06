@@ -103,7 +103,7 @@ class FirebaseUserRepo {
     return out;
   }
 
-  Future<void> reduceBalance(String uid, int amount) {
+  Future<void> updateBalanceAtStake(String uid, int amount) {
     return firestore.collection(userPath)
         .document(uid).get().then((doc) {
       int newBalance = doc["balance"] - amount;

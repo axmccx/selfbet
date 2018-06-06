@@ -109,9 +109,7 @@ exports.onBetModified = functions.firestore
     .onUpdate((snap, context) => {
     const prevBet = snap.before.data();
     const newBet = snap.after.data();
-    // if bet's win condition changes and not expired, set isExpited
-    // else if bet was renewed, update balance and atStake
-    // else if bet was just set isExpire, deal with outcome. 
+    // bet's win condition changes and not expired => set isExpited
     if ((prevBet.winCond !== newBet.winCond) && (!prevBet.isExpired)) {
         const betRef = db.collection(betPath).doc(snap.after.id);
         return betRef.update({
@@ -120,22 +118,23 @@ exports.onBetModified = functions.firestore
             .catch(err => {
             console.log('Error getting document', err);
         });
-    }
-    else if (prevBet.isExpired && !newBet.isExpired) {
-        const userRef = db.collection(userPath).doc(newBet.uid);
-        return userRef.get().then(doc => {
-            const newBalance = doc.data().balance - newBet.amount;
-            const newAtStake = doc.data().atStake + newBet.amount;
-            userRef.update({
-                balance: newBalance,
-                atStake: newAtStake,
-            }).catch(err => {
-                console.log('Error updating document', err);
-            });
-        });
+        // bet expired => deal with outcome.     
     }
     else if (!prevBet.isExpired && newBet.isExpired) {
-        // bet was won, update balance and create new won transaction entry
+        // reduce AtStake in the bet's group
+        db.collection(groupPath).doc(newBet.group).get().then(group => {
+            const newAtStake = group.data().membersAtStake[newBet.uid]
+                - newBet.amount;
+            const groupUpdate = {};
+            groupUpdate[`membersAtStake.${newBet.uid}`] = newAtStake;
+            db.collection(groupPath).doc(newBet.group).update(groupUpdate)
+                .catch(err => {
+                console.log('Error updating user\'s atStake', err);
+            });
+        }).catch(err => {
+            console.log('Error getting group from bet', err);
+        });
+        // bet won => update balance and create new won transaction entry
         if (newBet.winCond) {
             const userRef = db.collection(userPath).doc(newBet.uid);
             userRef.get().then(doc => {
@@ -167,6 +166,7 @@ exports.onBetModified = functions.firestore
                 "calcedAtStake": {},
                 "recipients": {},
             });
+            // bet lost => run process...     
         }
         else {
             //reduce the user's atStake by bet amount
@@ -180,8 +180,6 @@ exports.onBetModified = functions.firestore
             }).catch(err => {
                 console.log('Error getting userDoc', err);
             });
-            ;
-            // get the list of users in the bet's group
             return generateLostBet(newBet)
                 .catch(err => {
                 console.log('Error running getUserList', err);

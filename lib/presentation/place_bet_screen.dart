@@ -105,13 +105,13 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         if (form.validate()) {
           form.save();
           setSelectedOptions();
+          Navigator.pop(context);
           widget.onSubmit(
             _selectAmount,
             _selectedType,
             _selectedGroup,
             _selectedOptions,
           );
-          Navigator.pop(context);
         }
       };
     }

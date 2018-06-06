@@ -63,8 +63,9 @@ class GroupDisplayScreen extends StatelessWidget {
                     group.members[members[index].uid]
                 );
                 return _UserRow(
-                    members[index],
-                    joinDate,
+                    user: members[index],
+                    joinDate: joinDate,
+                    atStakeInGroup: group.membersAtStake[members[index].uid],
                 );
               },
               itemCount: members.length,
@@ -79,12 +80,17 @@ class GroupDisplayScreen extends StatelessWidget {
 class _UserRow extends StatelessWidget {
   final UserEntity user;
   final DateTime joinDate;
+  final int atStakeInGroup;
 
-  const _UserRow(this.user, this.joinDate);
+  const _UserRow({
+    @required this.user,
+    @required this.joinDate,
+    @required this.atStakeInGroup,
+  });
 
   @override
   Widget build(BuildContext context) {
-    double atStakeDouble = user.atStake / 100;
+    double atStakeDouble = atStakeInGroup / 100;
     return Column(
       children: <Widget>[
         ListTile(

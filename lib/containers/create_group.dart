@@ -26,6 +26,9 @@ class CreateGroup extends StatelessWidget {
               members: {
                 store.state.currentUser.uid: DateTime.now().millisecondsSinceEpoch,
               },
+              membersAtStake: {
+                store.state.currentUser.uid: 0,
+              },
               groupAtStake: 0,
               owner: store.state.name,
             ),

@@ -4,14 +4,14 @@ import 'package:meta/meta.dart';
 class Group {
   final String name;
   final Map<dynamic, dynamic> members;
+  final Map<dynamic, dynamic> membersAtStake;
   final int groupAtStake;
   final String owner;
-  // thumbnail picture
-  // number of members
 
   Group({
     @required this.name,
     @required this.members,
+    @required this.membersAtStake,
     @required this.groupAtStake,
     @required this.owner,
   });
@@ -19,12 +19,14 @@ class Group {
   Group copyWith({
     String name,
     Map<dynamic, dynamic> members,
+    Map<dynamic, dynamic> membersAtStake,
     int groupAtStake,
     String owner,
   }) {
     return Group(
       name: name ?? this.name,
       members: members ?? this.members,
+      membersAtStake: membersAtStake ?? this.membersAtStake,
       groupAtStake: groupAtStake ?? this.groupAtStake,
       owner: owner ?? this.owner,
     );
@@ -34,6 +36,7 @@ class Group {
   int get hashCode =>
       name.hashCode ^
       members.hashCode ^
+      membersAtStake.hashCode ^
       groupAtStake.hashCode ^
       owner.hashCode;
 
@@ -44,6 +47,7 @@ class Group {
               runtimeType == other.runtimeType &&
               name == other.name &&
               members == other.members &&
+              membersAtStake == other.membersAtStake &&
               groupAtStake == other.groupAtStake &&
               owner == other.owner;
 
@@ -51,14 +55,19 @@ class Group {
     return {
       "name" : name,
       "members": members,
-      "groupAtStake" : groupAtStake,
+      "membersAtStake": membersAtStake,
       "owner" : owner,
     };
   }
 
   @override
   String toString() {
-    return 'Group{Name: $name, Members: $members, '
-        'Group At Stake: $groupAtStake, Owner: $owner}';
+    return 'Group{'
+        'Name: $name, '
+        'Members: $members, '
+        'membersAtStake: $membersAtStake, '
+        'Group At Stake: $groupAtStake, '
+        'Owner: $owner, '
+        '}';
   }
 }

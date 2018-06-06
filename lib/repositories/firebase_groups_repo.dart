@@ -15,10 +15,13 @@ class FirebaseGroupsRepo {
         .snapshots
         .map((snapshot) {
           return snapshot.documents.map((doc) {
+            int groupAtStake = doc['membersAtStake'].values
+                .reduce((prev, atStake) => prev + atStake);
             return Group(
               name: doc['name'],
               members: doc['members'],
-              groupAtStake: doc['groupAtStake'],
+              membersAtStake: doc['membersAtStake'],
+              groupAtStake: groupAtStake,
               owner: doc['owner'],
             );
           }).toList();
@@ -48,6 +51,7 @@ class FirebaseGroupsRepo {
         firestore.collection(groupPath).document(groupName).updateData(
             {
               "members.$uid": DateTime.now().millisecondsSinceEpoch,
+              "membersAtStake.$uid": 0,
             }
         );
         return null;
@@ -67,15 +71,31 @@ class FirebaseGroupsRepo {
     );
   }
 
+  Future<void> updateGroupAtStake(String groupName, String uid, int amount) {
+    return firestore.collection(groupPath)
+        .document(groupName).get().then((doc) {
+      int newAtStake = doc['membersAtStake'][uid] + amount;
+      firestore.collection(groupPath)
+          .document(groupName).updateData(
+          {
+            "membersAtStake.$uid": newAtStake,
+          }
+      );
+    });
+  }
+
   Future<void> leaveGroup(String groupName, String uid) {
     return firestore.collection(groupPath)
         .document(groupName).get().then((doc) {
           Map members = doc["members"];
+          Map membersAtStake = doc['membersAtStake'];
           members.remove(uid);
+          membersAtStake.remove(uid);
           firestore.collection(groupPath)
               .document(groupName).updateData(
             {
               "members": members,
+              "membersAtStake": membersAtStake,
             }
           );
     });
