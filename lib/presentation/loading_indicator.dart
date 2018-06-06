@@ -21,7 +21,14 @@ class LoadingIndicator extends StatelessWidget {
                 Padding( padding: EdgeInsets.all(5.0),),
                 CircularProgressIndicator(),
                 Padding( padding: EdgeInsets.all(15.0)),
-                Text(message),
+                Text(
+                  message,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ],
             )
           ),

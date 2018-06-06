@@ -22,12 +22,12 @@ class GroupPopupMenuContainer extends StatelessWidget {
             if (action == ExtraActions.ChangeGroupOwner) {
               vm.changeGroupOwnerDispatch(context, group);
             }
+            List<Bet> expiredBetInGroup = vm.bets.where((bet) {
+              return (bet.groupName == group.name) && bet.isExpired;
+            }).toList();
             if (action == ExtraActions.LeaveGroup) {
               List<Bet> activeBetInGroup = vm.bets.where((bet) {
                 return (bet.groupName == group.name) && !bet.isExpired;
-              }).toList();
-              List<Bet> expiredBetInGroup = vm.bets.where((bet) {
-                return (bet.groupName == group.name) && bet.isExpired;
               }).toList();
               if (activeBetInGroup.length > 0) {
                 showDialog(
@@ -122,29 +122,60 @@ class GroupPopupMenuContainer extends StatelessWidget {
               }
             }
             if (action == ExtraActions.DeleteGroup) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  content:  Text(
-                    "Delete group?",
-                  ),
-                  actions: <Widget>[
-                    new FlatButton(
-                        child: const Text('CANCEL'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }
-                    ),
-                    new FlatButton(
-                        child: const Text('DELETE'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          vm.deleteGroupDispatch(group.name);
-                        }
-                    )
-                  ],
-                ),
-              );
+              if (expiredBetInGroup.length > 0) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        content: Text(
+                          "Delete group?\nThis will delete all the expired bets assigned to this group",
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                              child: const Text('CANCEL'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                          ),
+                          new FlatButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                expiredBetInGroup.forEach((bet) {
+                                  vm.onDeleteBet(bet);
+                                });
+                                vm.deleteGroupDispatch(group.name);
+                              }
+                          ),
+                        ],
+                      ),
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        content: Text(
+                          "Delete group?",
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                              child: const Text('CANCEL'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                          ),
+                          new FlatButton(
+                              child: const Text('DELETE'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                vm.deleteGroupDispatch(group.name);
+                              }
+                          )
+                        ],
+                      ),
+                );
+              }
             }
           },
           canChangeOwner: (vm.name == group.owner) &&

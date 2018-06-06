@@ -26,18 +26,29 @@ class GroupTile extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${group.name}",
-                      style: TextStyle(
-                        fontSize: 20.0,
+                Container(
+                  margin: EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${group.name}",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    Text("Owner: ${group.owner}"),
-                    Text("Total at Stake: \$${atStakeDouble.toStringAsFixed(2)}"),
-                  ],
+                      Padding(padding: EdgeInsets.all(5.0)),
+                      Text("Owner: ${group.owner}"),
+                      Padding(padding: EdgeInsets.all(5.0)),
+                      Text(
+                        "Total at Stake: \n\$${atStakeDouble.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

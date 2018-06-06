@@ -34,43 +34,47 @@ class _GroupOwnerChangeScreenState extends State<GroupOwnerChangeScreen> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "Choose a new owner for ${widget.groupName}",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Choose a new owner for ${widget.groupName}",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
-            Padding(padding: EdgeInsets.all(10.0)),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: <Widget>[
-                      RadioListTile<int>(
-                        title: Text(widget.members[index].name),
-                        value: index,
-                        groupValue: _selected,
-                        onChanged: (int value) {
-                          setState(() {
-                            _selected = value;
-                          });
-                        },
-                      ),
-                      Divider(),
-                    ],
-                  );
-                },
-                itemCount: widget.members.length,
-              ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: <Widget>[
+                    RadioListTile<int>(
+                      title: Text(widget.members[index].name),
+                      value: index,
+                      groupValue: _selected,
+                      onChanged: (int value) {
+                        setState(() {
+                          _selected = value;
+                        });
+                      },
+                    ),
+                    Divider(),
+                  ],
+                );
+              },
+              itemCount: widget.members.length,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
