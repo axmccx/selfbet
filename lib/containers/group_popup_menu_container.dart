@@ -23,29 +23,84 @@ class GroupPopupMenuContainer extends StatelessWidget {
               vm.changeGroupOwnerDispatch(context, group);
             }
             if (action == ExtraActions.LeaveGroup) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  content:  Text(
-                    "Leave group?",
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: const Text('CANCEL'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }
-                    ),
-                    FlatButton(
-                      child: const Text('LEAVE'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        vm.leaveGroupDispatch(group.name);
-                      }
-                    )
-                  ],
-                ),
-              );
+              List<Bet> activeBetInGroup = vm.bets.where((bet) {
+                return (bet.groupName == group.name) && !bet.isExpired;
+              }).toList();
+              List<Bet> expiredBetInGroup = vm.bets.where((bet) {
+                return (bet.groupName == group.name) && bet.isExpired;
+              }).toList();
+              if (activeBetInGroup.length > 0) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        content: Text(
+                          "You can't leave this group, you have active bets in it!",
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                          ),
+                        ],
+                      ),
+                );
+              } else if (expiredBetInGroup.length > 0) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        content: Text(
+                          "Leave group?\nThis will delete all the expired bets assigned to this group",
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                              child: const Text('CANCEL'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                          ),
+                          new FlatButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                expiredBetInGroup.forEach((bet) {
+                                  vm.onDeleteBet(bet);
+                                });
+                                vm.leaveGroupDispatch(group.name);
+                              }
+                          ),
+                        ],
+                      ),
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        content: Text(
+                          "Leave group?",
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                              child: const Text('CANCEL'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                          ),
+                          FlatButton(
+                              child: const Text('LEAVE'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                vm.leaveGroupDispatch(group.name);
+                              }
+                          )
+                        ],
+                      ),
+                );
+              }
             }
             if (action == ExtraActions.DeleteGroup) {
               showDialog(
@@ -86,20 +141,25 @@ class GroupPopupMenuContainer extends StatelessWidget {
 
 class _ViewModel {
   final String name;
+  final List<Bet> bets;
   final Function(BuildContext, Group) changeGroupOwnerDispatch;
   final Function(String) leaveGroupDispatch;
   final Function(String) deleteGroupDispatch;
+  final Function(Bet) onDeleteBet;
 
   _ViewModel({
     @required this.name,
+    @required this.bets,
     @required this.changeGroupOwnerDispatch,
     @required this.leaveGroupDispatch,
     @required this.deleteGroupDispatch,
+    @required this.onDeleteBet,
   });
 
   static _ViewModel fromStore(Store <AppState> store) {
     return _ViewModel(
       name: store.state.name,
+      bets: store.state.bets,
       changeGroupOwnerDispatch: (context, group) {
         store.dispatch(GetGroupMembersAction(
             groupMemberUids: group.members,
@@ -117,6 +177,9 @@ class _ViewModel {
       },
       deleteGroupDispatch: (groupName) {
         store.dispatch(DeleteGroupAction(groupName));
+      },
+      onDeleteBet: (bet) {
+        store.dispatch(DeleteBetAction(bet));
       },
     );
   }
