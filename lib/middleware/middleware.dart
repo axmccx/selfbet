@@ -8,9 +8,10 @@ import 'package:selfbet/repositories/repos.dart';
 import 'package:redux/redux.dart';
 
 List<Middleware<AppState>> createMiddleware(
-  FirebaseUserRepo userRepo,
-  FirebaseGroupsRepo groupsRepo,
-  FirebaseBetsRepo betsRepo,
+    FirebaseUserRepo userRepo,
+    FirebaseGroupsRepo groupsRepo,
+    FirebaseBetsRepo betsRepo,
+    NativeCodeRepo nativeCodeRepo,
   ) {
   return [
     TypedMiddleware<AppState, InitAppAction>(
@@ -53,7 +54,7 @@ List<Middleware<AppState>> createMiddleware(
       _firestoreDeleteGroup(groupsRepo),
     ),
     TypedMiddleware<AppState, PlaceBetAction>(
-      _firestorePlaceBet(userRepo, groupsRepo, betsRepo),
+      _firestorePlaceBet(userRepo, groupsRepo, betsRepo, nativeCodeRepo),
     ),
     TypedMiddleware<AppState, ExpireBetAction>(  // temporary for testing
       _firestoreExpireBet(betsRepo),
@@ -345,7 +346,8 @@ void Function(
     ) _firestorePlaceBet(
     FirebaseUserRepo userRepo,
     FirebaseGroupsRepo groupsRepo,
-    FirebaseBetsRepo betsRepo
+    FirebaseBetsRepo betsRepo,
+    NativeCodeRepo nativeCodeRepo,
     ) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
@@ -357,6 +359,9 @@ void Function(
           action.bet.amount,
       );
       betsRepo.placeBet(action.bet);
+      if (action.bet.type == BetType.alarmClock) {
+        nativeCodeRepo.setAlarm(action.bet);
+      }
     } catch (e) {
       print(e);
     }

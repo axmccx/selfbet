@@ -27,6 +27,7 @@ class SelfbetApp extends StatelessWidget {
        FirebaseUserRepo(FirebaseAuth.instance, Firestore.instance),
        FirebaseGroupsRepo(Firestore.instance),
        FirebaseBetsRepo(Firestore.instance),
+       NativeCodeRepo(),
      ))
      ..add(LoggingMiddleware.printer()),
 
