@@ -27,7 +27,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
   static final _alarmOptionsKey = GlobalKey<BetAlarmOptionsState>();
 
   int _selectAmount;
-  Group _selectedGroup;
+  int _selectedGroupIndex;
   BetType _selectedType;
   Map _selectedOptions;
 
@@ -75,7 +75,7 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         );
         Scaffold.of(context).showSnackBar(snackBar);
       };
-    } else if (_selectedGroup == null) {
+    } else if (_selectedGroupIndex == null) {
       return () {
         final snackBar = SnackBar(
           content: Text("Please select a group"),
@@ -89,13 +89,13 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         );
         Scaffold.of(context).showSnackBar(snackBar);
       };
-    } else if (_selectedGroup.members.length < 2) {
+    } else if (widget.groups[_selectedGroupIndex].members.length < 2) {
       return () {
         final snackBar = SnackBar(
           duration: Duration(seconds: 8),
           content: Text("You are the only member in the selected group.\n"
               "Who will receive your money if you lose? :)\n"
-              "Ask a friend to join ${_selectedGroup.name}."),
+              "Ask a friend to join ${widget.groups[_selectedGroupIndex].name}."),
         );
         Scaffold.of(context).showSnackBar(snackBar);
       };
@@ -105,13 +105,13 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
         if (form.validate()) {
           form.save();
           setSelectedOptions();
-          Navigator.pop(context);
           widget.onSubmit(
             _selectAmount,
             _selectedType,
-            _selectedGroup,
+            widget.groups[_selectedGroupIndex],
             _selectedOptions,
           );
+          Navigator.pop(context);
         }
       };
     }
@@ -185,19 +185,19 @@ class _PlaceBetScreenState extends State<PlaceBetScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20.0),
-                    child: DropdownButton<Group>(
-                      value: _selectedGroup,
+                    child: DropdownButton<int>(
+                      value: _selectedGroupIndex,
                       items: widget.groups.map((group) {
-                        return DropdownMenuItem<Group>(
+                        return DropdownMenuItem<int>(
                           child: Text(
                             group.name,
                           ),
-                          value: group,
+                          value: widget.groups.indexOf(group),
                         );
                       }).toList(),
-                      onChanged: (Group group) {
+                      onChanged: (int index) {
                         setState(() {
-                          _selectedGroup = group;
+                          _selectedGroupIndex = index;
                         });
                       },
                     ),
