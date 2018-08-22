@@ -360,7 +360,7 @@ void Function(
       );
       betsRepo.placeBet(action.bet);
       if (action.bet.type == BetType.alarmClock) {
-        nativeCodeRepo.setAlarm(action.bet);
+        //nativeCodeRepo.setAlarm(action.bet);
       }
     } catch (e) {
       print(e);
